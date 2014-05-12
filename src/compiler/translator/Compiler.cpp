@@ -125,8 +125,11 @@ bool TCompiler::Init(const ShBuiltInResources& resources)
     InitExtensionBehavior(resources, extensionBehavior);
     fragmentPrecisionHigh = resources.FragmentPrecisionHigh == 1;
 
-    arrayBoundsClamper.SetClampingStrategy(resources.ArrayIndexClampingStrategy);
-    clampingStrategy = resources.ArrayIndexClampingStrategy;
+    // ArrayIndexClampingStrategy's enum starts at 1, so 0 is 'default'.
+    if (resources.ArrayIndexClampingStrategy) {
+        clampingStrategy = resources.ArrayIndexClampingStrategy;
+    }
+    arrayBoundsClamper.SetClampingStrategy(clampingStrategy);
 
     hashFunction = resources.HashFunction;
 
