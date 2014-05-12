@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ! -f third_party/gyp/gyp ] ; then
+  echo "gyp not found, run: "
+  echo "  svn checkout http://gyp.googlecode.com/svn/trunk@1806 third_party/gyp"
+  exit 1
+fi
+
+# Generate commit.h
+python src/commit_id.py src/commit.h
+echo Generated src/commit.h
+
+# Install our generator
+cp dump_mozbuild.py third_party/gyp/pylib/gyp/generator
+
+# This will call gyp for each platform
+./generate_mozbuild.py
