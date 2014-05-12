@@ -37,6 +37,10 @@ out
 lib/*
 Makefile
 *.Makefile
+moz.build
+sources.json
+*.mozbuild
+src/commit.h
 *~
 .gclient
 angle_internal
