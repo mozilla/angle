@@ -30,6 +30,7 @@ struct TParseContext {
             symbolTable(symt),
             shaderType(type),
             shaderSpec(spec),
+            shaderVersion(100),
             compileOptions(options),
             sourcePath(sourcePath),
             treeRoot(0),
@@ -41,7 +42,6 @@ struct TParseContext {
             defaultMatrixPacking(EmpColumnMajor),
             defaultBlockStorage(EbsShared),
             diagnostics(is),
-            shaderVersion(100),
             directiveHandler(ext, diagnostics, shaderVersion),
             preprocessor(&diagnostics, &directiveHandler),
             scanner(NULL) {  }
