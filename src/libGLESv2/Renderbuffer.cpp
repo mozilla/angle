@@ -423,32 +423,74 @@ GLenum Renderbuffer::getActualFormat() const
 
 GLuint Renderbuffer::getRedSize() const
 {
-    return gl::GetRedBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    if (gl::GetRedBits(getInternalFormat(), mRenderer->getCurrentClientVersion()) > 0)
+    {
+        return gl::GetRedBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 GLuint Renderbuffer::getGreenSize() const
 {
-    return gl::GetGreenBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    if (gl::GetGreenBits(getInternalFormat(), mRenderer->getCurrentClientVersion()) > 0)
+    {
+        return gl::GetGreenBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 GLuint Renderbuffer::getBlueSize() const
 {
-    return gl::GetBlueBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    if (gl::GetBlueBits(getInternalFormat(), mRenderer->getCurrentClientVersion()) > 0)
+    {
+        return gl::GetBlueBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 GLuint Renderbuffer::getAlphaSize() const
 {
-    return gl::GetAlphaBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    if (gl::GetAlphaBits(getInternalFormat(), mRenderer->getCurrentClientVersion()) > 0)
+    {
+        return gl::GetAlphaBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 GLuint Renderbuffer::getDepthSize() const
 {
-    return gl::GetDepthBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    if (gl::GetDepthBits(getInternalFormat(), mRenderer->getCurrentClientVersion()) > 0)
+    {
+        return gl::GetDepthBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 GLuint Renderbuffer::getStencilSize() const
 {
-    return gl::GetStencilBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    if (gl::GetStencilBits(getInternalFormat(), mRenderer->getCurrentClientVersion()) > 0)
+    {
+        return gl::GetStencilBits(getActualFormat(), mRenderer->getCurrentClientVersion());
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 GLenum Renderbuffer::getComponentType() const
