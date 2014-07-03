@@ -2904,18 +2904,12 @@ bool Renderer9::boxFilter(IDirect3DSurface9 *source, IDirect3DSurface9 *dest)
 
 D3DPOOL Renderer9::getTexturePool(DWORD usage) const
 {
-    if (mD3d9Ex != NULL)
-    {
-        return D3DPOOL_DEFAULT;
-    }
-    else
-    {
-        if (!(usage & (D3DUSAGE_DEPTHSTENCIL | D3DUSAGE_RENDERTARGET)))
-        {
-            return D3DPOOL_MANAGED;
-        }
-    }
-
+    // Always use DEFAULT pool for textures, as there is a bug
+    // on XP (non-D3D9Ex) where we select MANAGED here,
+    // but trigger a crash in Image9::copyToSurface where the
+    // source pool is SYSTEMMEM, but the destination pool is
+    // MANAGED.  It expects the dest pool to be DEFAULT
+    // if the source is SYSTEMMEM.
     return D3DPOOL_DEFAULT;
 }
 
