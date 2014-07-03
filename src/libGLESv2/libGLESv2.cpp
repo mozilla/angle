@@ -38,7 +38,7 @@ void __stdcall glActiveTexture(GLenum texture)
 {
     EVENT("(GLenum texture = 0x%X)", texture);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -52,7 +52,7 @@ void __stdcall glActiveTexture(GLenum texture)
             context->setActiveSampler(texture - GL_TEXTURE0);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -62,7 +62,7 @@ void __stdcall glAttachShader(GLuint program, GLuint shader)
 {
     EVENT("(GLuint program = %d, GLuint shader = %d)", program, shader);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -101,7 +101,7 @@ void __stdcall glAttachShader(GLuint program, GLuint shader)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -111,7 +111,7 @@ void __stdcall glBeginQueryEXT(GLenum target, GLuint id)
 {
     EVENT("(GLenum target = 0x%X, GLuint %d)", target, id);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -125,7 +125,7 @@ void __stdcall glBeginQueryEXT(GLenum target, GLuint id)
             context->beginQuery(target, id);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -135,7 +135,7 @@ void __stdcall glBindAttribLocation(GLuint program, GLuint index, const GLchar* 
 {
     EVENT("(GLuint program = %d, GLuint index = %d, const GLchar* name = 0x%0.8p)", program, index, name);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -168,7 +168,7 @@ void __stdcall glBindAttribLocation(GLuint program, GLuint index, const GLchar* 
             programObject->bindAttributeLocation(index, name);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -178,7 +178,7 @@ void __stdcall glBindBuffer(GLenum target, GLuint buffer)
 {
     EVENT("(GLenum target = 0x%X, GLuint buffer = %d)", target, buffer);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -220,7 +220,7 @@ void __stdcall glBindBuffer(GLenum target, GLuint buffer)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -230,7 +230,7 @@ void __stdcall glBindFramebuffer(GLenum target, GLuint framebuffer)
 {
     EVENT("(GLenum target = 0x%X, GLuint framebuffer = %d)", target, framebuffer);
 
-    try
+    ANGLE_TRY
     {
         if (!gl::ValidFramebufferTarget(target))
         {
@@ -252,7 +252,7 @@ void __stdcall glBindFramebuffer(GLenum target, GLuint framebuffer)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -262,7 +262,7 @@ void __stdcall glBindRenderbuffer(GLenum target, GLuint renderbuffer)
 {
     EVENT("(GLenum target = 0x%X, GLuint renderbuffer = %d)", target, renderbuffer);
 
-    try
+    ANGLE_TRY
     {
         if (target != GL_RENDERBUFFER)
         {
@@ -276,7 +276,7 @@ void __stdcall glBindRenderbuffer(GLenum target, GLuint renderbuffer)
             context->bindRenderbuffer(renderbuffer);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -286,7 +286,7 @@ void __stdcall glBindTexture(GLenum target, GLuint texture)
 {
     EVENT("(GLenum target = 0x%X, GLuint texture = %d)", target, texture);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -326,7 +326,7 @@ void __stdcall glBindTexture(GLenum target, GLuint texture)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -337,7 +337,7 @@ void __stdcall glBlendColor(GLclampf red, GLclampf green, GLclampf blue, GLclamp
     EVENT("(GLclampf red = %f, GLclampf green = %f, GLclampf blue = %f, GLclampf alpha = %f)",
           red, green, blue, alpha);
 
-    try
+    ANGLE_TRY
     {
         gl::Context* context = gl::getNonLostContext();
 
@@ -346,7 +346,7 @@ void __stdcall glBlendColor(GLclampf red, GLclampf green, GLclampf blue, GLclamp
             context->setBlendColor(gl::clamp01(red), gl::clamp01(green), gl::clamp01(blue), gl::clamp01(alpha));
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -361,7 +361,7 @@ void __stdcall glBlendEquationSeparate(GLenum modeRGB, GLenum modeAlpha)
 {
     EVENT("(GLenum modeRGB = 0x%X, GLenum modeAlpha = 0x%X)", modeRGB, modeAlpha);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -396,7 +396,7 @@ void __stdcall glBlendEquationSeparate(GLenum modeRGB, GLenum modeAlpha)
             context->setBlendEquation(modeRGB, modeAlpha);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -412,7 +412,7 @@ void __stdcall glBlendFuncSeparate(GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha
     EVENT("(GLenum srcRGB = 0x%X, GLenum dstRGB = 0x%X, GLenum srcAlpha = 0x%X, GLenum dstAlpha = 0x%X)",
           srcRGB, dstRGB, srcAlpha, dstAlpha);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -535,7 +535,7 @@ void __stdcall glBlendFuncSeparate(GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha
             context->setBlendFactors(srcRGB, dstRGB, srcAlpha, dstAlpha);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -546,7 +546,7 @@ void __stdcall glBufferData(GLenum target, GLsizeiptr size, const GLvoid* data, 
     EVENT("(GLenum target = 0x%X, GLsizeiptr size = %d, const GLvoid* data = 0x%0.8p, GLenum usage = %d)",
           target, size, data, usage);
 
-    try
+    ANGLE_TRY
     {
         if (size < 0)
         {
@@ -595,7 +595,7 @@ void __stdcall glBufferData(GLenum target, GLsizeiptr size, const GLvoid* data, 
             buffer->bufferData(data, size, usage);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -606,7 +606,7 @@ void __stdcall glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, 
     EVENT("(GLenum target = 0x%X, GLintptr offset = %d, GLsizeiptr size = %d, const GLvoid* data = 0x%0.8p)",
           target, offset, size, data);
 
-    try
+    ANGLE_TRY
     {
         if (size < 0 || offset < 0)
         {
@@ -653,7 +653,7 @@ void __stdcall glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, 
             buffer->bufferSubData(data, size, offset);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -663,7 +663,7 @@ GLenum __stdcall glCheckFramebufferStatus(GLenum target)
 {
     EVENT("(GLenum target = 0x%X)", target);
 
-    try
+    ANGLE_TRY
     {
         if (!gl::ValidFramebufferTarget(target))
         {
@@ -679,7 +679,7 @@ GLenum __stdcall glCheckFramebufferStatus(GLenum target)
             return framebuffer->completeness();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, 0);
     }
@@ -691,7 +691,7 @@ void __stdcall glClear(GLbitfield mask)
 {
     EVENT("(GLbitfield mask = 0x%X)", mask);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -712,7 +712,7 @@ void __stdcall glClear(GLbitfield mask)
             context->clear(mask);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -723,7 +723,7 @@ void __stdcall glClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclamp
     EVENT("(GLclampf red = %f, GLclampf green = %f, GLclampf blue = %f, GLclampf alpha = %f)",
           red, green, blue, alpha);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -732,7 +732,7 @@ void __stdcall glClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclamp
             context->setClearColor(red, green, blue, alpha);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -742,7 +742,7 @@ void __stdcall glClearDepthf(GLclampf depth)
 {
     EVENT("(GLclampf depth = %f)", depth);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -751,7 +751,7 @@ void __stdcall glClearDepthf(GLclampf depth)
             context->setClearDepth(depth);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -761,7 +761,7 @@ void __stdcall glClearStencil(GLint s)
 {
     EVENT("(GLint s = %d)", s);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -770,7 +770,7 @@ void __stdcall glClearStencil(GLint s)
             context->setClearStencil(s);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -781,7 +781,7 @@ void __stdcall glColorMask(GLboolean red, GLboolean green, GLboolean blue, GLboo
     EVENT("(GLboolean red = %d, GLboolean green = %u, GLboolean blue = %u, GLboolean alpha = %u)",
           red, green, blue, alpha);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -790,7 +790,7 @@ void __stdcall glColorMask(GLboolean red, GLboolean green, GLboolean blue, GLboo
             context->setColorMask(red == GL_TRUE, green == GL_TRUE, blue == GL_TRUE, alpha == GL_TRUE);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -800,7 +800,7 @@ void __stdcall glCompileShader(GLuint shader)
 {
     EVENT("(GLuint shader = %d)", shader);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -823,7 +823,7 @@ void __stdcall glCompileShader(GLuint shader)
             shaderObject->compile();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -836,7 +836,7 @@ void __stdcall glCompressedTexImage2D(GLenum target, GLint level, GLenum interna
           "GLsizei height = %d, GLint border = %d, GLsizei imageSize = %d, const GLvoid* data = 0x%0.8p)",
           target, level, internalformat, width, height, border, imageSize, data);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -887,7 +887,7 @@ void __stdcall glCompressedTexImage2D(GLenum target, GLint level, GLenum interna
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -901,7 +901,7 @@ void __stdcall glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffs
           "GLsizei imageSize = %d, const GLvoid* data = 0x%0.8p)",
           target, level, xoffset, yoffset, width, height, format, imageSize, data);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -952,7 +952,7 @@ void __stdcall glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffs
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -964,7 +964,7 @@ void __stdcall glCopyTexImage2D(GLenum target, GLint level, GLenum internalforma
           "GLint x = %d, GLint y = %d, GLsizei width = %d, GLsizei height = %d, GLint border = %d)",
           target, level, internalformat, x, y, width, height, border);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1012,7 +1012,7 @@ void __stdcall glCopyTexImage2D(GLenum target, GLint level, GLenum internalforma
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1024,7 +1024,7 @@ void __stdcall glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GL
           "GLint x = %d, GLint y = %d, GLsizei width = %d, GLsizei height = %d)",
           target, level, xoffset, yoffset, x, y, width, height);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1073,7 +1073,7 @@ void __stdcall glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GL
         }
     }
 
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1083,7 +1083,7 @@ GLuint __stdcall glCreateProgram(void)
 {
     EVENT("()");
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1092,7 +1092,7 @@ GLuint __stdcall glCreateProgram(void)
             return context->createProgram();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, 0);
     }
@@ -1104,7 +1104,7 @@ GLuint __stdcall glCreateShader(GLenum type)
 {
     EVENT("(GLenum type = 0x%X)", type);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1120,7 +1120,7 @@ GLuint __stdcall glCreateShader(GLenum type)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, 0);
     }
@@ -1132,7 +1132,7 @@ void __stdcall glCullFace(GLenum mode)
 {
     EVENT("(GLenum mode = 0x%X)", mode);
 
-    try
+    ANGLE_TRY
     {
         switch (mode)
         {
@@ -1152,7 +1152,7 @@ void __stdcall glCullFace(GLenum mode)
             return gl::error(GL_INVALID_ENUM);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1162,7 +1162,7 @@ void __stdcall glDeleteBuffers(GLsizei n, const GLuint* buffers)
 {
     EVENT("(GLsizei n = %d, const GLuint* buffers = 0x%0.8p)", n, buffers);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -1179,7 +1179,7 @@ void __stdcall glDeleteBuffers(GLsizei n, const GLuint* buffers)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1189,7 +1189,7 @@ void __stdcall glDeleteFencesNV(GLsizei n, const GLuint* fences)
 {
     EVENT("(GLsizei n = %d, const GLuint* fences = 0x%0.8p)", n, fences);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -1206,7 +1206,7 @@ void __stdcall glDeleteFencesNV(GLsizei n, const GLuint* fences)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1216,7 +1216,7 @@ void __stdcall glDeleteFramebuffers(GLsizei n, const GLuint* framebuffers)
 {
     EVENT("(GLsizei n = %d, const GLuint* framebuffers = 0x%0.8p)", n, framebuffers);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -1236,7 +1236,7 @@ void __stdcall glDeleteFramebuffers(GLsizei n, const GLuint* framebuffers)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1246,7 +1246,7 @@ void __stdcall glDeleteProgram(GLuint program)
 {
     EVENT("(GLuint program = %d)", program);
 
-    try
+    ANGLE_TRY
     {
         if (program == 0)
         {
@@ -1272,7 +1272,7 @@ void __stdcall glDeleteProgram(GLuint program)
             context->deleteProgram(program);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1282,7 +1282,7 @@ void __stdcall glDeleteQueriesEXT(GLsizei n, const GLuint *ids)
 {
     EVENT("(GLsizei n = %d, const GLuint *ids = 0x%0.8p)", n, ids);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -1299,7 +1299,7 @@ void __stdcall glDeleteQueriesEXT(GLsizei n, const GLuint *ids)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1309,7 +1309,7 @@ void __stdcall glDeleteRenderbuffers(GLsizei n, const GLuint* renderbuffers)
 {
     EVENT("(GLsizei n = %d, const GLuint* renderbuffers = 0x%0.8p)", n, renderbuffers);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -1326,7 +1326,7 @@ void __stdcall glDeleteRenderbuffers(GLsizei n, const GLuint* renderbuffers)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1336,7 +1336,7 @@ void __stdcall glDeleteShader(GLuint shader)
 {
     EVENT("(GLuint shader = %d)", shader);
 
-    try
+    ANGLE_TRY
     {
         if (shader == 0)
         {
@@ -1362,7 +1362,7 @@ void __stdcall glDeleteShader(GLuint shader)
             context->deleteShader(shader);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1372,7 +1372,7 @@ void __stdcall glDeleteTextures(GLsizei n, const GLuint* textures)
 {
     EVENT("(GLsizei n = %d, const GLuint* textures = 0x%0.8p)", n, textures);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -1392,7 +1392,7 @@ void __stdcall glDeleteTextures(GLsizei n, const GLuint* textures)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1402,7 +1402,7 @@ void __stdcall glDepthFunc(GLenum func)
 {
     EVENT("(GLenum func = 0x%X)", func);
 
-    try
+    ANGLE_TRY
     {
         switch (func)
         {
@@ -1426,7 +1426,7 @@ void __stdcall glDepthFunc(GLenum func)
             context->setDepthFunc(func);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1436,7 +1436,7 @@ void __stdcall glDepthMask(GLboolean flag)
 {
     EVENT("(GLboolean flag = %u)", flag);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1445,7 +1445,7 @@ void __stdcall glDepthMask(GLboolean flag)
             context->setDepthMask(flag != GL_FALSE);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1455,7 +1455,7 @@ void __stdcall glDepthRangef(GLclampf zNear, GLclampf zFar)
 {
     EVENT("(GLclampf zNear = %f, GLclampf zFar = %f)", zNear, zFar);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1464,7 +1464,7 @@ void __stdcall glDepthRangef(GLclampf zNear, GLclampf zFar)
             context->setDepthRange(zNear, zFar);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1474,7 +1474,7 @@ void __stdcall glDetachShader(GLuint program, GLuint shader)
 {
     EVENT("(GLuint program = %d, GLuint shader = %d)", program, shader);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1517,7 +1517,7 @@ void __stdcall glDetachShader(GLuint program, GLuint shader)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1527,7 +1527,7 @@ void __stdcall glDisable(GLenum cap)
 {
     EVENT("(GLenum cap = 0x%X)", cap);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1541,7 +1541,7 @@ void __stdcall glDisable(GLenum cap)
             context->setCap(cap, false);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1551,7 +1551,7 @@ void __stdcall glDisableVertexAttribArray(GLuint index)
 {
     EVENT("(GLuint index = %d)", index);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -1565,7 +1565,7 @@ void __stdcall glDisableVertexAttribArray(GLuint index)
             context->setEnableVertexAttribArray(index, false);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1575,7 +1575,7 @@ void __stdcall glDrawArrays(GLenum mode, GLint first, GLsizei count)
 {
     EVENT("(GLenum mode = 0x%X, GLint first = %d, GLsizei count = %d)", mode, first, count);
 
-    try
+    ANGLE_TRY
     {
         if (count < 0 || first < 0)
         {
@@ -1605,7 +1605,7 @@ void __stdcall glDrawArrays(GLenum mode, GLint first, GLsizei count)
             context->drawArrays(mode, first, count, 0);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1615,7 +1615,7 @@ void __stdcall glDrawArraysInstancedANGLE(GLenum mode, GLint first, GLsizei coun
 {
     EVENT("(GLenum mode = 0x%X, GLint first = %d, GLsizei count = %d, GLsizei primcount = %d)", mode, first, count, primcount);
 
-    try
+    ANGLE_TRY
     {
         if (count < 0 || first < 0 || primcount < 0)
         {
@@ -1648,7 +1648,7 @@ void __stdcall glDrawArraysInstancedANGLE(GLenum mode, GLint first, GLsizei coun
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1659,7 +1659,7 @@ void __stdcall glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLv
     EVENT("(GLenum mode = 0x%X, GLsizei count = %d, GLenum type = 0x%X, const GLvoid* indices = 0x%0.8p)",
           mode, count, type, indices);
 
-    try
+    ANGLE_TRY
     {
         if (count < 0)
         {
@@ -1702,7 +1702,7 @@ void __stdcall glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLv
             context->drawElements(mode, count, type, indices, 0);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1713,7 +1713,7 @@ void __stdcall glDrawElementsInstancedANGLE(GLenum mode, GLsizei count, GLenum t
     EVENT("(GLenum mode = 0x%X, GLsizei count = %d, GLenum type = 0x%X, const GLvoid* indices = 0x%0.8p, GLsizei primcount = %d)",
           mode, count, type, indices, primcount);
 
-    try
+    ANGLE_TRY
     {
         if (count < 0 || primcount < 0)
         {
@@ -1759,7 +1759,7 @@ void __stdcall glDrawElementsInstancedANGLE(GLenum mode, GLsizei count, GLenum t
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1769,7 +1769,7 @@ void __stdcall glEnable(GLenum cap)
 {
     EVENT("(GLenum cap = 0x%X)", cap);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1783,7 +1783,7 @@ void __stdcall glEnable(GLenum cap)
             context->setCap(cap, true);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1793,7 +1793,7 @@ void __stdcall glEnableVertexAttribArray(GLuint index)
 {
     EVENT("(GLuint index = %d)", index);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -1807,7 +1807,7 @@ void __stdcall glEnableVertexAttribArray(GLuint index)
             context->setEnableVertexAttribArray(index, true);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1817,7 +1817,7 @@ void __stdcall glEndQueryEXT(GLenum target)
 {
     EVENT("GLenum target = 0x%X)", target);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1831,7 +1831,7 @@ void __stdcall glEndQueryEXT(GLenum target)
             context->endQuery(target);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1841,7 +1841,7 @@ void __stdcall glFinishFenceNV(GLuint fence)
 {
     EVENT("(GLuint fence = %d)", fence);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1862,7 +1862,7 @@ void __stdcall glFinishFenceNV(GLuint fence)
             fenceObject->finishFence();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1872,7 +1872,7 @@ void __stdcall glFinish(void)
 {
     EVENT("()");
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1881,7 +1881,7 @@ void __stdcall glFinish(void)
             context->sync(true);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1891,7 +1891,7 @@ void __stdcall glFlush(void)
 {
     EVENT("()");
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -1900,7 +1900,7 @@ void __stdcall glFlush(void)
             context->sync(false);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1911,7 +1911,7 @@ void __stdcall glFramebufferRenderbuffer(GLenum target, GLenum attachment, GLenu
     EVENT("(GLenum target = 0x%X, GLenum attachment = 0x%X, GLenum renderbuffertarget = 0x%X, "
           "GLuint renderbuffer = %d)", target, attachment, renderbuffertarget, renderbuffer);
 
-    try
+    ANGLE_TRY
     {
         if (!gl::ValidFramebufferTarget(target) || (renderbuffertarget != GL_RENDERBUFFER && renderbuffer != 0))
         {
@@ -1955,7 +1955,7 @@ void __stdcall glFramebufferRenderbuffer(GLenum target, GLenum attachment, GLenu
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -1966,7 +1966,7 @@ void __stdcall glFramebufferTexture2D(GLenum target, GLenum attachment, GLenum t
     EVENT("(GLenum target = 0x%X, GLenum attachment = 0x%X, GLenum textarget = 0x%X, "
           "GLuint texture = %d, GLint level = %d)", target, attachment, textarget, texture, level);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
         if (context)
@@ -2006,7 +2006,7 @@ void __stdcall glFramebufferTexture2D(GLenum target, GLenum attachment, GLenum t
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2016,7 +2016,7 @@ void __stdcall glFrontFace(GLenum mode)
 {
     EVENT("(GLenum mode = 0x%X)", mode);
 
-    try
+    ANGLE_TRY
     {
         switch (mode)
         {
@@ -2035,7 +2035,7 @@ void __stdcall glFrontFace(GLenum mode)
             return gl::error(GL_INVALID_ENUM);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2045,7 +2045,7 @@ void __stdcall glGenBuffers(GLsizei n, GLuint* buffers)
 {
     EVENT("(GLsizei n = %d, GLuint* buffers = 0x%0.8p)", n, buffers);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -2062,7 +2062,7 @@ void __stdcall glGenBuffers(GLsizei n, GLuint* buffers)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2072,7 +2072,7 @@ void __stdcall glGenerateMipmap(GLenum target)
 {
     EVENT("(GLenum target = 0x%X)", target);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -2126,7 +2126,7 @@ void __stdcall glGenerateMipmap(GLenum target)
             texture->generateMipmaps();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2136,7 +2136,7 @@ void __stdcall glGenFencesNV(GLsizei n, GLuint* fences)
 {
     EVENT("(GLsizei n = %d, GLuint* fences = 0x%0.8p)", n, fences);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -2153,7 +2153,7 @@ void __stdcall glGenFencesNV(GLsizei n, GLuint* fences)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2163,7 +2163,7 @@ void __stdcall glGenFramebuffers(GLsizei n, GLuint* framebuffers)
 {
     EVENT("(GLsizei n = %d, GLuint* framebuffers = 0x%0.8p)", n, framebuffers);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -2180,7 +2180,7 @@ void __stdcall glGenFramebuffers(GLsizei n, GLuint* framebuffers)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2190,7 +2190,7 @@ void __stdcall glGenQueriesEXT(GLsizei n, GLuint* ids)
 {
     EVENT("(GLsizei n = %d, GLuint* ids = 0x%0.8p)", n, ids);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -2207,7 +2207,7 @@ void __stdcall glGenQueriesEXT(GLsizei n, GLuint* ids)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2217,7 +2217,7 @@ void __stdcall glGenRenderbuffers(GLsizei n, GLuint* renderbuffers)
 {
     EVENT("(GLsizei n = %d, GLuint* renderbuffers = 0x%0.8p)", n, renderbuffers);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -2234,7 +2234,7 @@ void __stdcall glGenRenderbuffers(GLsizei n, GLuint* renderbuffers)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2244,7 +2244,7 @@ void __stdcall glGenTextures(GLsizei n, GLuint* textures)
 {
     EVENT("(GLsizei n = %d, GLuint* textures = 0x%0.8p)", n, textures);
 
-    try
+    ANGLE_TRY
     {
         if (n < 0)
         {
@@ -2261,7 +2261,7 @@ void __stdcall glGenTextures(GLsizei n, GLuint* textures)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2273,7 +2273,7 @@ void __stdcall glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufsize, 
           "GLint *size = 0x%0.8p, GLenum *type = %0.8p, GLchar *name = %0.8p)",
           program, index, bufsize, length, size, type, name);
 
-    try
+    ANGLE_TRY
     {
         if (bufsize < 0)
         {
@@ -2306,7 +2306,7 @@ void __stdcall glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufsize, 
             programObject->getActiveAttribute(index, bufsize, length, size, type, name);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2318,7 +2318,7 @@ void __stdcall glGetActiveUniform(GLuint program, GLuint index, GLsizei bufsize,
           "GLsizei* length = 0x%0.8p, GLint* size = 0x%0.8p, GLenum* type = 0x%0.8p, GLchar* name = 0x%0.8p)",
           program, index, bufsize, length, size, type, name);
 
-    try
+    ANGLE_TRY
     {
         if (bufsize < 0)
         {
@@ -2351,7 +2351,7 @@ void __stdcall glGetActiveUniform(GLuint program, GLuint index, GLsizei bufsize,
             programObject->getActiveUniform(index, bufsize, length, size, type, name);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2362,7 +2362,7 @@ void __stdcall glGetAttachedShaders(GLuint program, GLsizei maxcount, GLsizei* c
     EVENT("(GLuint program = %d, GLsizei maxcount = %d, GLsizei* count = 0x%0.8p, GLuint* shaders = 0x%0.8p)",
           program, maxcount, count, shaders);
 
-    try
+    ANGLE_TRY
     {
         if (maxcount < 0)
         {
@@ -2390,7 +2390,7 @@ void __stdcall glGetAttachedShaders(GLuint program, GLsizei maxcount, GLsizei* c
             return programObject->getAttachedShaders(maxcount, count, shaders);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2400,7 +2400,7 @@ int __stdcall glGetAttribLocation(GLuint program, const GLchar* name)
 {
     EVENT("(GLuint program = %d, const GLchar* name = %s)", program, name);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -2430,7 +2430,7 @@ int __stdcall glGetAttribLocation(GLuint program, const GLchar* name)
             return programBinary->getAttributeLocation(name);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, -1);
     }
@@ -2442,7 +2442,7 @@ void __stdcall glGetBooleanv(GLenum pname, GLboolean* params)
 {
     EVENT("(GLenum pname = 0x%X, GLboolean* params = 0x%0.8p)",  pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -2465,7 +2465,7 @@ void __stdcall glGetBooleanv(GLenum pname, GLboolean* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2475,7 +2475,7 @@ void __stdcall glGetBufferParameteriv(GLenum target, GLenum pname, GLint* params
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLint* params = 0x%0.8p)", target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -2523,7 +2523,7 @@ void __stdcall glGetBufferParameteriv(GLenum target, GLenum pname, GLint* params
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2547,7 +2547,7 @@ void __stdcall glGetFenceivNV(GLuint fence, GLenum pname, GLint *params)
 {
     EVENT("(GLuint fence = %d, GLenum pname = 0x%X, GLint *params = 0x%0.8p)", fence, pname, params);
 
-    try
+    ANGLE_TRY
     {
     
         gl::Context *context = gl::getNonLostContext();
@@ -2578,7 +2578,7 @@ void __stdcall glGetFenceivNV(GLuint fence, GLenum pname, GLint *params)
             params[0] = fenceObject->getFencei(pname);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2588,7 +2588,7 @@ void __stdcall glGetFloatv(GLenum pname, GLfloat* params)
 {
     EVENT("(GLenum pname = 0x%X, GLfloat* params = 0x%0.8p)", pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -2611,7 +2611,7 @@ void __stdcall glGetFloatv(GLenum pname, GLfloat* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2622,7 +2622,7 @@ void __stdcall glGetFramebufferAttachmentParameteriv(GLenum target, GLenum attac
     EVENT("(GLenum target = 0x%X, GLenum attachment = 0x%X, GLenum pname = 0x%X, GLint* params = 0x%0.8p)",
           target, attachment, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -2914,7 +2914,7 @@ void __stdcall glGetFramebufferAttachmentParameteriv(GLenum target, GLenum attac
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2924,7 +2924,7 @@ GLenum __stdcall glGetGraphicsResetStatusEXT(void)
 {
     EVENT("()");
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getContext();
 
@@ -2935,7 +2935,7 @@ GLenum __stdcall glGetGraphicsResetStatusEXT(void)
 
         return GL_NO_ERROR;
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return GL_OUT_OF_MEMORY;
     }
@@ -2945,7 +2945,7 @@ void __stdcall glGetIntegerv(GLenum pname, GLint* params)
 {
     EVENT("(GLenum pname = 0x%X, GLint* params = 0x%0.8p)", pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -2969,7 +2969,7 @@ void __stdcall glGetIntegerv(GLenum pname, GLint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -2979,7 +2979,7 @@ void __stdcall glGetProgramiv(GLuint program, GLenum pname, GLint* params)
 {
     EVENT("(GLuint program = %d, GLenum pname = %d, GLint* params = 0x%0.8p)", program, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3057,7 +3057,7 @@ void __stdcall glGetProgramiv(GLuint program, GLenum pname, GLint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3068,7 +3068,7 @@ void __stdcall glGetProgramInfoLog(GLuint program, GLsizei bufsize, GLsizei* len
     EVENT("(GLuint program = %d, GLsizei bufsize = %d, GLsizei* length = 0x%0.8p, GLchar* infolog = 0x%0.8p)",
           program, bufsize, length, infolog);
 
-    try
+    ANGLE_TRY
     {
         if (bufsize < 0)
         {
@@ -3089,7 +3089,7 @@ void __stdcall glGetProgramInfoLog(GLuint program, GLsizei bufsize, GLsizei* len
             programObject->getInfoLog(bufsize, length, infolog);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3099,7 +3099,7 @@ void __stdcall glGetQueryivEXT(GLenum target, GLenum pname, GLint *params)
 {
     EVENT("GLenum target = 0x%X, GLenum pname = 0x%X, GLint *params = 0x%0.8p)", target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3121,7 +3121,7 @@ void __stdcall glGetQueryivEXT(GLenum target, GLenum pname, GLint *params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3131,7 +3131,7 @@ void __stdcall glGetQueryObjectuivEXT(GLuint id, GLenum pname, GLuint *params)
 {
     EVENT("(GLuint id = %d, GLenum pname = 0x%X, GLuint *params = 0x%0.8p)", id, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3162,7 +3162,7 @@ void __stdcall glGetQueryObjectuivEXT(GLuint id, GLenum pname, GLuint *params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3172,7 +3172,7 @@ void __stdcall glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint* 
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLint* params = 0x%0.8p)", target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3216,7 +3216,7 @@ void __stdcall glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint* 
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3226,7 +3226,7 @@ void __stdcall glGetShaderiv(GLuint shader, GLenum pname, GLint* params)
 {
     EVENT("(GLuint shader = %d, GLenum pname = %d, GLint* params = 0x%0.8p)", shader, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3264,7 +3264,7 @@ void __stdcall glGetShaderiv(GLuint shader, GLenum pname, GLint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3275,7 +3275,7 @@ void __stdcall glGetShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* lengt
     EVENT("(GLuint shader = %d, GLsizei bufsize = %d, GLsizei* length = 0x%0.8p, GLchar* infolog = 0x%0.8p)",
           shader, bufsize, length, infolog);
 
-    try
+    ANGLE_TRY
     {
         if (bufsize < 0)
         {
@@ -3296,7 +3296,7 @@ void __stdcall glGetShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* lengt
             shaderObject->getInfoLog(bufsize, length, infolog);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3307,7 +3307,7 @@ void __stdcall glGetShaderPrecisionFormat(GLenum shadertype, GLenum precisiontyp
     EVENT("(GLenum shadertype = 0x%X, GLenum precisiontype = 0x%X, GLint* range = 0x%0.8p, GLint* precision = 0x%0.8p)",
           shadertype, precisiontype, range, precision);
 
-    try
+    ANGLE_TRY
     {
         switch (shadertype)
         {
@@ -3341,7 +3341,7 @@ void __stdcall glGetShaderPrecisionFormat(GLenum shadertype, GLenum precisiontyp
             return gl::error(GL_INVALID_ENUM);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3352,7 +3352,7 @@ void __stdcall glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length
     EVENT("(GLuint shader = %d, GLsizei bufsize = %d, GLsizei* length = 0x%0.8p, GLchar* source = 0x%0.8p)",
           shader, bufsize, length, source);
 
-    try
+    ANGLE_TRY
     {
         if (bufsize < 0)
         {
@@ -3373,7 +3373,7 @@ void __stdcall glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* length
             shaderObject->getSource(bufsize, length, source);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3384,7 +3384,7 @@ void __stdcall glGetTranslatedShaderSourceANGLE(GLuint shader, GLsizei bufsize, 
     EVENT("(GLuint shader = %d, GLsizei bufsize = %d, GLsizei* length = 0x%0.8p, GLchar* source = 0x%0.8p)",
           shader, bufsize, length, source);
 
-    try
+    ANGLE_TRY
     {
         if (bufsize < 0)
         {
@@ -3405,7 +3405,7 @@ void __stdcall glGetTranslatedShaderSourceANGLE(GLuint shader, GLsizei bufsize, 
             shaderObject->getTranslatedSource(bufsize, length, source);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3415,7 +3415,7 @@ const GLubyte* __stdcall glGetString(GLenum name)
 {
     EVENT("(GLenum name = 0x%X)", name);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3449,7 +3449,7 @@ const GLubyte* __stdcall glGetString(GLenum name)
             return gl::error(GL_INVALID_ENUM, (GLubyte*)NULL);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, (GLubyte*)NULL);
     }
@@ -3459,7 +3459,7 @@ void __stdcall glGetTexParameterfv(GLenum target, GLenum pname, GLfloat* params)
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLfloat* params = 0x%0.8p)", target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3575,7 +3575,7 @@ void __stdcall glGetTexParameterfv(GLenum target, GLenum pname, GLfloat* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3585,7 +3585,7 @@ void __stdcall glGetTexParameteriv(GLenum target, GLenum pname, GLint* params)
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLint* params = 0x%0.8p)", target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3701,7 +3701,7 @@ void __stdcall glGetTexParameteriv(GLenum target, GLenum pname, GLint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3712,7 +3712,7 @@ void __stdcall glGetnUniformfvEXT(GLuint program, GLint location, GLsizei bufSiz
     EVENT("(GLuint program = %d, GLint location = %d, GLsizei bufSize = %d, GLfloat* params = 0x%0.8p)",
           program, location, bufSize, params);
 
-    try
+    ANGLE_TRY
     {
         if (bufSize < 0)
         {
@@ -3747,7 +3747,7 @@ void __stdcall glGetnUniformfvEXT(GLuint program, GLint location, GLsizei bufSiz
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3757,7 +3757,7 @@ void __stdcall glGetUniformfv(GLuint program, GLint location, GLfloat* params)
 {
     EVENT("(GLuint program = %d, GLint location = %d, GLfloat* params = 0x%0.8p)", program, location, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3787,7 +3787,7 @@ void __stdcall glGetUniformfv(GLuint program, GLint location, GLfloat* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3798,7 +3798,7 @@ void __stdcall glGetnUniformivEXT(GLuint program, GLint location, GLsizei bufSiz
     EVENT("(GLuint program = %d, GLint location = %d, GLsizei bufSize = %d, GLint* params = 0x%0.8p)", 
           program, location, bufSize, params);
 
-    try
+    ANGLE_TRY
     {
         if (bufSize < 0)
         {
@@ -3833,7 +3833,7 @@ void __stdcall glGetnUniformivEXT(GLuint program, GLint location, GLsizei bufSiz
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3843,7 +3843,7 @@ void __stdcall glGetUniformiv(GLuint program, GLint location, GLint* params)
 {
     EVENT("(GLuint program = %d, GLint location = %d, GLint* params = 0x%0.8p)", program, location, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3873,7 +3873,7 @@ void __stdcall glGetUniformiv(GLuint program, GLint location, GLint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3883,7 +3883,7 @@ int __stdcall glGetUniformLocation(GLuint program, const GLchar* name)
 {
     EVENT("(GLuint program = %d, const GLchar* name = 0x%0.8p)", program, name);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3917,7 +3917,7 @@ int __stdcall glGetUniformLocation(GLuint program, const GLchar* name)
             return programBinary->getUniformLocation(name);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, -1);
     }
@@ -3929,7 +3929,7 @@ void __stdcall glGetVertexAttribfv(GLuint index, GLenum pname, GLfloat* params)
 {
     EVENT("(GLuint index = %d, GLenum pname = 0x%X, GLfloat* params = 0x%0.8p)", index, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -3961,7 +3961,7 @@ void __stdcall glGetVertexAttribfv(GLuint index, GLenum pname, GLfloat* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -3971,7 +3971,7 @@ void __stdcall glGetVertexAttribiv(GLuint index, GLenum pname, GLint* params)
 {
     EVENT("(GLuint index = %d, GLenum pname = 0x%X, GLint* params = 0x%0.8p)", index, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4004,7 +4004,7 @@ void __stdcall glGetVertexAttribiv(GLuint index, GLenum pname, GLint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4014,7 +4014,7 @@ void __stdcall glGetVertexAttribPointerv(GLuint index, GLenum pname, GLvoid** po
 {
     EVENT("(GLuint index = %d, GLenum pname = 0x%X, GLvoid** pointer = 0x%0.8p)", index, pname, pointer);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4033,7 +4033,7 @@ void __stdcall glGetVertexAttribPointerv(GLuint index, GLenum pname, GLvoid** po
             *pointer = const_cast<GLvoid*>(context->getVertexAttribPointer(index));
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4043,7 +4043,7 @@ void __stdcall glHint(GLenum target, GLenum mode)
 {
     EVENT("(GLenum target = 0x%X, GLenum mode = 0x%X)", target, mode);
 
-    try
+    ANGLE_TRY
     {
         switch (mode)
         {
@@ -4068,7 +4068,7 @@ void __stdcall glHint(GLenum target, GLenum mode)
             return gl::error(GL_INVALID_ENUM);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4078,7 +4078,7 @@ GLboolean __stdcall glIsBuffer(GLuint buffer)
 {
     EVENT("(GLuint buffer = %d)", buffer);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4092,7 +4092,7 @@ GLboolean __stdcall glIsBuffer(GLuint buffer)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -4104,7 +4104,7 @@ GLboolean __stdcall glIsEnabled(GLenum cap)
 {
     EVENT("(GLenum cap = 0x%X)", cap);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4118,7 +4118,7 @@ GLboolean __stdcall glIsEnabled(GLenum cap)
             return context->getCap(cap);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, false);
     }
@@ -4130,7 +4130,7 @@ GLboolean __stdcall glIsFenceNV(GLuint fence)
 {
     EVENT("(GLuint fence = %d)", fence);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4146,7 +4146,7 @@ GLboolean __stdcall glIsFenceNV(GLuint fence)
             return fenceObject->isFence();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -4158,7 +4158,7 @@ GLboolean __stdcall glIsFramebuffer(GLuint framebuffer)
 {
     EVENT("(GLuint framebuffer = %d)", framebuffer);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4172,7 +4172,7 @@ GLboolean __stdcall glIsFramebuffer(GLuint framebuffer)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -4184,7 +4184,7 @@ GLboolean __stdcall glIsProgram(GLuint program)
 {
     EVENT("(GLuint program = %d)", program);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4198,7 +4198,7 @@ GLboolean __stdcall glIsProgram(GLuint program)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -4210,7 +4210,7 @@ GLboolean __stdcall glIsQueryEXT(GLuint id)
 {
     EVENT("(GLuint id = %d)", id);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4219,7 +4219,7 @@ GLboolean __stdcall glIsQueryEXT(GLuint id)
             return (context->getQuery(id, false, GL_NONE) != NULL) ? GL_TRUE : GL_FALSE;
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -4231,7 +4231,7 @@ GLboolean __stdcall glIsRenderbuffer(GLuint renderbuffer)
 {
     EVENT("(GLuint renderbuffer = %d)", renderbuffer);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4245,7 +4245,7 @@ GLboolean __stdcall glIsRenderbuffer(GLuint renderbuffer)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -4257,7 +4257,7 @@ GLboolean __stdcall glIsShader(GLuint shader)
 {
     EVENT("(GLuint shader = %d)", shader);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4271,7 +4271,7 @@ GLboolean __stdcall glIsShader(GLuint shader)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -4283,7 +4283,7 @@ GLboolean __stdcall glIsTexture(GLuint texture)
 {
     EVENT("(GLuint texture = %d)", texture);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4297,7 +4297,7 @@ GLboolean __stdcall glIsTexture(GLuint texture)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -4309,7 +4309,7 @@ void __stdcall glLineWidth(GLfloat width)
 {
     EVENT("(GLfloat width = %f)", width);
 
-    try
+    ANGLE_TRY
     {
         if (width <= 0.0f)
         {
@@ -4323,7 +4323,7 @@ void __stdcall glLineWidth(GLfloat width)
             context->setLineWidth(width);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4333,7 +4333,7 @@ void __stdcall glLinkProgram(GLuint program)
 {
     EVENT("(GLuint program = %d)", program);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4356,7 +4356,7 @@ void __stdcall glLinkProgram(GLuint program)
             context->linkProgram(program);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4366,7 +4366,7 @@ void __stdcall glPixelStorei(GLenum pname, GLint param)
 {
     EVENT("(GLenum pname = 0x%X, GLint param = %d)", pname, param);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4416,7 +4416,7 @@ void __stdcall glPixelStorei(GLenum pname, GLint param)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4426,7 +4426,7 @@ void __stdcall glPolygonOffset(GLfloat factor, GLfloat units)
 {
     EVENT("(GLfloat factor = %f, GLfloat units = %f)", factor, units);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4435,7 +4435,7 @@ void __stdcall glPolygonOffset(GLfloat factor, GLfloat units)
             context->setPolygonOffsetParams(factor, units);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4449,7 +4449,7 @@ void __stdcall glReadnPixelsEXT(GLint x, GLint y, GLsizei width, GLsizei height,
           "GLenum format = 0x%X, GLenum type = 0x%X, GLsizei bufSize = 0x%d, GLvoid *data = 0x%0.8p)",
           x, y, width, height, format, type, bufSize, data);
 
-    try
+    ANGLE_TRY
     {
         if (width < 0 || height < 0 || bufSize < 0)
         {
@@ -4469,7 +4469,7 @@ void __stdcall glReadnPixelsEXT(GLint x, GLint y, GLsizei width, GLsizei height,
             context->readPixels(x, y, width, height, format, type, &bufSize, data);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4482,7 +4482,7 @@ void __stdcall glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height,
           "GLenum format = 0x%X, GLenum type = 0x%X, GLvoid* pixels = 0x%0.8p)",
           x, y, width, height, format, type,  pixels);
 
-    try
+    ANGLE_TRY
     {
         if (width < 0 || height < 0)
         {
@@ -4502,7 +4502,7 @@ void __stdcall glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height,
             context->readPixels(x, y, width, height, format, type, NULL, pixels);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4512,11 +4512,11 @@ void __stdcall glReleaseShaderCompiler(void)
 {
     EVENT("()");
 
-    try
+    ANGLE_TRY
     {
         gl::Shader::releaseCompiler();
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4527,7 +4527,7 @@ void __stdcall glRenderbufferStorageMultisampleANGLE(GLenum target, GLsizei samp
     EVENT("(GLenum target = 0x%X, GLsizei samples = %d, GLenum internalformat = 0x%X, GLsizei width = %d, GLsizei height = %d)",
           target, samples, internalformat, width, height);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4542,7 +4542,7 @@ void __stdcall glRenderbufferStorageMultisampleANGLE(GLenum target, GLsizei samp
             context->setRenderbufferStorage(width, height, internalformat, samples);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4557,7 +4557,7 @@ void __stdcall glSampleCoverage(GLclampf value, GLboolean invert)
 {
     EVENT("(GLclampf value = %f, GLboolean invert = %u)", value, invert);
 
-    try
+    ANGLE_TRY
     {
         gl::Context* context = gl::getNonLostContext();
 
@@ -4566,7 +4566,7 @@ void __stdcall glSampleCoverage(GLclampf value, GLboolean invert)
             context->setSampleCoverageParams(gl::clamp01(value), invert == GL_TRUE);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4576,7 +4576,7 @@ void __stdcall glSetFenceNV(GLuint fence, GLenum condition)
 {
     EVENT("(GLuint fence = %d, GLenum condition = 0x%X)", fence, condition);
 
-    try
+    ANGLE_TRY
     {
         if (condition != GL_ALL_COMPLETED_NV)
         {
@@ -4597,7 +4597,7 @@ void __stdcall glSetFenceNV(GLuint fence, GLenum condition)
             fenceObject->setFence(condition);    
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4607,7 +4607,7 @@ void __stdcall glScissor(GLint x, GLint y, GLsizei width, GLsizei height)
 {
     EVENT("(GLint x = %d, GLint y = %d, GLsizei width = %d, GLsizei height = %d)", x, y, width, height);
 
-    try
+    ANGLE_TRY
     {
         if (width < 0 || height < 0)
         {
@@ -4621,7 +4621,7 @@ void __stdcall glScissor(GLint x, GLint y, GLsizei width, GLsizei height)
             context->setScissorParams(x, y, width, height);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4633,12 +4633,12 @@ void __stdcall glShaderBinary(GLsizei n, const GLuint* shaders, GLenum binaryfor
           "const GLvoid* binary = 0x%0.8p, GLsizei length = %d)",
           n, shaders, binaryformat, binary, length);
 
-    try
+    ANGLE_TRY
     {
         // No binary shader formats are supported.
         return gl::error(GL_INVALID_ENUM);
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4649,7 +4649,7 @@ void __stdcall glShaderSource(GLuint shader, GLsizei count, const GLchar* const*
     EVENT("(GLuint shader = %d, GLsizei count = %d, const GLchar** string = 0x%0.8p, const GLint* length = 0x%0.8p)",
           shader, count, string, length);
 
-    try
+    ANGLE_TRY
     {
         if (count < 0)
         {
@@ -4677,7 +4677,7 @@ void __stdcall glShaderSource(GLuint shader, GLsizei count, const GLchar* const*
             shaderObject->setSource(count, string, length);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4692,7 +4692,7 @@ void __stdcall glStencilFuncSeparate(GLenum face, GLenum func, GLint ref, GLuint
 {
     EVENT("(GLenum face = 0x%X, GLenum func = 0x%X, GLint ref = %d, GLuint mask = %d)", face, func, ref, mask);
 
-    try
+    ANGLE_TRY
     {
         switch (face)
         {
@@ -4734,7 +4734,7 @@ void __stdcall glStencilFuncSeparate(GLenum face, GLenum func, GLint ref, GLuint
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4749,7 +4749,7 @@ void __stdcall glStencilMaskSeparate(GLenum face, GLuint mask)
 {
     EVENT("(GLenum face = 0x%X, GLuint mask = %d)", face, mask);
 
-    try
+    ANGLE_TRY
     {
         switch (face)
         {
@@ -4776,7 +4776,7 @@ void __stdcall glStencilMaskSeparate(GLenum face, GLuint mask)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4792,7 +4792,7 @@ void __stdcall glStencilOpSeparate(GLenum face, GLenum fail, GLenum zfail, GLenu
     EVENT("(GLenum face = 0x%X, GLenum fail = 0x%X, GLenum zfail = 0x%X, GLenum zpas = 0x%Xs)",
           face, fail, zfail, zpass);
 
-    try
+    ANGLE_TRY
     {
         switch (face)
         {
@@ -4864,7 +4864,7 @@ void __stdcall glStencilOpSeparate(GLenum face, GLenum fail, GLenum zfail, GLenu
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4874,7 +4874,7 @@ GLboolean __stdcall glTestFenceNV(GLuint fence)
 {
     EVENT("(GLuint fence = %d)", fence);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4895,7 +4895,7 @@ GLboolean __stdcall glTestFenceNV(GLuint fence)
             return fenceObject->testFence();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4910,7 +4910,7 @@ void __stdcall glTexImage2D(GLenum target, GLint level, GLint internalformat, GL
           "GLint border = %d, GLenum format = 0x%X, GLenum type = 0x%X, const GLvoid* pixels = 0x%0.8p)",
           target, level, internalformat, width, height, border, format, type, pixels);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -4978,7 +4978,7 @@ void __stdcall glTexImage2D(GLenum target, GLint level, GLint internalformat, GL
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -4988,7 +4988,7 @@ void __stdcall glTexParameterf(GLenum target, GLenum pname, GLfloat param)
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLint param = %f)", target, pname, param);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5029,7 +5029,7 @@ void __stdcall glTexParameterf(GLenum target, GLenum pname, GLfloat param)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5044,7 +5044,7 @@ void __stdcall glTexParameteri(GLenum target, GLenum pname, GLint param)
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLint param = %d)", target, pname, param);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5085,7 +5085,7 @@ void __stdcall glTexParameteri(GLenum target, GLenum pname, GLint param)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5101,7 +5101,7 @@ void __stdcall glTexStorage2DEXT(GLenum target, GLsizei levels, GLenum internalf
     EVENT("(GLenum target = 0x%X, GLsizei levels = %d, GLenum internalformat = 0x%X, GLsizei width = %d, GLsizei height = %d)",
            target, levels, internalformat, width, height);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5140,7 +5140,7 @@ void __stdcall glTexStorage2DEXT(GLenum target, GLsizei levels, GLenum internalf
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5154,7 +5154,7 @@ void __stdcall glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint 
           "const GLvoid* pixels = 0x%0.8p)",
            target, level, xoffset, yoffset, width, height, format, type, pixels);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5206,7 +5206,7 @@ void __stdcall glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint 
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5221,7 +5221,7 @@ void __stdcall glUniform1fv(GLint location, GLsizei count, const GLfloat* v)
 {
     EVENT("(GLint location = %d, GLsizei count = %d, const GLfloat* v = 0x%0.8p)", location, count, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5236,7 +5236,7 @@ void __stdcall glUniform1fv(GLint location, GLsizei count, const GLfloat* v)
             programBinary->setUniform1fv(location, count, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5251,7 +5251,7 @@ void __stdcall glUniform1iv(GLint location, GLsizei count, const GLint* v)
 {
     EVENT("(GLint location = %d, GLsizei count = %d, const GLint* v = 0x%0.8p)", location, count, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5266,7 +5266,7 @@ void __stdcall glUniform1iv(GLint location, GLsizei count, const GLint* v)
             programBinary->setUniform1iv(location, count, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5283,7 +5283,7 @@ void __stdcall glUniform2fv(GLint location, GLsizei count, const GLfloat* v)
 {
     EVENT("(GLint location = %d, GLsizei count = %d, const GLfloat* v = 0x%0.8p)", location, count, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5298,7 +5298,7 @@ void __stdcall glUniform2fv(GLint location, GLsizei count, const GLfloat* v)
             programBinary->setUniform2fv(location, count, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5315,7 +5315,7 @@ void __stdcall glUniform2iv(GLint location, GLsizei count, const GLint* v)
 {
     EVENT("(GLint location = %d, GLsizei count = %d, const GLint* v = 0x%0.8p)", location, count, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5330,7 +5330,7 @@ void __stdcall glUniform2iv(GLint location, GLsizei count, const GLint* v)
             programBinary->setUniform2iv(location, count, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5347,7 +5347,7 @@ void __stdcall glUniform3fv(GLint location, GLsizei count, const GLfloat* v)
 {
     EVENT("(GLint location = %d, GLsizei count = %d, const GLfloat* v = 0x%0.8p)", location, count, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5362,7 +5362,7 @@ void __stdcall glUniform3fv(GLint location, GLsizei count, const GLfloat* v)
             programBinary->setUniform3fv(location, count, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5379,7 +5379,7 @@ void __stdcall glUniform3iv(GLint location, GLsizei count, const GLint* v)
 {
     EVENT("(GLint location = %d, GLsizei count = %d, const GLint* v = 0x%0.8p)", location, count, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5394,7 +5394,7 @@ void __stdcall glUniform3iv(GLint location, GLsizei count, const GLint* v)
             programBinary->setUniform3iv(location, count, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5411,7 +5411,7 @@ void __stdcall glUniform4fv(GLint location, GLsizei count, const GLfloat* v)
 {
     EVENT("(GLint location = %d, GLsizei count = %d, const GLfloat* v = 0x%0.8p)", location, count, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5426,7 +5426,7 @@ void __stdcall glUniform4fv(GLint location, GLsizei count, const GLfloat* v)
             programBinary->setUniform4fv(location, count, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5443,7 +5443,7 @@ void __stdcall glUniform4iv(GLint location, GLsizei count, const GLint* v)
 {
     EVENT("(GLint location = %d, GLsizei count = %d, const GLint* v = 0x%0.8p)", location, count, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5458,7 +5458,7 @@ void __stdcall glUniform4iv(GLint location, GLsizei count, const GLint* v)
             programBinary->setUniform4iv(location, count, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5469,7 +5469,7 @@ void __stdcall glUniformMatrix2fv(GLint location, GLsizei count, GLboolean trans
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5484,7 +5484,7 @@ void __stdcall glUniformMatrix2fv(GLint location, GLsizei count, GLboolean trans
             programBinary->setUniformMatrix2fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5495,7 +5495,7 @@ void __stdcall glUniformMatrix3fv(GLint location, GLsizei count, GLboolean trans
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5510,7 +5510,7 @@ void __stdcall glUniformMatrix3fv(GLint location, GLsizei count, GLboolean trans
             programBinary->setUniformMatrix3fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5521,7 +5521,7 @@ void __stdcall glUniformMatrix4fv(GLint location, GLsizei count, GLboolean trans
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5536,7 +5536,7 @@ void __stdcall glUniformMatrix4fv(GLint location, GLsizei count, GLboolean trans
             programBinary->setUniformMatrix4fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5546,7 +5546,7 @@ void __stdcall glUseProgram(GLuint program)
 {
     EVENT("(GLuint program = %d)", program);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5574,7 +5574,7 @@ void __stdcall glUseProgram(GLuint program)
             context->useProgram(program);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5584,7 +5584,7 @@ void __stdcall glValidateProgram(GLuint program)
 {
     EVENT("(GLuint program = %d)", program);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5607,7 +5607,7 @@ void __stdcall glValidateProgram(GLuint program)
             programObject->validate();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5617,7 +5617,7 @@ void __stdcall glVertexAttrib1f(GLuint index, GLfloat x)
 {
     EVENT("(GLuint index = %d, GLfloat x = %f)", index, x);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5632,7 +5632,7 @@ void __stdcall glVertexAttrib1f(GLuint index, GLfloat x)
             context->setVertexAttribf(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5642,7 +5642,7 @@ void __stdcall glVertexAttrib1fv(GLuint index, const GLfloat* values)
 {
     EVENT("(GLuint index = %d, const GLfloat* values = 0x%0.8p)", index, values);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5657,7 +5657,7 @@ void __stdcall glVertexAttrib1fv(GLuint index, const GLfloat* values)
             context->setVertexAttribf(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5667,7 +5667,7 @@ void __stdcall glVertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
 {
     EVENT("(GLuint index = %d, GLfloat x = %f, GLfloat y = %f)", index, x, y);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5682,7 +5682,7 @@ void __stdcall glVertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
             context->setVertexAttribf(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5692,7 +5692,7 @@ void __stdcall glVertexAttrib2fv(GLuint index, const GLfloat* values)
 {
     EVENT("(GLuint index = %d, const GLfloat* values = 0x%0.8p)", index, values);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5707,7 +5707,7 @@ void __stdcall glVertexAttrib2fv(GLuint index, const GLfloat* values)
             context->setVertexAttribf(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5717,7 +5717,7 @@ void __stdcall glVertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z)
 {
     EVENT("(GLuint index = %d, GLfloat x = %f, GLfloat y = %f, GLfloat z = %f)", index, x, y, z);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5732,7 +5732,7 @@ void __stdcall glVertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z)
             context->setVertexAttribf(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5742,7 +5742,7 @@ void __stdcall glVertexAttrib3fv(GLuint index, const GLfloat* values)
 {
     EVENT("(GLuint index = %d, const GLfloat* values = 0x%0.8p)", index, values);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5757,7 +5757,7 @@ void __stdcall glVertexAttrib3fv(GLuint index, const GLfloat* values)
             context->setVertexAttribf(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5767,7 +5767,7 @@ void __stdcall glVertexAttrib4f(GLuint index, GLfloat x, GLfloat y, GLfloat z, G
 {
     EVENT("(GLuint index = %d, GLfloat x = %f, GLfloat y = %f, GLfloat z = %f, GLfloat w = %f)", index, x, y, z, w);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5782,7 +5782,7 @@ void __stdcall glVertexAttrib4f(GLuint index, GLfloat x, GLfloat y, GLfloat z, G
             context->setVertexAttribf(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5792,7 +5792,7 @@ void __stdcall glVertexAttrib4fv(GLuint index, const GLfloat* values)
 {
     EVENT("(GLuint index = %d, const GLfloat* values = 0x%0.8p)", index, values);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5806,7 +5806,7 @@ void __stdcall glVertexAttrib4fv(GLuint index, const GLfloat* values)
             context->setVertexAttribf(index, values);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5816,7 +5816,7 @@ void __stdcall glVertexAttribDivisorANGLE(GLuint index, GLuint divisor)
 {
     EVENT("(GLuint index = %d, GLuint divisor = %d)", index, divisor);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5830,7 +5830,7 @@ void __stdcall glVertexAttribDivisorANGLE(GLuint index, GLuint divisor)
             context->setVertexAttribDivisor(index, divisor);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5842,7 +5842,7 @@ void __stdcall glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLbo
           "GLboolean normalized = %u, GLsizei stride = %d, const GLvoid* ptr = 0x%0.8p)",
           index, size, type, normalized, stride, ptr);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -5907,7 +5907,7 @@ void __stdcall glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLbo
                                           normalized == GL_TRUE, false, stride, ptr);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5917,7 +5917,7 @@ void __stdcall glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 {
     EVENT("(GLint x = %d, GLint y = %d, GLsizei width = %d, GLsizei height = %d)", x, y, width, height);
 
-    try
+    ANGLE_TRY
     {
         if (width < 0 || height < 0)
         {
@@ -5931,7 +5931,7 @@ void __stdcall glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
             context->setViewportParams(x, y, width, height);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5943,7 +5943,7 @@ void __stdcall glReadBuffer(GLenum mode)
 {
     EVENT("(GLenum mode = 0x%X)", mode);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5958,7 +5958,7 @@ void __stdcall glReadBuffer(GLenum mode)
             UNIMPLEMENTED();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5969,7 +5969,7 @@ void __stdcall glDrawRangeElements(GLenum mode, GLuint start, GLuint end, GLsize
     EVENT("(GLenum mode = 0x%X, GLuint start = %u, GLuint end = %u, GLsizei count = %d, GLenum type = 0x%X, "
           "const GLvoid* indices = 0x%0.8p)", mode, start, end, count, type, indices);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -5984,7 +5984,7 @@ void __stdcall glDrawRangeElements(GLenum mode, GLuint start, GLuint end, GLsize
             UNIMPLEMENTED();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -5997,7 +5997,7 @@ void __stdcall glTexImage3D(GLenum target, GLint level, GLint internalformat, GL
           "GLenum type = 0x%X, const GLvoid* pixels = 0x%0.8p)",
           target, level, internalformat, width, height, depth, border, format, type, pixels);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6036,7 +6036,7 @@ void __stdcall glTexImage3D(GLenum target, GLint level, GLint internalformat, GL
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6049,7 +6049,7 @@ void __stdcall glTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint 
           "GLenum format = 0x%X, GLenum type = 0x%X, const GLvoid* pixels = 0x%0.8p)",
           target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6095,7 +6095,7 @@ void __stdcall glTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint 
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6107,7 +6107,7 @@ void __stdcall glCopyTexSubImage3D(GLenum target, GLint level, GLint xoffset, GL
           "GLint zoffset = %d, GLint x = %d, GLint y = %d, GLsizei width = %d, GLsizei height = %d)",
           target, level, xoffset, yoffset, zoffset, x, y, width, height);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6149,7 +6149,7 @@ void __stdcall glCopyTexSubImage3D(GLenum target, GLint level, GLint xoffset, GL
             texture->copySubImage(target, level, xoffset, yoffset, zoffset, x, y, width, height, framebuffer);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6162,7 +6162,7 @@ void __stdcall glCompressedTexImage3D(GLenum target, GLint level, GLenum interna
           "const GLvoid* data = 0x%0.8p)",
           target, level, internalformat, width, height, depth, border, imageSize, data);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6206,7 +6206,7 @@ void __stdcall glCompressedTexImage3D(GLenum target, GLint level, GLenum interna
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6219,7 +6219,7 @@ void __stdcall glCompressedTexSubImage3D(GLenum target, GLint level, GLint xoffs
         "GLenum format = 0x%X, GLsizei imageSize = %d, const GLvoid* data = 0x%0.8p)",
         target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6276,7 +6276,7 @@ void __stdcall glCompressedTexSubImage3D(GLenum target, GLint level, GLint xoffs
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6286,7 +6286,7 @@ void __stdcall glGenQueries(GLsizei n, GLuint* ids)
 {
     EVENT("(GLsizei n = %d, GLuint* ids = 0x%0.8p)", n, ids);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6308,7 +6308,7 @@ void __stdcall glGenQueries(GLsizei n, GLuint* ids)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6318,7 +6318,7 @@ void __stdcall glDeleteQueries(GLsizei n, const GLuint* ids)
 {
     EVENT("(GLsizei n = %d, GLuint* ids = 0x%0.8p)", n, ids);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6340,7 +6340,7 @@ void __stdcall glDeleteQueries(GLsizei n, const GLuint* ids)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6350,7 +6350,7 @@ GLboolean __stdcall glIsQuery(GLuint id)
 {
     EVENT("(GLuint id = %u)", id);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6364,7 +6364,7 @@ GLboolean __stdcall glIsQuery(GLuint id)
             return (context->getQuery(id, false, GL_NONE) != NULL) ? GL_TRUE : GL_FALSE;
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -6376,7 +6376,7 @@ void __stdcall glBeginQuery(GLenum target, GLuint id)
 {
     EVENT("(GLenum target = 0x%X, GLuint id = %u)", target, id);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6394,7 +6394,7 @@ void __stdcall glBeginQuery(GLenum target, GLuint id)
             context->beginQuery(target, id);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6404,7 +6404,7 @@ void __stdcall glEndQuery(GLenum target)
 {
     EVENT("(GLenum target = 0x%X)", target);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6423,7 +6423,7 @@ void __stdcall glEndQuery(GLenum target)
             context->endQuery(target);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6433,7 +6433,7 @@ void __stdcall glGetQueryiv(GLenum target, GLenum pname, GLint* params)
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLint* params = 0x%0.8p)", target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6460,7 +6460,7 @@ void __stdcall glGetQueryiv(GLenum target, GLenum pname, GLint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6470,7 +6470,7 @@ void __stdcall glGetQueryObjectuiv(GLuint id, GLenum pname, GLuint* params)
 {
     EVENT("(GLuint id = %u, GLenum pname = 0x%X, GLint* params = 0x%0.8p)", id, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6506,7 +6506,7 @@ void __stdcall glGetQueryObjectuiv(GLuint id, GLenum pname, GLuint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6516,7 +6516,7 @@ GLboolean __stdcall glUnmapBuffer(GLenum target)
 {
     EVENT("(GLenum target = 0x%X)", target);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6530,7 +6530,7 @@ GLboolean __stdcall glUnmapBuffer(GLenum target)
             return glUnmapBufferOES(target);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -6542,7 +6542,7 @@ void __stdcall glGetBufferPointerv(GLenum target, GLenum pname, GLvoid** params)
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLvoid** params = 0x%0.8p)", target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6556,7 +6556,7 @@ void __stdcall glGetBufferPointerv(GLenum target, GLenum pname, GLvoid** params)
             glGetBufferPointervOES(target, pname, params);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6564,7 +6564,7 @@ void __stdcall glGetBufferPointerv(GLenum target, GLenum pname, GLvoid** params)
 
 void __stdcall glDrawBuffers(GLsizei n, const GLenum* bufs)
 {
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6578,7 +6578,7 @@ void __stdcall glDrawBuffers(GLsizei n, const GLenum* bufs)
             glDrawBuffersEXT(n, bufs);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6589,7 +6589,7 @@ void __stdcall glUniformMatrix2x3fv(GLint location, GLsizei count, GLboolean tra
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6604,7 +6604,7 @@ void __stdcall glUniformMatrix2x3fv(GLint location, GLsizei count, GLboolean tra
             programBinary->setUniformMatrix2x3fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6615,7 +6615,7 @@ void __stdcall glUniformMatrix3x2fv(GLint location, GLsizei count, GLboolean tra
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6630,7 +6630,7 @@ void __stdcall glUniformMatrix3x2fv(GLint location, GLsizei count, GLboolean tra
             programBinary->setUniformMatrix3x2fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6641,7 +6641,7 @@ void __stdcall glUniformMatrix2x4fv(GLint location, GLsizei count, GLboolean tra
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6656,7 +6656,7 @@ void __stdcall glUniformMatrix2x4fv(GLint location, GLsizei count, GLboolean tra
             programBinary->setUniformMatrix2x4fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6667,7 +6667,7 @@ void __stdcall glUniformMatrix4x2fv(GLint location, GLsizei count, GLboolean tra
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6682,7 +6682,7 @@ void __stdcall glUniformMatrix4x2fv(GLint location, GLsizei count, GLboolean tra
             programBinary->setUniformMatrix4x2fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6693,7 +6693,7 @@ void __stdcall glUniformMatrix3x4fv(GLint location, GLsizei count, GLboolean tra
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6708,7 +6708,7 @@ void __stdcall glUniformMatrix3x4fv(GLint location, GLsizei count, GLboolean tra
             programBinary->setUniformMatrix3x4fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6719,7 +6719,7 @@ void __stdcall glUniformMatrix4x3fv(GLint location, GLsizei count, GLboolean tra
     EVENT("(GLint location = %d, GLsizei count = %d, GLboolean transpose = %u, const GLfloat* value = 0x%0.8p)",
           location, count, transpose, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6734,7 +6734,7 @@ void __stdcall glUniformMatrix4x3fv(GLint location, GLsizei count, GLboolean tra
             programBinary->setUniformMatrix4x3fv(location, count, transpose, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6746,7 +6746,7 @@ void __stdcall glBlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint sr
           "GLint dstY0 = %d, GLint dstX1 = %d, GLint dstY1 = %d, GLbitfield mask = 0x%X, GLenum filter = 0x%X)",
           srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
         if (context)
@@ -6767,7 +6767,7 @@ void __stdcall glBlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint sr
                                      mask, filter);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6778,7 +6778,7 @@ void __stdcall glRenderbufferStorageMultisample(GLenum target, GLsizei samples, 
     EVENT("(GLenum target = 0x%X, GLsizei samples = %d, GLenum internalformat = 0x%X, GLsizei width = %d, GLsizei height = %d)",
         target, samples, internalformat, width, height);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6798,7 +6798,7 @@ void __stdcall glRenderbufferStorageMultisample(GLenum target, GLsizei samples, 
             context->setRenderbufferStorage(width, height, internalformat, samples);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6809,7 +6809,7 @@ void __stdcall glFramebufferTextureLayer(GLenum target, GLenum attachment, GLuin
     EVENT("(GLenum target = 0x%X, GLenum attachment = 0x%X, GLuint texture = %u, GLint level = %d, GLint layer = %d)",
         target, attachment, texture, level, layer);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6847,7 +6847,7 @@ void __stdcall glFramebufferTextureLayer(GLenum target, GLenum attachment, GLuin
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6858,7 +6858,7 @@ GLvoid* __stdcall glMapBufferRange(GLenum target, GLintptr offset, GLsizeiptr le
     EVENT("(GLenum target = 0x%X, GLintptr offset = %d, GLsizeiptr length = %d, GLbitfield access = 0x%X)",
           target, offset, length, access);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6872,7 +6872,7 @@ GLvoid* __stdcall glMapBufferRange(GLenum target, GLintptr offset, GLsizeiptr le
             return glMapBufferRangeEXT(target, offset, length, access);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, reinterpret_cast<GLvoid*>(NULL));
     }
@@ -6884,7 +6884,7 @@ void __stdcall glFlushMappedBufferRange(GLenum target, GLintptr offset, GLsizeip
 {
     EVENT("(GLenum target = 0x%X, GLintptr offset = %d, GLsizeiptr length = %d)", target, offset, length);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6898,7 +6898,7 @@ void __stdcall glFlushMappedBufferRange(GLenum target, GLintptr offset, GLsizeip
             glFlushMappedBufferRangeEXT(target, offset, length);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6908,7 +6908,7 @@ void __stdcall glBindVertexArray(GLuint array)
 {
     EVENT("(GLuint array = %u)", array);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6931,7 +6931,7 @@ void __stdcall glBindVertexArray(GLuint array)
             context->bindVertexArray(array);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6941,7 +6941,7 @@ void __stdcall glDeleteVertexArrays(GLsizei n, const GLuint* arrays)
 {
     EVENT("(GLsizei n = %d, const GLuint* arrays = 0x%0.8p)", n, arrays);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6966,7 +6966,7 @@ void __stdcall glDeleteVertexArrays(GLsizei n, const GLuint* arrays)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -6976,7 +6976,7 @@ void __stdcall glGenVertexArrays(GLsizei n, GLuint* arrays)
 {
     EVENT("(GLsizei n = %d, GLuint* arrays = 0x%0.8p)", n, arrays);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -6998,7 +6998,7 @@ void __stdcall glGenVertexArrays(GLsizei n, GLuint* arrays)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7008,7 +7008,7 @@ GLboolean __stdcall glIsVertexArray(GLuint array)
 {
     EVENT("(GLuint array = %u)", array);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7029,7 +7029,7 @@ GLboolean __stdcall glIsVertexArray(GLuint array)
             return (vao != NULL ? GL_TRUE : GL_FALSE);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -7042,7 +7042,7 @@ void __stdcall glGetIntegeri_v(GLenum target, GLuint index, GLint* data)
     EVENT("(GLenum target = 0x%X, GLuint index = %u, GLint* data = 0x%0.8p)",
           target, index, data);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7104,7 +7104,7 @@ void __stdcall glGetIntegeri_v(GLenum target, GLuint index, GLint* data)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7114,7 +7114,7 @@ void __stdcall glBeginTransformFeedback(GLenum primitiveMode)
 {
     EVENT("(GLenum primitiveMode = 0x%X)", primitiveMode);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7153,7 +7153,7 @@ void __stdcall glBeginTransformFeedback(GLenum primitiveMode)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7163,7 +7163,7 @@ void __stdcall glEndTransformFeedback(void)
 {
     EVENT("(void)");
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7185,7 +7185,7 @@ void __stdcall glEndTransformFeedback(void)
             transformFeedback->stop();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7196,7 +7196,7 @@ void __stdcall glBindBufferRange(GLenum target, GLuint index, GLuint buffer, GLi
     EVENT("(GLenum target = 0x%X, GLuint index = %u, GLuint buffer = %u, GLintptr offset = %d, GLsizeiptr size = %d)",
           target, index, buffer, offset, size);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7263,7 +7263,7 @@ void __stdcall glBindBufferRange(GLenum target, GLuint index, GLuint buffer, GLi
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7274,7 +7274,7 @@ void __stdcall glBindBufferBase(GLenum target, GLuint index, GLuint buffer)
     EVENT("(GLenum target = 0x%X, GLuint index = %u, GLuint buffer = %u)",
           target, index, buffer);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7322,7 +7322,7 @@ void __stdcall glBindBufferBase(GLenum target, GLuint index, GLuint buffer)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7333,7 +7333,7 @@ void __stdcall glTransformFeedbackVaryings(GLuint program, GLsizei count, const 
     EVENT("(GLuint program = %u, GLsizei count = %d, const GLchar* const* varyings = 0x%0.8p, GLenum bufferMode = 0x%X)",
           program, count, varyings, bufferMode);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7374,7 +7374,7 @@ void __stdcall glTransformFeedbackVaryings(GLuint program, GLsizei count, const 
             programObject->setTransformFeedbackVaryings(count, varyings, bufferMode);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7386,7 +7386,7 @@ void __stdcall glGetTransformFeedbackVarying(GLuint program, GLuint index, GLsiz
           "GLsizei* size = 0x%0.8p, GLenum* type = 0x%0.8p, GLchar* name = 0x%0.8p)",
           program, index, bufSize, length, size, type, name);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7418,7 +7418,7 @@ void __stdcall glGetTransformFeedbackVarying(GLuint program, GLuint index, GLsiz
             programObject->getTransformFeedbackVarying(index, bufSize, length, size, type, name);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7429,7 +7429,7 @@ void __stdcall glVertexAttribIPointer(GLuint index, GLint size, GLenum type, GLs
     EVENT("(GLuint index = %u, GLint size = %d, GLenum type = 0x%X, GLsizei stride = %d, const GLvoid* pointer = 0x%0.8p)",
           index, size, type, stride, pointer);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7491,7 +7491,7 @@ void __stdcall glVertexAttribIPointer(GLuint index, GLint size, GLenum type, GLs
                                           stride, pointer);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7502,7 +7502,7 @@ void __stdcall glGetVertexAttribIiv(GLuint index, GLenum pname, GLint* params)
     EVENT("(GLuint index = %u, GLenum pname = 0x%X, GLint* params = 0x%0.8p)",
           index, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7539,7 +7539,7 @@ void __stdcall glGetVertexAttribIiv(GLuint index, GLenum pname, GLint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7550,7 +7550,7 @@ void __stdcall glGetVertexAttribIuiv(GLuint index, GLenum pname, GLuint* params)
     EVENT("(GLuint index = %u, GLenum pname = 0x%X, GLuint* params = 0x%0.8p)",
           index, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7587,7 +7587,7 @@ void __stdcall glGetVertexAttribIuiv(GLuint index, GLenum pname, GLuint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7598,7 +7598,7 @@ void __stdcall glVertexAttribI4i(GLuint index, GLint x, GLint y, GLint z, GLint 
     EVENT("(GLuint index = %u, GLint x = %d, GLint y = %d, GLint z = %d, GLint w = %d)",
           index, x, y, z, w);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7618,7 +7618,7 @@ void __stdcall glVertexAttribI4i(GLuint index, GLint x, GLint y, GLint z, GLint 
             context->setVertexAttribi(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7629,7 +7629,7 @@ void __stdcall glVertexAttribI4ui(GLuint index, GLuint x, GLuint y, GLuint z, GL
     EVENT("(GLuint index = %u, GLuint x = %u, GLuint y = %u, GLuint z = %u, GLuint w = %u)",
           index, x, y, z, w);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7649,7 +7649,7 @@ void __stdcall glVertexAttribI4ui(GLuint index, GLuint x, GLuint y, GLuint z, GL
             context->setVertexAttribu(index, vals);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7659,7 +7659,7 @@ void __stdcall glVertexAttribI4iv(GLuint index, const GLint* v)
 {
     EVENT("(GLuint index = %u, const GLint* v = 0x%0.8p)", index, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7678,7 +7678,7 @@ void __stdcall glVertexAttribI4iv(GLuint index, const GLint* v)
             context->setVertexAttribi(index, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7688,7 +7688,7 @@ void __stdcall glVertexAttribI4uiv(GLuint index, const GLuint* v)
 {
     EVENT("(GLuint index = %u, const GLuint* v = 0x%0.8p)", index, v);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7707,7 +7707,7 @@ void __stdcall glVertexAttribI4uiv(GLuint index, const GLuint* v)
             context->setVertexAttribu(index, v);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7718,7 +7718,7 @@ void __stdcall glGetUniformuiv(GLuint program, GLint location, GLuint* params)
     EVENT("(GLuint program = %u, GLint location = %d, GLuint* params = 0x%0.8p)",
           program, location, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7753,7 +7753,7 @@ void __stdcall glGetUniformuiv(GLuint program, GLint location, GLuint* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7764,7 +7764,7 @@ GLint __stdcall glGetFragDataLocation(GLuint program, const GLchar *name)
     EVENT("(GLuint program = %u, const GLchar *name = 0x%0.8p)",
           program, name);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7796,7 +7796,7 @@ GLint __stdcall glGetFragDataLocation(GLuint program, const GLchar *name)
             return programBinary->getFragDataLocation(name);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, 0);
     }
@@ -7832,7 +7832,7 @@ void __stdcall glUniform1uiv(GLint location, GLsizei count, const GLuint* value)
     EVENT("(GLint location = %d, GLsizei count = %d, const GLuint* value = 0x%0.8p)",
           location, count, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7847,7 +7847,7 @@ void __stdcall glUniform1uiv(GLint location, GLsizei count, const GLuint* value)
             programBinary->setUniform1uiv(location, count, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7858,7 +7858,7 @@ void __stdcall glUniform2uiv(GLint location, GLsizei count, const GLuint* value)
     EVENT("(GLint location = %d, GLsizei count = %d, const GLuint* value = 0x%0.8p)",
           location, count, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7873,7 +7873,7 @@ void __stdcall glUniform2uiv(GLint location, GLsizei count, const GLuint* value)
             programBinary->setUniform2uiv(location, count, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7884,7 +7884,7 @@ void __stdcall glUniform3uiv(GLint location, GLsizei count, const GLuint* value)
     EVENT("(GLint location = %d, GLsizei count = %d, const GLuint* value)",
           location, count, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7899,7 +7899,7 @@ void __stdcall glUniform3uiv(GLint location, GLsizei count, const GLuint* value)
             programBinary->setUniform3uiv(location, count, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7910,7 +7910,7 @@ void __stdcall glUniform4uiv(GLint location, GLsizei count, const GLuint* value)
     EVENT("(GLint location = %d, GLsizei count = %d, const GLuint* value = 0x%0.8p)",
           location, count, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7925,7 +7925,7 @@ void __stdcall glUniform4uiv(GLint location, GLsizei count, const GLuint* value)
             programBinary->setUniform4uiv(location, count, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7936,7 +7936,7 @@ void __stdcall glClearBufferiv(GLenum buffer, GLint drawbuffer, const GLint* val
     EVENT("(GLenum buffer = 0x%X, GLint drawbuffer = %d, const GLint* value = 0x%0.8p)",
           buffer, drawbuffer, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -7968,7 +7968,7 @@ void __stdcall glClearBufferiv(GLenum buffer, GLint drawbuffer, const GLint* val
             context->clearBufferiv(buffer, drawbuffer, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -7979,7 +7979,7 @@ void __stdcall glClearBufferuiv(GLenum buffer, GLint drawbuffer, const GLuint* v
     EVENT("(GLenum buffer = 0x%X, GLint drawbuffer = %d, const GLuint* value = 0x%0.8p)",
           buffer, drawbuffer, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8005,7 +8005,7 @@ void __stdcall glClearBufferuiv(GLenum buffer, GLint drawbuffer, const GLuint* v
             context->clearBufferuiv(buffer, drawbuffer, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8016,7 +8016,7 @@ void __stdcall glClearBufferfv(GLenum buffer, GLint drawbuffer, const GLfloat* v
     EVENT("(GLenum buffer = 0x%X, GLint drawbuffer = %d, const GLfloat* value = 0x%0.8p)",
           buffer, drawbuffer, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8048,7 +8048,7 @@ void __stdcall glClearBufferfv(GLenum buffer, GLint drawbuffer, const GLfloat* v
             context->clearBufferfv(buffer, drawbuffer, value);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8059,7 +8059,7 @@ void __stdcall glClearBufferfi(GLenum buffer, GLint drawbuffer, GLfloat depth, G
     EVENT("(GLenum buffer = 0x%X, GLint drawbuffer = %d, GLfloat depth, GLint stencil = %d)",
           buffer, drawbuffer, depth, stencil);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8085,7 +8085,7 @@ void __stdcall glClearBufferfi(GLenum buffer, GLint drawbuffer, GLfloat depth, G
             context->clearBufferfi(buffer, drawbuffer, depth, stencil);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8095,7 +8095,7 @@ const GLubyte* __stdcall glGetStringi(GLenum name, GLuint index)
 {
     EVENT("(GLenum name = 0x%X, GLuint index = %u)", name, index);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8119,7 +8119,7 @@ const GLubyte* __stdcall glGetStringi(GLenum name, GLuint index)
             return reinterpret_cast<const GLubyte*>(context->getExtensionString(index));
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, reinterpret_cast<GLubyte*>(NULL));
     }
@@ -8132,7 +8132,7 @@ void __stdcall glCopyBufferSubData(GLenum readTarget, GLenum writeTarget, GLintp
     EVENT("(GLenum readTarget = 0x%X, GLenum writeTarget = 0x%X, GLintptr readOffset = %d, GLintptr writeOffset = %d, GLsizeiptr size = %d)",
           readTarget, writeTarget, readOffset, writeOffset, size);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8182,7 +8182,7 @@ void __stdcall glCopyBufferSubData(GLenum readTarget, GLenum writeTarget, GLintp
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8193,7 +8193,7 @@ void __stdcall glGetUniformIndices(GLuint program, GLsizei uniformCount, const G
     EVENT("(GLuint program = %u, GLsizei uniformCount = %d, const GLchar* const* uniformNames = 0x%0.8p, GLuint* uniformIndices = 0x%0.8p)",
           program, uniformCount, uniformNames, uniformIndices);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8240,7 +8240,7 @@ void __stdcall glGetUniformIndices(GLuint program, GLsizei uniformCount, const G
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8251,7 +8251,7 @@ void __stdcall glGetActiveUniformsiv(GLuint program, GLsizei uniformCount, const
     EVENT("(GLuint program = %u, GLsizei uniformCount = %d, const GLuint* uniformIndices = 0x%0.8p, GLenum pname = 0x%X, GLint* params = 0x%0.8p)",
           program, uniformCount, uniformIndices, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8320,7 +8320,7 @@ void __stdcall glGetActiveUniformsiv(GLuint program, GLsizei uniformCount, const
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8330,7 +8330,7 @@ GLuint __stdcall glGetUniformBlockIndex(GLuint program, const GLchar* uniformBlo
 {
     EVENT("(GLuint program = %u, const GLchar* uniformBlockName = 0x%0.8p)", program, uniformBlockName);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8364,7 +8364,7 @@ GLuint __stdcall glGetUniformBlockIndex(GLuint program, const GLchar* uniformBlo
             return programBinary->getUniformBlockIndex(uniformBlockName);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, 0);
     }
@@ -8377,7 +8377,7 @@ void __stdcall glGetActiveUniformBlockiv(GLuint program, GLuint uniformBlockInde
     EVENT("(GLuint program = %u, GLuint uniformBlockIndex = %u, GLenum pname = 0x%X, GLint* params = 0x%0.8p)",
           program, uniformBlockIndex, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8428,7 +8428,7 @@ void __stdcall glGetActiveUniformBlockiv(GLuint program, GLuint uniformBlockInde
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8439,7 +8439,7 @@ void __stdcall glGetActiveUniformBlockName(GLuint program, GLuint uniformBlockIn
     EVENT("(GLuint program = %u, GLuint uniformBlockIndex = %u, GLsizei bufSize = %d, GLsizei* length = 0x%0.8p, GLchar* uniformBlockName = 0x%0.8p)",
           program, uniformBlockIndex, bufSize, length, uniformBlockName);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8474,7 +8474,7 @@ void __stdcall glGetActiveUniformBlockName(GLuint program, GLuint uniformBlockIn
             programBinary->getActiveUniformBlockName(uniformBlockIndex, bufSize, length, uniformBlockName);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8485,7 +8485,7 @@ void __stdcall glUniformBlockBinding(GLuint program, GLuint uniformBlockIndex, G
     EVENT("(GLuint program = %u, GLuint uniformBlockIndex = %u, GLuint uniformBlockBinding = %u)",
           program, uniformBlockIndex, uniformBlockBinding);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8526,7 +8526,7 @@ void __stdcall glUniformBlockBinding(GLuint program, GLuint uniformBlockIndex, G
             programObject->bindUniformBlock(uniformBlockIndex, uniformBlockBinding);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8537,7 +8537,7 @@ void __stdcall glDrawArraysInstanced(GLenum mode, GLint first, GLsizei count, GL
     EVENT("(GLenum mode = 0x%X, GLint first = %d, GLsizei count = %d, GLsizei instanceCount = %d)",
           mode, first, count, instanceCount);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8552,7 +8552,7 @@ void __stdcall glDrawArraysInstanced(GLenum mode, GLint first, GLsizei count, GL
             UNIMPLEMENTED();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8563,7 +8563,7 @@ void __stdcall glDrawElementsInstanced(GLenum mode, GLsizei count, GLenum type, 
     EVENT("(GLenum mode = 0x%X, GLsizei count = %d, GLenum type = 0x%X, const GLvoid* indices = 0x%0.8p, GLsizei instanceCount = %d)",
           mode, count, type, indices, instanceCount);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8578,7 +8578,7 @@ void __stdcall glDrawElementsInstanced(GLenum mode, GLsizei count, GLenum type, 
             UNIMPLEMENTED();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8588,7 +8588,7 @@ GLsync __stdcall glFenceSync(GLenum condition, GLbitfield flags)
 {
     EVENT("(GLenum condition = 0x%X, GLbitfield flags = 0x%X)", condition, flags);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8612,7 +8612,7 @@ GLsync __stdcall glFenceSync(GLenum condition, GLbitfield flags)
             return context->createFenceSync(condition);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, reinterpret_cast<GLsync>(NULL));
     }
@@ -8624,7 +8624,7 @@ GLboolean __stdcall glIsSync(GLsync sync)
 {
     EVENT("(GLsync sync = 0x%0.8p)", sync);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8638,7 +8638,7 @@ GLboolean __stdcall glIsSync(GLsync sync)
             return (context->getFenceSync(sync) != NULL);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -8650,7 +8650,7 @@ void __stdcall glDeleteSync(GLsync sync)
 {
     EVENT("(GLsync sync = 0x%0.8p)", sync);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8669,7 +8669,7 @@ void __stdcall glDeleteSync(GLsync sync)
             context->deleteFenceSync(sync);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8680,7 +8680,7 @@ GLenum __stdcall glClientWaitSync(GLsync sync, GLbitfield flags, GLuint64 timeou
     EVENT("(GLsync sync = 0x%0.8p, GLbitfield flags = 0x%X, GLuint64 timeout = %llu)",
           sync, flags, timeout);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8706,7 +8706,7 @@ GLenum __stdcall glClientWaitSync(GLsync sync, GLbitfield flags, GLuint64 timeou
             return fenceSync->clientWait(flags, timeout);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -8719,7 +8719,7 @@ void __stdcall glWaitSync(GLsync sync, GLbitfield flags, GLuint64 timeout)
     EVENT("(GLsync sync = 0x%0.8p, GLbitfield flags = 0x%X, GLuint64 timeout = %llu)",
           sync, flags, timeout);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8750,7 +8750,7 @@ void __stdcall glWaitSync(GLsync sync, GLbitfield flags, GLuint64 timeout)
             fenceSync->serverWait();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8761,7 +8761,7 @@ void __stdcall glGetInteger64v(GLenum pname, GLint64* params)
     EVENT("(GLenum pname = 0x%X, GLint64* params = 0x%0.8p)",
           pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8789,7 +8789,7 @@ void __stdcall glGetInteger64v(GLenum pname, GLint64* params)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8800,7 +8800,7 @@ void __stdcall glGetSynciv(GLsync sync, GLenum pname, GLsizei bufSize, GLsizei* 
     EVENT("(GLsync sync = 0x%0.8p, GLenum pname = 0x%X, GLsizei bufSize = %d, GLsizei* length = 0x%0.8p, GLint* values = 0x%0.8p)",
           sync, pname, bufSize, length, values);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8835,7 +8835,7 @@ void __stdcall glGetSynciv(GLsync sync, GLenum pname, GLsizei bufSize, GLsizei* 
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8846,7 +8846,7 @@ void __stdcall glGetInteger64i_v(GLenum target, GLuint index, GLint64* data)
     EVENT("(GLenum target = 0x%X, GLuint index = %u, GLint64* data = 0x%0.8p)",
           target, index, data);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8905,7 +8905,7 @@ void __stdcall glGetInteger64i_v(GLenum target, GLuint index, GLint64* data)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8916,7 +8916,7 @@ void __stdcall glGetBufferParameteri64v(GLenum target, GLenum pname, GLint64* pa
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLint64* params = 0x%0.8p)",
           target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -8969,7 +8969,7 @@ void __stdcall glGetBufferParameteri64v(GLenum target, GLenum pname, GLint64* pa
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -8979,7 +8979,7 @@ void __stdcall glGenSamplers(GLsizei count, GLuint* samplers)
 {
     EVENT("(GLsizei count = %d, GLuint* samplers = 0x%0.8p)", count, samplers);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9001,7 +9001,7 @@ void __stdcall glGenSamplers(GLsizei count, GLuint* samplers)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9011,7 +9011,7 @@ void __stdcall glDeleteSamplers(GLsizei count, const GLuint* samplers)
 {
     EVENT("(GLsizei count = %d, const GLuint* samplers = 0x%0.8p)", count, samplers);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9033,7 +9033,7 @@ void __stdcall glDeleteSamplers(GLsizei count, const GLuint* samplers)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9043,7 +9043,7 @@ GLboolean __stdcall glIsSampler(GLuint sampler)
 {
     EVENT("(GLuint sampler = %u)", sampler);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9057,7 +9057,7 @@ GLboolean __stdcall glIsSampler(GLuint sampler)
             return context->isSampler(sampler);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -9069,7 +9069,7 @@ void __stdcall glBindSampler(GLuint unit, GLuint sampler)
 {
     EVENT("(GLuint unit = %u, GLuint sampler = %u)", unit, sampler);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9093,7 +9093,7 @@ void __stdcall glBindSampler(GLuint unit, GLuint sampler)
             context->bindSampler(unit, sampler);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9103,7 +9103,7 @@ void __stdcall glSamplerParameteri(GLuint sampler, GLenum pname, GLint param)
 {
     EVENT("(GLuint sampler = %u, GLenum pname = 0x%X, GLint param = %d)", sampler, pname, param);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9132,7 +9132,7 @@ void __stdcall glSamplerParameteri(GLuint sampler, GLenum pname, GLint param)
             context->samplerParameteri(sampler, pname, param);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9147,7 +9147,7 @@ void __stdcall glSamplerParameterf(GLuint sampler, GLenum pname, GLfloat param)
 {
     EVENT("(GLuint sampler = %u, GLenum pname = 0x%X, GLfloat param = %g)", sampler, pname, param);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9176,7 +9176,7 @@ void __stdcall glSamplerParameterf(GLuint sampler, GLenum pname, GLfloat param)
             context->samplerParameterf(sampler, pname, param);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9191,7 +9191,7 @@ void __stdcall glGetSamplerParameteriv(GLuint sampler, GLenum pname, GLint* para
 {
     EVENT("(GLuint sampler = %u, GLenum pname = 0x%X, GLint* params = 0x%0.8p)", sampler, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9215,7 +9215,7 @@ void __stdcall glGetSamplerParameteriv(GLuint sampler, GLenum pname, GLint* para
             *params = context->getSamplerParameteri(sampler, pname);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9225,7 +9225,7 @@ void __stdcall glGetSamplerParameterfv(GLuint sampler, GLenum pname, GLfloat* pa
 {
     EVENT("(GLuint sample = %ur, GLenum pname = 0x%X, GLfloat* params = 0x%0.8p)", sampler, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9249,7 +9249,7 @@ void __stdcall glGetSamplerParameterfv(GLuint sampler, GLenum pname, GLfloat* pa
             *params = context->getSamplerParameterf(sampler, pname);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9259,7 +9259,7 @@ void __stdcall glVertexAttribDivisor(GLuint index, GLuint divisor)
 {
     EVENT("(GLuint index = %u, GLuint divisor = %u)", index, divisor);
 
-    try
+    ANGLE_TRY
     {
         if (index >= gl::MAX_VERTEX_ATTRIBS)
         {
@@ -9278,7 +9278,7 @@ void __stdcall glVertexAttribDivisor(GLuint index, GLuint divisor)
             context->setVertexAttribDivisor(index, divisor);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9288,7 +9288,7 @@ void __stdcall glBindTransformFeedback(GLenum target, GLuint id)
 {
     EVENT("(GLenum target = 0x%X, GLuint id = %u)", target, id);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9325,7 +9325,7 @@ void __stdcall glBindTransformFeedback(GLenum target, GLuint id)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9335,7 +9335,7 @@ void __stdcall glDeleteTransformFeedbacks(GLsizei n, const GLuint* ids)
 {
     EVENT("(GLsizei n = %d, const GLuint* ids = 0x%0.8p)", n, ids);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9352,7 +9352,7 @@ void __stdcall glDeleteTransformFeedbacks(GLsizei n, const GLuint* ids)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9362,7 +9362,7 @@ void __stdcall glGenTransformFeedbacks(GLsizei n, GLuint* ids)
 {
     EVENT("(GLsizei n = %d, GLuint* ids = 0x%0.8p)", n, ids);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9379,7 +9379,7 @@ void __stdcall glGenTransformFeedbacks(GLsizei n, GLuint* ids)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9389,7 +9389,7 @@ GLboolean __stdcall glIsTransformFeedback(GLuint id)
 {
     EVENT("(GLuint id = %u)", id);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9403,7 +9403,7 @@ GLboolean __stdcall glIsTransformFeedback(GLuint id)
             return ((context->getTransformFeedback(id) != NULL) ? GL_TRUE : GL_FALSE);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -9415,7 +9415,7 @@ void __stdcall glPauseTransformFeedback(void)
 {
     EVENT("(void)");
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9438,7 +9438,7 @@ void __stdcall glPauseTransformFeedback(void)
             transformFeedback->pause();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9448,7 +9448,7 @@ void __stdcall glResumeTransformFeedback(void)
 {
     EVENT("(void)");
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9471,7 +9471,7 @@ void __stdcall glResumeTransformFeedback(void)
             transformFeedback->resume();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9482,7 +9482,7 @@ void __stdcall glGetProgramBinary(GLuint program, GLsizei bufSize, GLsizei* leng
     EVENT("(GLuint program = %u, GLsizei bufSize = %d, GLsizei* length = 0x%0.8p, GLenum* binaryFormat = 0x%0.8p, GLvoid* binary = 0x%0.8p)",
           program, bufSize, length, binaryFormat, binary);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9497,7 +9497,7 @@ void __stdcall glGetProgramBinary(GLuint program, GLsizei bufSize, GLsizei* leng
             UNIMPLEMENTED();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9508,7 +9508,7 @@ void __stdcall glProgramBinary(GLuint program, GLenum binaryFormat, const GLvoid
     EVENT("(GLuint program = %u, GLenum binaryFormat = 0x%X, const GLvoid* binary = 0x%0.8p, GLsizei length = %d)",
           program, binaryFormat, binary, length);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9523,7 +9523,7 @@ void __stdcall glProgramBinary(GLuint program, GLenum binaryFormat, const GLvoid
             UNIMPLEMENTED();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9534,7 +9534,7 @@ void __stdcall glProgramParameteri(GLuint program, GLenum pname, GLint value)
     EVENT("(GLuint program = %u, GLenum pname = 0x%X, GLint value = %d)",
           program, pname, value);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9549,7 +9549,7 @@ void __stdcall glProgramParameteri(GLuint program, GLenum pname, GLint value)
             UNIMPLEMENTED();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9560,7 +9560,7 @@ void __stdcall glInvalidateFramebuffer(GLenum target, GLsizei numAttachments, co
     EVENT("(GLenum target = 0x%X, GLsizei numAttachments = %d, const GLenum* attachments = 0x%0.8p)",
           target, numAttachments, attachments);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9580,7 +9580,7 @@ void __stdcall glInvalidateFramebuffer(GLenum target, GLsizei numAttachments, co
             context->invalidateFrameBuffer(target, numAttachments, attachments, 0, 0, maxDimension, maxDimension);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9592,7 +9592,7 @@ void __stdcall glInvalidateSubFramebuffer(GLenum target, GLsizei numAttachments,
           "GLint y = %d, GLsizei width = %d, GLsizei height = %d)",
           target, numAttachments, attachments, x, y, width, height);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9611,7 +9611,7 @@ void __stdcall glInvalidateSubFramebuffer(GLenum target, GLsizei numAttachments,
             context->invalidateFrameBuffer(target, numAttachments, attachments, x, y, width, height);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9622,7 +9622,7 @@ void __stdcall glTexStorage2D(GLenum target, GLsizei levels, GLenum internalform
     EVENT("(GLenum target = 0x%X, GLsizei levels = %d, GLenum internalformat = 0x%X, GLsizei width = %d, GLsizei height = %d)",
           target, levels, internalformat, width, height);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9659,7 +9659,7 @@ void __stdcall glTexStorage2D(GLenum target, GLsizei levels, GLenum internalform
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9671,7 +9671,7 @@ void __stdcall glTexStorage3D(GLenum target, GLsizei levels, GLenum internalform
           "GLsizei height = %d, GLsizei depth = %d)",
           target, levels, internalformat, width, height, depth);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9708,7 +9708,7 @@ void __stdcall glTexStorage3D(GLenum target, GLsizei levels, GLenum internalform
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9720,7 +9720,7 @@ void __stdcall glGetInternalformativ(GLenum target, GLenum internalformat, GLenu
           "GLint* params = 0x%0.8p)",
           target, internalformat, pname, bufSize, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9762,7 +9762,7 @@ void __stdcall glGetInternalformativ(GLenum target, GLenum internalformat, GLenu
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9778,7 +9778,7 @@ void __stdcall glBlitFramebufferANGLE(GLint srcX0, GLint srcY0, GLint srcX1, GLi
           "GLbitfield mask = 0x%X, GLenum filter = 0x%X)",
           srcX0, srcY0, srcX1, srcX1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9795,7 +9795,7 @@ void __stdcall glBlitFramebufferANGLE(GLint srcX0, GLint srcY0, GLint srcX1, GLi
                                      mask, filter);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9809,11 +9809,11 @@ void __stdcall glTexImage3DOES(GLenum target, GLint level, GLenum internalformat
           "GLenum format = 0x%X, GLenum type = 0x%x, const GLvoid* pixels = 0x%0.8p)",
           target, level, internalformat, width, height, depth, border, format, type, pixels);
 
-    try
+    ANGLE_TRY
     {
         UNIMPLEMENTED();   // FIXME
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9825,7 +9825,7 @@ void __stdcall glGetProgramBinaryOES(GLuint program, GLsizei bufSize, GLsizei *l
     EVENT("(GLenum program = 0x%X, bufSize = %d, length = 0x%0.8p, binaryFormat = 0x%0.8p, binary = 0x%0.8p)",
           program, bufSize, length, binaryFormat, binary);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9853,7 +9853,7 @@ void __stdcall glGetProgramBinaryOES(GLuint program, GLsizei bufSize, GLsizei *l
             *binaryFormat = GL_PROGRAM_BINARY_ANGLE;
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9865,7 +9865,7 @@ void __stdcall glProgramBinaryOES(GLuint program, GLenum binaryFormat,
     EVENT("(GLenum program = 0x%X, binaryFormat = 0x%x, binary = 0x%0.8p, length = %d)",
           program, binaryFormat, binary, length);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9886,7 +9886,7 @@ void __stdcall glProgramBinaryOES(GLuint program, GLenum binaryFormat,
             context->setProgramBinary(program, binary, length);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9896,7 +9896,7 @@ void __stdcall glDrawBuffersEXT(GLsizei n, const GLenum *bufs)
 {
     EVENT("(GLenum n = %d, bufs = 0x%0.8p)", n, bufs);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9944,7 +9944,7 @@ void __stdcall glDrawBuffersEXT(GLsizei n, const GLenum *bufs)
             }
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9954,7 +9954,7 @@ void __stdcall glGetBufferPointervOES(GLenum target, GLenum pname, void** params
 {
     EVENT("(GLenum target = 0x%X, GLenum pname = 0x%X, GLvoid** params = 0x%0.8p)", target, pname, params);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -9985,7 +9985,7 @@ void __stdcall glGetBufferPointervOES(GLenum target, GLenum pname, void** params
             *params = buffer->mapPointer();
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -9995,7 +9995,7 @@ void * __stdcall glMapBufferOES(GLenum target, GLenum access)
 {
     EVENT("(GLenum target = 0x%X, GLbitfield access = 0x%X)", target, access);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -10026,7 +10026,7 @@ void * __stdcall glMapBufferOES(GLenum target, GLenum access)
             return buffer->mapRange(0, buffer->size(), GL_MAP_WRITE_BIT);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, reinterpret_cast<GLvoid*>(NULL));
     }
@@ -10038,7 +10038,7 @@ GLboolean __stdcall glUnmapBufferOES(GLenum target)
 {
     EVENT("(GLenum target = 0x%X)", target);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -10063,7 +10063,7 @@ GLboolean __stdcall glUnmapBufferOES(GLenum target)
             return GL_TRUE;
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, GL_FALSE);
     }
@@ -10076,7 +10076,7 @@ void* __stdcall glMapBufferRangeEXT (GLenum target, GLintptr offset, GLsizeiptr 
     EVENT("(GLenum target = 0x%X, GLintptr offset = %d, GLsizeiptr length = %d, GLbitfield access = 0x%X)",
           target, offset, length, access);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -10150,7 +10150,7 @@ void* __stdcall glMapBufferRangeEXT (GLenum target, GLintptr offset, GLsizeiptr 
             return buffer->mapRange(offset, length, access);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, reinterpret_cast<GLvoid*>(NULL));
     }
@@ -10162,7 +10162,7 @@ void __stdcall glFlushMappedBufferRangeEXT (GLenum target, GLintptr offset, GLsi
 {
     EVENT("(GLenum target = 0x%X, GLintptr offset = %d, GLsizeiptr length = %d)", target, offset, length);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -10203,7 +10203,7 @@ void __stdcall glFlushMappedBufferRangeEXT (GLenum target, GLintptr offset, GLsi
             // We do not currently support a non-trivial implementation of FlushMappedBufferRange
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY);
     }
@@ -10272,7 +10272,7 @@ bool __stdcall glBindTexImage(egl::Surface *surface)
     EVENT("(egl::Surface* surface = 0x%0.8p)",
           surface);
 
-    try
+    ANGLE_TRY
     {
         gl::Context *context = gl::getNonLostContext();
 
@@ -10289,7 +10289,7 @@ bool __stdcall glBindTexImage(egl::Surface *surface)
             textureObject->bindTexImage(surface);
         }
     }
-    catch (...)
+    ANGLE_CATCH_ALL
     {
         return gl::error(GL_OUT_OF_MEMORY, false);
     }
