@@ -26,6 +26,8 @@ public:
     bool SetFunctionCalled(TOperator op, const TType& param);
     bool SetFunctionCalled(
         TOperator op, const TType& param1, const TType& param2);
+    bool SetFunctionCalled(
+        TOperator op, const TType& param1, const TType& param2, const TType& param3);
 
     // Output function emulation definition.  This should be before any other
     // shader source.
@@ -73,12 +75,19 @@ private:
         TFunctionReflect3_3,  // vec3 reflect(vec3, vec3);
         TFunctionReflect4_4,  // vec4 reflect(vec4, vec4);
 
+        TFunctionFaceForward1_1_1,  // float faceforward(float, float, float);
+        TFunctionFaceForward2_2_2,  // vec2 faceforward(vec2, vec2, vec2);
+        TFunctionFaceForward3_3_3,  // vec3 faceforward(vec3, vec3, vec3);
+        TFunctionFaceForward4_4_4,  // vec4 faceforward(vec4, vec4, vec4);
+
         TFunctionUnknown
     };
 
     TBuiltInFunction IdentifyFunction(TOperator op, const TType& param);
     TBuiltInFunction IdentifyFunction(
         TOperator op, const TType& param1, const TType& param2);
+    TBuiltInFunction IdentifyFunction(
+        TOperator op, const TType& param1, const TType& param2, const TType& param3);
 
     bool SetFunctionCalled(TBuiltInFunction function);
 
