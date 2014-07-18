@@ -23,6 +23,9 @@ if CONFIG['GNU_CXX']:
     if CONFIG['CLANG_CXX']:
         CXXFLAGS += ['-Wno-unused-private-field']
 
+if CONFIG['MOZ_DIRECTX_SDK_PATH'] and not CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
+    CXXFLAGS += ['-I\'%s/include/\'' % CONFIG['MOZ_DIRECTX_SDK_PATH']]
+
 DEFINES['NOMINMAX'] = True
 DEFINES['_CRT_SECURE_NO_DEPRECATE'] = True
 DEFINES['_HAS_EXCEPTIONS'] = 0
@@ -31,7 +34,9 @@ if not CONFIG['MOZ_DEBUG']:
     DEFINES['_SECURE_SCL'] = 0
 
 DEFINES['ANGLE_ENABLE_D3D9'] = True
-DEFINES['ANGLE_ENABLE_D3D11'] = True
+if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
+    DEFINES['ANGLE_ENABLE_D3D11'] = True
+
 DEFINES['ANGLE_COMPILE_OPTIMIZATION_LEVEL'] = 'D3DCOMPILE_OPTIMIZATION_LEVEL1'
 DEFINES['ANGLE_NO_EXCEPTIONS'] = True
 
@@ -73,7 +78,15 @@ FINAL_LIBRARY = 'gkmedias'
 #
   'libGLESv2': """
 LOCAL_INCLUDES += [ '../../include', '../../src' ]
-EXTRA_DSO_LDOPTS += [ 'd3d9.lib', 'dxguid.lib' ]
+
+
+if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
+  EXTRA_DSO_LDOPTS += [ 'd3d9.lib', 'dxguid.lib' ]
+else:
+  EXTRA_DSO_LDOPTS += [
+    '\\'%s/lib/%s/d3d9.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
+    '\\'%s/lib/%s/dxguid.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
+  ]
 
 LIBRARY_NAME = 'libGLESv2'
 FORCE_SHARED_LIB = True
@@ -264,7 +277,7 @@ def write_mozbuild(includes, sources, target):
     if src_target not in sources:
       sources[src_target] = set()
 
-  f = open(filename, 'w')
+  f = open(filename, 'wb')
 
   f.write(header)
 
@@ -279,7 +292,13 @@ def write_mozbuild(includes, sources, target):
     if nonunified:
       write_list(f, 'SOURCES', nonunified, 4 if prefix else 0, prefix)
 
-  write_sources(sources['common'])
+  common_d3d11 = filter(lambda s: "/d3d11/" in s, sources['common'])
+  common_without_d3d11 = filter(lambda s: "/d3d11/" not in s, sources['common'])
+
+  write_sources(common_without_d3d11)
+
+  write_sources(common_d3d11,
+                "if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:\n")
 
   write_sources(sources['android'],
                 "if CONFIG['MOZ_WIDGET_TOOLKIT'] in ('android', 'gonk'):\n")
