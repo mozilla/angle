@@ -24,7 +24,7 @@ if CONFIG['GNU_CXX']:
         CXXFLAGS += ['-Wno-unused-private-field']
 
 if CONFIG['MOZ_DIRECTX_SDK_PATH'] and not CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
-    CXXFLAGS += ['-I\'%s/include/\'' % CONFIG['MOZ_DIRECTX_SDK_PATH']]
+    CXXFLAGS += ['-I\\'%s/include/\\'' % CONFIG['MOZ_DIRECTX_SDK_PATH']]
 
 DEFINES['NOMINMAX'] = True
 DEFINES['_CRT_SECURE_NO_DEPRECATE'] = True
