@@ -2375,7 +2375,7 @@ gl::Error Renderer9::createRenderTarget(int width, int height, GLenum format, GL
 
         if (FAILED(result))
         {
-            ASSERT(result == D3DERR_OUTOFVIDEOMEMORY || result == E_OUTOFMEMORY);
+            ASSERT(result == D3DERR_OUTOFVIDEOMEMORY || result == E_OUTOFMEMORY || result == E_INVALIDARG);
             return gl::Error(GL_OUT_OF_MEMORY, "Failed to create render target, result: 0x%X.", result);
         }
 
