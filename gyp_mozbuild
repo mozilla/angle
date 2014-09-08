@@ -7,7 +7,7 @@ if [ ! -f third_party/gyp/gyp ] ; then
 fi
 
 # Generate commit.h
-python src/commit_id.py src/commit.h
+python src/commit_id.py gen src src/commit.h
 echo Generated src/commit.h
 
 # Install our generator
