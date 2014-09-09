@@ -88,8 +88,7 @@ else:
     '\\'%s/lib/%s/dxguid.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
   ]
 
-LIBRARY_NAME = 'libGLESv2'
-FORCE_SHARED_LIB = True
+SharedLibrary('libGLESv2')
 
 RCFILE = SRCDIR + '/libGLESv2.rc'
 DEFFILE = SRCDIR + '/libGLESv2.def'
@@ -102,10 +101,10 @@ DEFINES['ANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES'] = '{ TEXT("d3dcompiler_47.dl
 #
   'libEGL': """
 LOCAL_INCLUDES += [ '../../include', '../../src' ]
+USE_LIBS += [ 'libGLESv2' ]
 EXTRA_DSO_LDOPTS += [ '../libGLESv2/libGLESv2.lib' ]
 
-LIBRARY_NAME = 'libEGL'
-FORCE_SHARED_LIB = True
+SharedLibrary('libEGL')
 
 RCFILE = SRCDIR + '/libEGL.rc'
 DEFFILE = SRCDIR + '/libEGL.def'
