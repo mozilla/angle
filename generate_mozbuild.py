@@ -56,7 +56,7 @@ DISABLE_STL_WRAPPING = True
 if CONFIG['MOZ_WIDGET_TOOLKIT'] == 'windows':
     DIRS += [ 'src/libGLESv2', 'src/libEGL' ]
 
-EXPORTS.angle += [ 'include/GLSLANG/ShaderLang.h' ]
+EXPORTS.angle += [ 'include/GLSLANG/ShaderLang.h', 'include/GLSLANG/ShaderVars.h' ]
 EXPORTS.angle.KHR += [ 'include/KHR/khrplatform.h' ]
 
 LOCAL_INCLUDES += [ 'include', 'src' ]
