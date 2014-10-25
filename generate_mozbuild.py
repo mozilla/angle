@@ -81,7 +81,7 @@ LOCAL_INCLUDES += [ '../../include', '../../src' ]
 
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
-  EXTRA_DSO_LDOPTS += [ 'd3d9.lib', 'dxguid.lib' ]
+  OS_LIBS += [ 'd3d9', 'dxguid' ]
 else:
   EXTRA_DSO_LDOPTS += [
     '\\'%s/lib/%s/d3d9.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
@@ -93,7 +93,7 @@ SharedLibrary('libGLESv2')
 RCFILE = SRCDIR + '/libGLESv2.rc'
 DEFFILE = SRCDIR + '/libGLESv2.def'
 
-DEFINES['ANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES'] = '{ TEXT("d3dcompiler_47.dll"), TEXT("d3dcompiler_46.dll"), TEXT("d3dcompiler_43.dll") }'
+SOURCES['renderer/d3d/HLSLCompiler.cpp'].flags += ['-DANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES=\\'{ TEXT("d3dcompiler_47.dll"), TEXT("d3dcompiler_46.dll"), TEXT("d3dcompiler_43.dll") }\\'']
 
 """,
 #
@@ -102,7 +102,6 @@ DEFINES['ANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES'] = '{ TEXT("d3dcompiler_47.dl
   'libEGL': """
 LOCAL_INCLUDES += [ '../../include', '../../src' ]
 USE_LIBS += [ 'libGLESv2' ]
-EXTRA_DSO_LDOPTS += [ '../libGLESv2/libGLESv2.lib' ]
 
 SharedLibrary('libEGL')
 
@@ -119,6 +118,7 @@ relative_dir = None
 # these files need to not be part of a unified build because they do not
 # play nicely with other files
 nonunified_source_files = [
+  "HLSLCompiler.cpp",
   # generated parsers
   "glslang_tab.cpp",
   "glslang_lex.cpp"
