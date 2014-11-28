@@ -88,7 +88,7 @@ else:
     '\\'%s/lib/%s/dxguid.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
   ]
 
-SharedLibrary('libGLESv2')
+GeckoSharedLibrary('libGLESv2', linkage=None)
 
 RCFILE = SRCDIR + '/libGLESv2.rc'
 DEFFILE = SRCDIR + '/libGLESv2.def'
@@ -103,7 +103,7 @@ SOURCES['renderer/d3d/HLSLCompiler.cpp'].flags += ['-DANGLE_PRELOADED_D3DCOMPILE
 LOCAL_INCLUDES += [ '../../include', '../../src' ]
 USE_LIBS += [ 'libGLESv2' ]
 
-SharedLibrary('libEGL')
+GeckoSharedLibrary('libEGL', linkage=None)
 
 RCFILE = SRCDIR + '/libEGL.rc'
 DEFFILE = SRCDIR + '/libEGL.def'
