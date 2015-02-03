@@ -95,6 +95,8 @@ DEFFILE = SRCDIR + '/libGLESv2.def'
 
 SOURCES['renderer/d3d/HLSLCompiler.cpp'].flags += ['-DANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES=\\'{ TEXT("d3dcompiler_47.dll"), TEXT("d3dcompiler_46.dll"), TEXT("d3dcompiler_43.dll") }\\'']
 
+SOURCES['renderer/d3d/d3d11/SwapChain11.cpp'].flags += ['-DANGLE_RESOURCE_SHARE_TYPE=D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX']
+
 """,
 #
 # libEGL
@@ -121,7 +123,8 @@ nonunified_source_files = [
   "HLSLCompiler.cpp",
   # generated parsers
   "glslang_tab.cpp",
-  "glslang_lex.cpp"
+  "glslang_lex.cpp",
+  "SwapChain11.cpp"
 ]
 
 def force_non_unified(s):
