@@ -44,9 +44,6 @@ DEFINES['ANGLE_NO_EXCEPTIONS'] = True
 DEFINES['GL_APICALL'] = ""
 DEFINES['GL_GLEXT_PROTOTYPES'] = ""
 DEFINES['EGLAPI'] = ""
-
-# ANGLE uses the STL, so we can't use our derpy STL wrappers.
-DISABLE_STL_WRAPPING = True
 """,
 #
 # translator -- this is the toplevel gfx/angle moz.build as well
@@ -76,7 +73,10 @@ FINAL_LIBRARY = 'gkmedias'
 #
 # libGLESv2
 #
-  'libGLESv2': """
+  'libGLESv2': """# ANGLE uses the STL, so we can't use our derpy STL wrappers.
+DISABLE_STL_WRAPPING = True
+
+
 LOCAL_INCLUDES += [ '../../include', '../../src' ]
 
 
@@ -102,7 +102,10 @@ if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
 #
 # libEGL
 #
-  'libEGL': """
+  'libEGL': """# ANGLE uses the STL, so we can't use our derpy STL wrappers.
+DISABLE_STL_WRAPPING = True
+
+
 LOCAL_INCLUDES += [ '../../include', '../../src' ]
 USE_LIBS += [ 'libGLESv2' ]
 
