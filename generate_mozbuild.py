@@ -71,12 +71,9 @@ FINAL_LIBRARY = 'gkmedias'
 #
 # libGLESv2
 #
-  'libGLESv2': """# ANGLE uses the STL, so we can't use our derpy STL wrappers.
-DISABLE_STL_WRAPPING = True
-
+  'libGLESv2': """
 
 LOCAL_INCLUDES += [ '../../include', '../../src' ]
-
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
   OS_LIBS += [ 'd3d9', 'dxguid' ]
@@ -100,9 +97,7 @@ if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
 #
 # libEGL
 #
-  'libEGL': """# ANGLE uses the STL, so we can't use our derpy STL wrappers.
-DISABLE_STL_WRAPPING = True
-
+  'libEGL': """
 
 LOCAL_INCLUDES += [ '../../include', '../../src' ]
 USE_LIBS += [ 'libGLESv2' ]
@@ -141,7 +136,7 @@ def generate_platform_sources(target=None):
   sources = {}
 
   targetarg = ""
-  if target: 
+  if target:
     targetarg = "-R %s " % target
 
   for plat in platforms:
