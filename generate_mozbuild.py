@@ -88,10 +88,10 @@ GeckoSharedLibrary('libGLESv2', linkage=None)
 RCFILE = SRCDIR + '/libGLESv2.rc'
 DEFFILE = SRCDIR + '/libGLESv2.def'
 
-SOURCES['renderer/d3d/HLSLCompiler.cpp'].flags += ['-DANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES=\\'{ TEXT("d3dcompiler_47.dll"), TEXT("d3dcompiler_46.dll"), TEXT("d3dcompiler_43.dll") }\\'']
+SOURCES['../libANGLE/renderer/d3d/HLSLCompiler.cpp'].flags += ['-DANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES=\\'{ TEXT("d3dcompiler_47.dll"), TEXT("d3dcompiler_46.dll"), TEXT("d3dcompiler_43.dll") }\\'']
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
-    SOURCES['renderer/d3d/d3d11/SwapChain11.cpp'].flags += ['-DANGLE_RESOURCE_SHARE_TYPE=D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX']
+    SOURCES['../libANGLE/renderer/d3d/d3d11/SwapChain11.cpp'].flags += ['-DANGLE_RESOURCE_SHARE_TYPE=D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX']
 
 """,
 #
@@ -121,6 +121,7 @@ nonunified_source_files = [
   # generated parsers
   "glslang_tab.cpp",
   "glslang_lex.cpp",
+  "Display.cpp",
   "SwapChain11.cpp"
 ]
 
@@ -145,14 +146,16 @@ def generate_platform_sources(target=None):
                     "--format=dump_mozbuild " +
                     "--ignore-environment " +
                     "--depth=. " +
-                    "--include=build/common.gypi " +
-                    "-D OS=%s " % plat +
-                    "-D MSVS_VERSION=2102 " +
-                    "-D angle_build_samples=0 " +
-                    "-D angle_build_tests=0 " +
-                    "-D release_symbols=true " +
+                    "-Ibuild/standalone.gypi " + 
+                    "-Ibuild/common.gypi " +
+                    "-DOS=%s " % plat +
+                    "-DMSVS_VERSION=2012 " +
+                    "-Dangle_standalone=1 " +
+                    "-Dangle_build_samples=0 " +
+                    "-Dangle_build_tests=0 " +
+                    "-Drelease_symbols=true " +
                     targetarg +
-                    "build/all.gyp")
+                    "build/ANGLE.gyp")
     if res != 0:
       print 'Failed to generate sources for ' + plat
       continue
