@@ -73,7 +73,7 @@ FINAL_LIBRARY = 'gkmedias'
 #
   'libGLESv2': """
 
-LOCAL_INCLUDES += [ '../../include', '../../src' ]
+LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos' ]
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
   OS_LIBS += [ 'd3d9', 'dxguid' ]
