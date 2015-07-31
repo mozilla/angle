@@ -53,6 +53,8 @@ DEFINES['EGLAPI'] = ""
 if CONFIG['MOZ_WIDGET_TOOLKIT'] == 'windows':
     DIRS += [ 'src/libANGLE', 'src/libGLESv2', 'src/libEGL' ]
 
+DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+
 EXPORTS.angle += [ 'include/GLSLANG/ShaderLang.h', 'include/GLSLANG/ShaderVars.h' ]
 EXPORTS.angle.KHR += [ 'include/KHR/khrplatform.h' ]
 
@@ -104,6 +106,7 @@ if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
 LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos' ]
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
+DEFINES['ANGLE_ENABLE_HLSL'] = "1"
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
   OS_LIBS += [ 'd3d9', 'dxguid' ]
@@ -130,6 +133,7 @@ LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos
 USE_LIBS += [ 'libGLESv2' ]
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
+DEFINES['ANGLE_ENABLE_HLSL'] = "1"
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
   OS_LIBS += [ 'd3d9', 'dxguid' ]
@@ -193,6 +197,7 @@ def generate_platform_sources(target=None):
                     "-Dangle_standalone=1 " +
                     "-Dangle_build_samples=0 " +
                     "-Dangle_build_tests=0 " +
+                    "-Dangle_enable_hlsl=1 " +
                     "-Drelease_symbols=true " +
                     targetarg +
                     "build/ANGLE.gyp")
