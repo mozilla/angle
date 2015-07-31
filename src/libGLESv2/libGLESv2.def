@@ -412,7 +412,3 @@ EXPORTS
     ANGLEPlatformInitialize         @291
     ANGLEPlatformShutdown           @292
 
-    ; GCC has problems with linking to undecorated stdcall functions,
-    ; so we explicitly add aliases for APIs used by EGL.
-    glGetProcAddress@4=glGetProcAddress
-    glBindTexImage@4=glBindTexImage
