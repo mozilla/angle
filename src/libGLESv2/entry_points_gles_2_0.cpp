@@ -245,7 +245,7 @@ void GL_APIENTRY BlendColor(GLclampf red, GLclampf green, GLclampf blue, GLclamp
     Context *context = GetValidGlobalContext();
     if (context)
     {
-        context->getState().setBlendColor(clamp01(red), clamp01(green), clamp01(blue), clamp01(alpha));
+        context->getState().setBlendColor(red, green, blue, alpha);
     }
 }
 
