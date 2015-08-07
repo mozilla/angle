@@ -51,6 +51,7 @@ bool NativeWindow11Win32::isIconic() const
     return IsIconic(getNativeWindow()) == TRUE;
 }
 
+#ifdef ANGLE_ENABLE_D3D11
 HRESULT NativeWindow11Win32::createSwapChain(ID3D11Device *device,
                                              IDXGIFactory *factory,
                                              DXGI_FORMAT format,
@@ -206,6 +207,7 @@ void NativeWindow11Win32::commitChange()
         mDevice->Commit();
     }
 }
+#endif
 
 // static
 bool NativeWindow11Win32::IsValidNativeWindow(EGLNativeWindowType window)
