@@ -735,7 +735,8 @@ bool ValidateES2CopyTexImageParameters(ValidationContext *context,
             if (colorbufferFormat != GL_ALPHA8_EXT &&
                 colorbufferFormat != GL_RGBA4 &&
                 colorbufferFormat != GL_RGB5_A1 &&
-                colorbufferFormat != GL_RGBA8_OES)
+                colorbufferFormat != GL_RGBA8_OES &&
+                colorbufferFormat != GL_BGRA8_EXT)
             {
                 context->handleError(Error(GL_INVALID_OPERATION));
                 return false;
@@ -748,7 +749,8 @@ bool ValidateES2CopyTexImageParameters(ValidationContext *context,
                   colorbufferFormat != GL_RGB8_OES &&
                   colorbufferFormat != GL_RGBA4 &&
                   colorbufferFormat != GL_RGB5_A1 &&
-                  colorbufferFormat != GL_RGBA8_OES)
+                  colorbufferFormat != GL_RGBA8_OES &&
+                  colorbufferFormat != GL_BGRA8_EXT)
               {
                   context->handleError(Error(GL_INVALID_OPERATION));
                   return false;
@@ -762,6 +764,7 @@ bool ValidateES2CopyTexImageParameters(ValidationContext *context,
                   colorbufferFormat != GL_RGBA4 &&
                   colorbufferFormat != GL_RGB5_A1 &&
                   colorbufferFormat != GL_RGBA8_OES &&
+                  colorbufferFormat != GL_BGRA8_EXT &&
                   colorbufferFormat != GL_R32F &&
                   colorbufferFormat != GL_RG32F &&
                   colorbufferFormat != GL_RGB32F &&
@@ -778,6 +781,7 @@ bool ValidateES2CopyTexImageParameters(ValidationContext *context,
                   colorbufferFormat != GL_RGBA4 &&
                   colorbufferFormat != GL_RGB5_A1 &&
                   colorbufferFormat != GL_RGBA8_OES &&
+                  colorbufferFormat != GL_BGRA8_EXT &&
                   colorbufferFormat != GL_RG32F &&
                   colorbufferFormat != GL_RGB32F &&
                   colorbufferFormat != GL_RGBA32F)
@@ -792,6 +796,7 @@ bool ValidateES2CopyTexImageParameters(ValidationContext *context,
                 colorbufferFormat != GL_RGBA4 &&
                 colorbufferFormat != GL_RGB5_A1 &&
                 colorbufferFormat != GL_RGBA8_OES &&
+                colorbufferFormat != GL_BGRA8_EXT &&
                 colorbufferFormat != GL_RGB32F &&
                 colorbufferFormat != GL_RGBA32F)
             {
@@ -804,6 +809,7 @@ bool ValidateES2CopyTexImageParameters(ValidationContext *context,
             if (colorbufferFormat != GL_RGBA4 &&
                 colorbufferFormat != GL_RGB5_A1 &&
                 colorbufferFormat != GL_RGBA8_OES &&
+                colorbufferFormat != GL_BGRA8_EXT &&
                 colorbufferFormat != GL_RGBA32F)
             {
                 context->handleError(Error(GL_INVALID_OPERATION));
