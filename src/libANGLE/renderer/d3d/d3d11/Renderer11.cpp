@@ -2491,6 +2491,12 @@ VendorID Renderer11::getVendorId() const
     return static_cast<VendorID>(mAdapterDescription.VendorId);
 }
 
+SIZE_T Renderer11::getMaxResourceSize() const
+{
+    // This formula comes from http://msdn.microsoft.com/en-us/library/windows/desktop/ff819065%28v=vs.85%29.aspx
+    return std::min(std::max(SIZE_T(128 * 1024 * 1024), mAdapterDescription.DedicatedVideoMemory), SIZE_T(2048) * 1024 * 1024);
+}
+
 std::string Renderer11::getRendererDescription() const
 {
     std::ostringstream rendererString;
@@ -2844,6 +2850,15 @@ void Renderer11::setOneTimeRenderTarget(ID3D11RenderTargetView *renderTargetView
     mAppliedDSV = DirtyPointer;
 }
 
+UINT64 EstimateSize(D3D11_TEXTURE2D_DESC &desc)
+{
+    //XXX: handle overflow (64 bits should be enough for anyone...)
+    const d3d11::DXGIFormat &dxgiFormatInfo = d3d11::GetDXGIFormatInfo(desc.Format);
+    // NVIDIA seems to align the width of buffers by 8 and the height by 64, so we do the same.
+    UINT64 total = UINT64(rx::roundUp(desc.Width, UINT(8))) * rx::roundUp(desc.Height, UINT(64)) * desc.SampleDesc.Count * dxgiFormatInfo.pixelBytes;
+    return total;
+}
+
 gl::Error Renderer11::createRenderTarget(int width, int height, GLenum format, GLsizei samples, RenderTargetD3D **outRT)
 {
     const d3d11::TextureFormat &formatInfo = d3d11::GetTextureFormatInfo(format, mRenderer11DeviceCaps);
@@ -2888,7 +2903,18 @@ gl::Error Renderer11::createRenderTarget(int width, int height, GLenum format, G
         ASSERT(bindRTV != bindDSV);
 
         ID3D11Texture2D *texture = NULL;
-        HRESULT result = mDevice->CreateTexture2D(&desc, NULL, &texture);
+        HRESULT result;
+
+        // Some Nvidia drivers (GeForce GT 610 w/ 9.18.13.3523) crash with very large render targets
+        if (EstimateSize(desc) > getMaxResourceSize())
+        {
+            result = E_OUTOFMEMORY;
+        }
+        else
+        {
+            result = mDevice->CreateTexture2D(&desc, NULL, &texture);
+        }
+
         if (FAILED(result))
         {
             ASSERT(result == E_OUTOFMEMORY);
