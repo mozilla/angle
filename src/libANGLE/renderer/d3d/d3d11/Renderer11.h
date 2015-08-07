@@ -150,6 +150,7 @@ class Renderer11 : public RendererD3D
     bool testDeviceResettable() override;
 
     VendorID getVendorId() const override;
+    SIZE_T getMaxResourceSize() const;
     std::string getRendererDescription() const override;
     DeviceIdentifier getAdapterIdentifier() const override;
 
