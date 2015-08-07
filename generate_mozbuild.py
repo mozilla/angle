@@ -54,6 +54,7 @@ if CONFIG['MOZ_WIDGET_TOOLKIT'] == 'windows':
     DIRS += [ 'src/libANGLE', 'src/libGLESv2', 'src/libEGL' ]
 
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
 
 EXPORTS.angle += [ 'include/GLSLANG/ShaderLang.h', 'include/GLSLANG/ShaderVars.h' ]
 EXPORTS.angle.KHR += [ 'include/KHR/khrplatform.h' ]
@@ -107,6 +108,7 @@ LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
   OS_LIBS += [ 'd3d9', 'dxguid' ]
@@ -134,6 +136,7 @@ USE_LIBS += [ 'libGLESv2' ]
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
   OS_LIBS += [ 'd3d9', 'dxguid' ]
