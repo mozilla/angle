@@ -162,6 +162,7 @@ class Renderer11 : public RendererD3D
     bool testDeviceLost() override;
     bool testDeviceResettable();
 
+    SIZE_T getMaxResourceSize() const;
     std::string getRendererDescription() const;
     DeviceIdentifier getAdapterIdentifier() const override;
 
