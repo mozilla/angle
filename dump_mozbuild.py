@@ -78,6 +78,7 @@ def GenerateOutput(target_list, target_dicts, data, params):
 
   #print "TARGETS %s" % str(targets_to_visit)
   sources = []
+  recurse = target_dicts[targets_to_visit[0]].get('type', None) == 'static_library'
 
   while len(targets_to_visit) > 0:
     target = targets_to_visit.pop()
@@ -93,11 +94,14 @@ def GenerateOutput(target_list, target_dicts, data, params):
           #print "   %s" % source
           sources.append(source)
 
+    dependencies = []
     for dep in target_dicts[target].get('dependencies', []):
       deptype = target_dicts[dep].get('type', None)
+      dependencies.append(target_dicts[dep].get('target_name', None))
       if deptype != "shared_library":
         edges[target].append(dep)
-        targets_to_visit.append(dep)
+        if recurse:
+          targets_to_visit.append(dep)
 
   f = open('sources.json', 'w')
   json.dump(sources, f)
