@@ -51,7 +51,7 @@ DEFINES['EGLAPI'] = ""
   'translator': """
 # Only build libEGL/libGLESv2 on Windows
 if CONFIG['MOZ_WIDGET_TOOLKIT'] == 'windows':
-    DIRS += [ 'src/libGLESv2', 'src/libEGL' ]
+    DIRS += [ 'src/libANGLE', 'src/libGLESv2', 'src/libEGL' ]
 
 EXPORTS.angle += [ 'include/GLSLANG/ShaderLang.h', 'include/GLSLANG/ShaderVars.h' ]
 EXPORTS.angle.KHR += [ 'include/KHR/khrplatform.h' ]
@@ -69,11 +69,41 @@ DEFINES['ANGLE_TRANSLATOR_IMPLEMENTATION'] = True
 FINAL_LIBRARY = 'gkmedias'
 """,
 #
+# libANGLE
+#
+  'libANGLE': """
+
+LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos' ]
+
+DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
+DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
+
+if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
+  OS_LIBS += [ 'd3d9', 'dxguid' ]
+else:
+  EXTRA_DSO_LDOPTS += [
+    '\\'%s/lib/%s/d3d9.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
+    '\\'%s/lib/%s/dxguid.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
+  ]
+
+Library('libANGLE')
+
+
+SOURCES['renderer/d3d/HLSLCompiler.cpp'].flags += ['-DANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES=\\'{ TEXT("d3dcompiler_47.dll"), TEXT("d3dcompiler_46.dll"), TEXT("d3dcompiler_43.dll") }\\'']
+
+if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
+    SOURCES['renderer/d3d/d3d11/SwapChain11.cpp'].flags += ['-DANGLE_RESOURCE_SHARE_TYPE=D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX']
+
+""",
+#
 # libGLESv2
 #
   'libGLESv2': """
 
 LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos' ]
+
+DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
   OS_LIBS += [ 'd3d9', 'dxguid' ]
@@ -88,10 +118,7 @@ GeckoSharedLibrary('libGLESv2', linkage=None)
 RCFILE = SRCDIR + '/libGLESv2.rc'
 DEFFILE = SRCDIR + '/libGLESv2.def'
 
-SOURCES['../libANGLE/renderer/d3d/HLSLCompiler.cpp'].flags += ['-DANGLE_PRELOADED_D3DCOMPILER_MODULE_NAMES=\\'{ TEXT("d3dcompiler_47.dll"), TEXT("d3dcompiler_46.dll"), TEXT("d3dcompiler_43.dll") }\\'']
-
-if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
-    SOURCES['../libANGLE/renderer/d3d/d3d11/SwapChain11.cpp'].flags += ['-DANGLE_RESOURCE_SHARE_TYPE=D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX']
+USE_LIBS += ['libANGLE']
 
 """,
 #
@@ -99,13 +126,26 @@ if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
 #
   'libEGL': """
 
-LOCAL_INCLUDES += [ '../../include', '../../src' ]
+LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos' ]
 USE_LIBS += [ 'libGLESv2' ]
+
+DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
+
+if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
+  OS_LIBS += [ 'd3d9', 'dxguid' ]
+else:
+  EXTRA_DSO_LDOPTS += [
+    '\\'%s/lib/%s/d3d9.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
+    '\\'%s/lib/%s/dxguid.lib\\'' % (CONFIG['MOZ_DIRECTX_SDK_PATH'], CONFIG['MOZ_D3D_CPU_SUFFIX']),
+  ]
+
 
 GeckoSharedLibrary('libEGL', linkage=None)
 
 RCFILE = SRCDIR + '/libEGL.rc'
 DEFFILE = SRCDIR + '/libEGL.def'
+
+USE_LIBS += ['libANGLE']
 """
 }
 
@@ -266,6 +306,8 @@ def write_list(f, name, values, indent, prefix=None):
 def write_mozbuild(includes, sources, target):
   if target is "translator":
     filename = "moz.build"
+  elif target is "libANGLE":
+    filename = "src/libANGLE/moz.build"
   elif target is "libGLESv2":
     filename = "src/libGLESv2/moz.build"
   elif target is "libEGL":
@@ -335,13 +377,15 @@ def main():
   target_platforms = {
     "translator": ['win', 'linux', 'mac', 'android'],
     "libGLESv2": ['win'],
-    "libEGL": ['win']
+    "libEGL": ['win'],
+    "libANGLE": ['win']
   }
 
   target_dirs = {
     "translator": ".",
     "libGLESv2": "src/libGLESv2",
-    "libEGL": "src/libEGL"
+    "libEGL": "src/libEGL",
+    "libANGLE": "src/libANGLE",
   }
 
   for target in target_platforms.keys():
