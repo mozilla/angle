@@ -24,11 +24,21 @@ footers = {
 if CONFIG['GNU_CXX']:
     CXXFLAGS += [
         '-Wno-attributes',
+        '-Wno-shadow',
         '-Wno-sign-compare',
         '-Wno-unknown-pragmas',
+        '-Wno-unreachable-code',
     ]
     if CONFIG['CLANG_CXX']:
-        CXXFLAGS += ['-Wno-unused-private-field']
+        CXXFLAGS += [
+            '-Wno-inconsistent-missing-override',
+            '-Wno-unused-private-field',
+        ]
+    else:
+        CXXFLAGS += [
+            '-Wno-shadow-compatible-local',
+            '-Wno-shadow-local',
+        ]
 
 if CONFIG['MOZ_DIRECTX_SDK_PATH'] and not CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
     LOCAL_INCLUDES += ['%' + '%s/include/' % CONFIG['MOZ_DIRECTX_SDK_PATH']]
