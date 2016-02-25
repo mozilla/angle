@@ -80,9 +80,15 @@ class NativeWindow
     EGLNativeWindowType mWindow;
 
     bool mDirectComposition;
+
+#ifdef HAS_DIRECT_COMPOSITION
+
     IDCompositionDevice *mDevice;
     IDCompositionTarget *mCompositionTarget;
     IDCompositionVisual *mVisual;
+
+#endif // HAS_DIRECT_COMPOSITION
+
     const egl::Config *mConfig;
 #if defined(ANGLE_ENABLE_WINDOWS_STORE)
     std::shared_ptr<InspectableNativeWindow> mImpl;

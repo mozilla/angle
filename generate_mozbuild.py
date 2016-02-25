@@ -70,6 +70,8 @@ if CONFIG['MOZ_WIDGET_TOOLKIT'] == 'windows':
     DIRS += [ 'src/libANGLE', 'src/libGLESv2', 'src/libEGL' ]
 
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+DEFINES['ANGLE_ENABLE_GLSL'] = "1"
+DEFINES['ANGLE_ENABLE_ESSL'] = "1"
 DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
 
 EXPORTS.angle += [ 'include/GLSLANG/ShaderLang.h', 'include/GLSLANG/ShaderVars.h' ]
@@ -91,6 +93,8 @@ LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+DEFINES['ANGLE_ENABLE_GLSL'] = "1"
+DEFINES['ANGLE_ENABLE_ESSL'] = "1"
 DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
 DEFINES['ANGLE_DEFAULT_D3D11'] = "0"
 
@@ -123,6 +127,8 @@ LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+DEFINES['ANGLE_ENABLE_GLSL'] = "1"
+DEFINES['ANGLE_ENABLE_ESSL'] = "1"
 DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
@@ -151,6 +157,8 @@ USE_LIBS += [ 'libGLESv2' ]
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
+DEFINES['ANGLE_ENABLE_GLSL'] = "1"
+DEFINES['ANGLE_ENABLE_ESSL'] = "1"
 DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
 
 if CONFIG['MOZ_HAS_WINSDK_WITH_D3D']:
@@ -184,7 +192,8 @@ nonunified_source_files = [
   "glslang_tab.cpp",
   "glslang_lex.cpp",
   "Display.cpp",
-  "SwapChain11.cpp"
+  "SwapChain11.cpp",
+  "NativeWindow.cpp" # because of include <initguid.h>
 ]
 
 def force_non_unified(s):

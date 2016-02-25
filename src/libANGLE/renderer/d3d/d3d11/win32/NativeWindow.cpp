@@ -12,7 +12,10 @@
 #include "common/debug.h"
 
 #include <initguid.h>
+
+#ifdef HAS_DIRECT_COMPOSITION
 #include <dcomp.h>
+#endif // HAS_DIRECT_COMPOSITION
 
 namespace rx
 {
@@ -22,18 +25,30 @@ NativeWindow::NativeWindow(EGLNativeWindowType window,
                            bool directComposition)
     : mWindow(window),
       mDirectComposition(directComposition),
+
+#ifdef HAS_DIRECT_COMPOSITION
+
       mDevice(nullptr),
       mCompositionTarget(nullptr),
       mVisual(nullptr),
+
+#endif // HAS_DIRECT_COMPOSITION
+
       mConfig(config)
 {
 }
 
 NativeWindow::~NativeWindow()
 {
+
+#ifdef HAS_DIRECT_COMPOSITION
+
     SafeRelease(mCompositionTarget);
     SafeRelease(mDevice);
     SafeRelease(mVisual);
+
+#endif // HAS_DIRECT_COMPOSITION
+
 }
 
 bool NativeWindow::initialize()
@@ -68,6 +83,7 @@ HRESULT NativeWindow::createSwapChain(ID3D11Device* device, DXGIFactory* factory
 
     if (mDirectComposition)
     {
+#ifdef HAS_DIRECT_COMPOSITION
         HMODULE dcomp = ::GetModuleHandle(TEXT("dcomp.dll"));
         if (!dcomp)
         {
@@ -142,6 +158,9 @@ HRESULT NativeWindow::createSwapChain(ID3D11Device* device, DXGIFactory* factory
         mCompositionTarget->SetRoot(mVisual);
         SafeRelease(factory2);
         return result;
+#else // HAS_DIRECT_COMPOSITION
+        return E_INVALIDARG;
+#endif // HAS_DIRECT_COMPOSITION		
     }
 
     // Use IDXGIFactory2::CreateSwapChainForHwnd if DXGI 1.2 is available to create a DXGI_SWAP_EFFECT_SEQUENTIAL swap chain.
@@ -192,13 +211,20 @@ HRESULT NativeWindow::createSwapChain(ID3D11Device* device, DXGIFactory* factory
 
     return factory->CreateSwapChain(device, &swapChainDesc, swapChain);
 }
+#endif // ANGLE_ENABLE_D3D11
 
 void NativeWindow::commitChange()
 {
-    if (mDevice)
-    {
-        mDevice->Commit();
-    }
+
+#ifdef HAS_DIRECT_COMPOSITION
+
+  if (mDevice)
+  {
+    mDevice->Commit();
+  }
+
+#endif // HAS_DIRECT_COMPOSITION
+
 }
-#endif
-}
+
+} // namespace rx
