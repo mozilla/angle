@@ -2739,6 +2739,11 @@ bool Renderer11::resetDevice()
     return true;
 }
 
+VendorID Renderer11::getVendorId() const
+{
+    return static_cast<VendorID>(mAdapterDescription.VendorId);
+}
+
 SIZE_T Renderer11::getMaxResourceSize() const
 {
     // This formula comes from http://msdn.microsoft.com/en-us/library/windows/desktop/ff819065%28v=vs.85%29.aspx

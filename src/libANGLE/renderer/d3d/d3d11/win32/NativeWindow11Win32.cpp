@@ -12,7 +12,10 @@
 #include "common/debug.h"
 
 #include <initguid.h>
+
+#ifdef HAS_DIRECT_COMPOSITION
 #include <dcomp.h>
+#endif // HAS_DIRECT_COMPOSITION
 
 namespace rx
 {
@@ -22,18 +25,30 @@ NativeWindow11Win32::NativeWindow11Win32(EGLNativeWindowType window,
                                          bool directComposition)
     : NativeWindow11(window),
       mDirectComposition(directComposition),
-      mHasAlpha(hasAlpha),
-      mDevice(nullptr),
+      mHasAlpha(hasAlpha)
+
+#ifdef HAS_DIRECT_COMPOSITION
+
+      , mDevice(nullptr),
       mCompositionTarget(nullptr),
       mVisual(nullptr)
+
+#endif // HAS_DIRECT_COMPOSITION
+
 {
 }
 
 NativeWindow11Win32::~NativeWindow11Win32()
 {
+
+#ifdef HAS_DIRECT_COMPOSITION
+
     SafeRelease(mCompositionTarget);
     SafeRelease(mDevice);
     SafeRelease(mVisual);
+
+#endif // HAS_DIRECT_COMPOSITION
+
 }
 
 bool NativeWindow11Win32::initialize()
@@ -66,6 +81,7 @@ HRESULT NativeWindow11Win32::createSwapChain(ID3D11Device *device,
 
     if (mDirectComposition)
     {
+#ifdef HAS_DIRECT_COMPOSITION
         HMODULE dcomp = ::GetModuleHandle(TEXT("dcomp.dll"));
         if (!dcomp)
         {
@@ -141,6 +157,9 @@ HRESULT NativeWindow11Win32::createSwapChain(ID3D11Device *device,
         mCompositionTarget->SetRoot(mVisual);
         SafeRelease(factory2);
         return result;
+#else // HAS_DIRECT_COMPOSITION
+        return E_INVALIDARG;
+#endif // HAS_DIRECT_COMPOSITION		
     }
 
     // Use IDXGIFactory2::CreateSwapChainForHwnd if DXGI 1.2 is available to create a
@@ -199,15 +218,21 @@ HRESULT NativeWindow11Win32::createSwapChain(ID3D11Device *device,
     }
     return result;
 }
+#endif // ANGLE_ENABLE_D3D11
 
 void NativeWindow11Win32::commitChange()
 {
-    if (mDevice)
-    {
-        mDevice->Commit();
-    }
+
+#ifdef HAS_DIRECT_COMPOSITION
+
+  if (mDevice)
+  {
+    mDevice->Commit();
+  }
+
+#endif // HAS_DIRECT_COMPOSITION
+
 }
-#endif
 
 // static
 bool NativeWindow11Win32::IsValidNativeWindow(EGLNativeWindowType window)
