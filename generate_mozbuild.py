@@ -78,7 +78,7 @@ DEFINES['ANGLE_ENABLE_KEYEDMUTEX'] = "1"
 EXPORTS.angle += [ 'include/GLSLANG/ShaderLang.h', 'include/GLSLANG/ShaderVars.h' ]
 EXPORTS.angle.KHR += [ 'include/KHR/khrplatform.h' ]
 
-LOCAL_INCLUDES += [ 'include', 'src' ]
+LOCAL_INCLUDES += [ 'include', 'src', 'src/common/third_party/numerics' ]
 
 # We allow warnings for third-party code that can be updated from upstream.
 ALLOW_COMPILER_WARNINGS = True
@@ -90,7 +90,7 @@ FINAL_LIBRARY = 'gkmedias'
 #
   'libANGLE': """
 
-LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos' ]
+LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/common/third_party/numerics', '../../src/third_party/khronos' ]
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
@@ -124,7 +124,7 @@ ALLOW_COMPILER_WARNINGS = True
 #
   'libGLESv2': """
 
-LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/third_party/khronos' ]
+LOCAL_INCLUDES += [ '../../include', '../../src', '../../src/common/third_party/numerics', '../../src/third_party/khronos' ]
 
 DEFINES['LIBANGLE_IMPLEMENTATION'] = "1"
 DEFINES['ANGLE_ENABLE_HLSL'] = "1"
