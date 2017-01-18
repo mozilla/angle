@@ -2,7 +2,10 @@
 
 if [ ! -f third_party/gyp/gyp ] ; then
   echo "gyp not found, run: "
-  echo "  svn checkout http://gyp.googlecode.com/svn/trunk@1806 third_party/gyp"
+  echo "  git clone https://chromium.googlesource.com/external/gyp third_party/gyp"
+  echo "  cd third_party/gyp"
+  echo "  git checkout 27c626e0515f845338cb60b1d8405f40150a791d"
+  echo "  cd ../../"
   exit 1
 fi
 
