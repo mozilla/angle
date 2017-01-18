@@ -189,6 +189,7 @@ relative_dir = None
 # play nicely with other files
 nonunified_source_files = [
   "HLSLCompiler.cpp",
+  "loadimage.cpp", # because we need to set sse2 flags
   # generated parsers
   "glslang_tab.cpp",
   "glslang_lex.cpp",
@@ -199,8 +200,22 @@ nonunified_source_files = [
   "DisplayD3D.cpp", # because some windows include need to be first line
 ]
 
+sse2_source_files = [
+  "loadimage.cpp",
+]
+
+# "subs" in "substring" returns true
+# "substring" in ["subs"] returns False
+# match_against_substring_list("substring", ["subs"]) returns True
+def match_against_substring_list(s, l):
+  for i in l:
+    if i in s:
+      return True
+  return False
+
+
 def force_non_unified(s):
-  if "SSE2" in s:
+  if match_against_substring_list(s, sse2_source_files):
     return True
   for pattern in nonunified_source_files:
     if pattern in s:
@@ -334,7 +349,7 @@ def write_list(f, name, values, indent, prefix=None):
 
   if name == 'SOURCES':
     for val in val_list:
-      if 'SSE2' in val:
+      if match_against_substring_list(val, sse2_source_files):
         write_indent(indent)
         f.write("SOURCES['%s'].flags += CONFIG['SSE2_FLAGS']\n" % val)
 
