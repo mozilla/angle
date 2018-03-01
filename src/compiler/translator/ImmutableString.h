@@ -20,7 +20,8 @@ namespace sh
 
 namespace
 {
-constexpr size_t constStrlen(const char *str)
+
+constexpr14 size_t constStrlen(const char *str)
 {
     if (str == nullptr)
     {
@@ -33,6 +34,7 @@ constexpr size_t constStrlen(const char *str)
     }
     return len;
 }
+
 }
 
 class ImmutableString
@@ -43,10 +45,10 @@ class ImmutableString
     //  2. a null-terminated static char array like a string literal.
     //  3. a null-terminated pool allocated char array. This can't be c_str() of a local TString,
     //     since when a TString goes out of scope it clears its first character.
-    explicit constexpr ImmutableString(const char *data) : mData(data), mLength(constStrlen(data))
-    {
-    }
 
+    template<size_t N>
+    explicit constexpr ImmutableString(const char (&data)[N]) : mData(data), mLength(N-1) {}
+    explicit constexpr14 ImmutableString(const char *(&data)) : mData(data), mLength(constStrlen(data)) {}
     constexpr ImmutableString(const char *data, size_t length) : mData(data), mLength(length) {}
 
     ImmutableString(const std::string &str)
@@ -71,7 +73,7 @@ class ImmutableString
     }
     bool contains(const char *substr) const { return strstr(data(), substr) != nullptr; }
 
-    constexpr bool operator==(const ImmutableString &b) const
+    constexpr14 bool operator==(const ImmutableString &b) const
     {
         if (mLength != b.mLength)
         {
@@ -79,8 +81,8 @@ class ImmutableString
         }
         return memcmp(data(), b.data(), mLength) == 0;
     }
-    constexpr bool operator!=(const ImmutableString &b) const { return !(*this == b); }
-    constexpr bool operator==(const char *b) const
+    constexpr14 bool operator!=(const ImmutableString &b) const { return !(*this == b); }
+    constexpr14 bool operator==(const char *b) const
     {
         if (b == nullptr)
         {
@@ -88,14 +90,14 @@ class ImmutableString
         }
         return strcmp(data(), b) == 0;
     }
-    constexpr bool operator!=(const char *b) const { return !(*this == b); }
+    constexpr14 bool operator!=(const char *b) const { return !(*this == b); }
     bool operator==(const std::string &b) const
     {
         return mLength == b.length() && memcmp(data(), b.c_str(), mLength) == 0;
     }
     bool operator!=(const std::string &b) const { return !(*this == b); }
 
-    constexpr bool operator<(const ImmutableString &b) const
+    constexpr14 bool operator<(const ImmutableString &b) const
     {
         if (mLength < b.mLength)
         {
@@ -114,7 +116,7 @@ class ImmutableString
         static const size_t kFnvOffsetBasis;
         static const size_t kFnvPrime;
 
-        constexpr size_t operator()(const ImmutableString &a) const
+        constexpr14 size_t operator()(const ImmutableString &a) const
         {
             const char *data = a.data();
             size_t hash      = kFnvOffsetBasis;

@@ -379,8 +379,7 @@ const gl::AttachmentList &FramebufferD3D::getColorAttachmentsForRender(const gl:
     if (mRenderer->getWorkarounds().addDummyTextureNoRenderTarget &&
         colorAttachmentsForRender.empty() && activeProgramOutputs.any())
     {
-        static_assert(static_cast<size_t>(activeProgramOutputs.size()) <= 32,
-                      "Size of active program outputs should less or equal than 32.");
+        ASSERT(static_cast<size_t>(activeProgramOutputs.size()) <= 32);
         const GLuint activeProgramLocation = static_cast<GLuint>(
             gl::ScanForward(static_cast<uint32_t>(activeProgramOutputs.bits())));
 

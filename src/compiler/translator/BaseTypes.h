@@ -130,7 +130,7 @@ enum TBasicType
     EbtLast
 };
 
-constexpr const char *GetBasicMangledName(TBasicType t)
+constexpr14 static const char *GetBasicMangledName(TBasicType t)
 {
     switch (t)
     {

@@ -72,6 +72,7 @@ config("internal_config") {
   defines = [
     "GL_GLEXT_PROTOTYPES",
     "EGL_EGLEXT_PROTOTYPES",
+    "constexpr14=constexpr",
   ]
 
   if (current_cpu == "x86" || current_cpu == "arm") {
