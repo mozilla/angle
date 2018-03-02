@@ -708,7 +708,7 @@ gl::Error TextureD3D::initializeContents(const gl::Context *context,
     const auto &formatInfo = gl::GetSizedInternalFormatInfo(image->getInternalFormat());
 
     size_t imageBytes = 0;
-    ANGLE_TRY_RESULT(formatInfo.computeRowPitch(formatInfo.type, image->getWidth(), 1, 0),
+    ANGLE_TRY_RESULT(formatInfo.computeRowPitch(image->getWidth(), 1, 0),
                      imageBytes);
     imageBytes *= image->getHeight() * image->getDepth();
 
@@ -2976,12 +2976,13 @@ gl::Error TextureD3D_2DArray::setImage(const gl::Context *context,
     ASSERT(target == GL_TEXTURE_2D_ARRAY);
 
     const gl::InternalFormat &formatInfo = gl::GetInternalFormatInfo(internalFormat, type);
+    const gl::InternalFormat &packFormat = gl::GetPackFormatInfo(format, type);
 
     GLint level = static_cast<GLint>(imageLevel);
     ANGLE_TRY(redefineImage(context, level, formatInfo.sizedInternalFormat, size, false));
 
     GLsizei inputDepthPitch              = 0;
-    ANGLE_TRY_RESULT(formatInfo.computeDepthPitch(type, size.width, size.height, unpack.alignment,
+    ANGLE_TRY_RESULT(packFormat.computeDepthPitch(size.width, size.height, unpack.alignment,
                                                   unpack.rowLength, unpack.imageHeight),
                      inputDepthPitch);
 
@@ -3006,10 +3007,11 @@ gl::Error TextureD3D_2DArray::setSubImage(const gl::Context *context,
 {
     ASSERT(target == GL_TEXTURE_2D_ARRAY);
     GLint level                          = static_cast<GLint>(imageLevel);
-    const gl::InternalFormat &formatInfo =
-        gl::GetInternalFormatInfo(getInternalFormat(level), type);
+    const gl::InternalFormat &packFormat =
+        gl::GetPackFormatInfo(getInternalFormat(level), type);
+
     GLsizei inputDepthPitch              = 0;
-    ANGLE_TRY_RESULT(formatInfo.computeDepthPitch(type, area.width, area.height, unpack.alignment,
+    ANGLE_TRY_RESULT(packFormat.computeDepthPitch(area.width, area.height, unpack.alignment,
                                                   unpack.rowLength, unpack.imageHeight),
                      inputDepthPitch);
 
@@ -3046,7 +3048,7 @@ gl::Error TextureD3D_2DArray::setCompressedImage(const gl::Context *context,
     const gl::InternalFormat &formatInfo = gl::GetSizedInternalFormatInfo(internalFormat);
     GLsizei inputDepthPitch              = 0;
     ANGLE_TRY_RESULT(
-        formatInfo.computeDepthPitch(GL_UNSIGNED_BYTE, size.width, size.height, 1, 0, 0),
+        formatInfo.computeDepthPitch(size.width, size.height, 1, 0, 0),
         inputDepthPitch);
 
     for (int i = 0; i < size.depth; i++)
@@ -3074,7 +3076,7 @@ gl::Error TextureD3D_2DArray::setCompressedSubImage(const gl::Context *context,
     const gl::InternalFormat &formatInfo = gl::GetSizedInternalFormatInfo(format);
     GLsizei inputDepthPitch              = 0;
     ANGLE_TRY_RESULT(
-        formatInfo.computeDepthPitch(GL_UNSIGNED_BYTE, area.width, area.height, 1, 0, 0),
+        formatInfo.computeDepthPitch(area.width, area.height, 1, 0, 0),
         inputDepthPitch);
 
     for (int i = 0; i < area.depth; i++)
