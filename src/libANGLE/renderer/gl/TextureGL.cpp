@@ -351,7 +351,7 @@ gl::Error TextureGL::setSubImageRowByRowWorkaround(const gl::Context *context,
 
     const gl::InternalFormat &glFormat   = gl::GetInternalFormatInfo(format, type);
     GLuint rowBytes                      = 0;
-    ANGLE_TRY_RESULT(glFormat.computeRowPitch(type, area.width, unpack.alignment, unpack.rowLength),
+    ANGLE_TRY_RESULT(glFormat.computeRowPitch(area.width, unpack.alignment, unpack.rowLength),
                      rowBytes);
     GLuint imageBytes = 0;
     ANGLE_TRY_RESULT(glFormat.computeDepthPitch(area.height, unpack.imageHeight, rowBytes),
@@ -403,7 +403,7 @@ gl::Error TextureGL::setSubImagePaddingWorkaround(const gl::Context *context,
 {
     const gl::InternalFormat &glFormat = gl::GetInternalFormatInfo(format, type);
     GLuint rowBytes = 0;
-    ANGLE_TRY_RESULT(glFormat.computeRowPitch(type, area.width, unpack.alignment, unpack.rowLength),
+    ANGLE_TRY_RESULT(glFormat.computeRowPitch(area.width, unpack.alignment, unpack.rowLength),
                      rowBytes);
     GLuint imageBytes = 0;
     ANGLE_TRY_RESULT(glFormat.computeDepthPitch(area.height, unpack.imageHeight, rowBytes),

@@ -212,7 +212,7 @@ gl::Error TextureVk::setSubImageImpl(ContextVk *contextVk,
 
     GLuint inputRowPitch = 0;
     ANGLE_TRY_RESULT(
-        formatInfo.computeRowPitch(type, size.width, unpack.alignment, unpack.rowLength),
+        formatInfo.computeRowPitch(size.width, unpack.alignment, unpack.rowLength),
         inputRowPitch);
 
     GLuint inputDepthPitch = 0;

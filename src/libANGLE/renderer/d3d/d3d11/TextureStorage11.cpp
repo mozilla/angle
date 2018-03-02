@@ -752,7 +752,9 @@ gl::Error TextureStorage11::setData(const gl::Context *context,
     UINT destSubresource = getSubresourceIndex(index);
 
     const gl::InternalFormat &internalFormatInfo =
-        gl::GetInternalFormatInfo(image->getInternalFormat(), type);
+        gl::GetSizedInternalFormatInfo(image->getInternalFormat());
+    const gl::InternalFormat &packInfo =
+        gl::GetPackFormatInfo(image->getInternalFormat(), type);
 
     gl::Box levelBox(0, 0, 0, getLevelWidth(index.mipIndex), getLevelHeight(index.mipIndex),
                      getLevelDepth(index.mipIndex));
@@ -770,14 +772,14 @@ gl::Error TextureStorage11::setData(const gl::Context *context,
     const int depth    = destBox ? destBox->depth : static_cast<int>(image->getDepth());
     GLuint srcRowPitch = 0;
     ANGLE_TRY_RESULT(
-        internalFormatInfo.computeRowPitch(type, width, unpack.alignment, unpack.rowLength),
+        packInfo.computeRowPitch(width, unpack.alignment, unpack.rowLength),
         srcRowPitch);
     GLuint srcDepthPitch = 0;
-    ANGLE_TRY_RESULT(internalFormatInfo.computeDepthPitch(height, unpack.imageHeight, srcRowPitch),
+    ANGLE_TRY_RESULT(packInfo.computeDepthPitch(height, unpack.imageHeight, srcRowPitch),
                      srcDepthPitch);
     GLuint srcSkipBytes = 0;
     ANGLE_TRY_RESULT(
-        internalFormatInfo.computeSkipBytes(srcRowPitch, srcDepthPitch, unpack, index.is3D()),
+        packInfo.computeSkipBytes(srcRowPitch, srcDepthPitch, unpack, index.is3D()),
         srcSkipBytes);
 
     const d3d11::Format &d3d11Format =

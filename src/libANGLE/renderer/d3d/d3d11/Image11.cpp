@@ -281,17 +281,17 @@ gl::Error Image11::loadData(const gl::Context *context,
                             const void *input,
                             bool applySkipImages)
 {
-    const gl::InternalFormat &formatInfo = gl::GetSizedInternalFormatInfo(mInternalFormat);
+    const gl::InternalFormat &packFormat = gl::GetPackFormatInfo(mInternalFormat, type);
     GLuint inputRowPitch                 = 0;
     ANGLE_TRY_RESULT(
-        formatInfo.computeRowPitch(type, area.width, unpack.alignment, unpack.rowLength),
+        packFormat.computeRowPitch(area.width, unpack.alignment, unpack.rowLength),
         inputRowPitch);
     GLuint inputDepthPitch = 0;
-    ANGLE_TRY_RESULT(formatInfo.computeDepthPitch(area.height, unpack.imageHeight, inputRowPitch),
+    ANGLE_TRY_RESULT(packFormat.computeDepthPitch(area.height, unpack.imageHeight, inputRowPitch),
                      inputDepthPitch);
     GLuint inputSkipBytes = 0;
     ANGLE_TRY_RESULT(
-        formatInfo.computeSkipBytes(inputRowPitch, inputDepthPitch, unpack, applySkipImages),
+        packFormat.computeSkipBytes(inputRowPitch, inputDepthPitch, unpack, applySkipImages),
         inputSkipBytes);
 
     const d3d11::DXGIFormatSize &dxgiFormatInfo = d3d11::GetDXGIFormatSizeInfo(mDXGIFormat);
@@ -322,7 +322,7 @@ gl::Error Image11::loadCompressedData(const gl::Context *context,
 {
     const gl::InternalFormat &formatInfo = gl::GetSizedInternalFormatInfo(mInternalFormat);
     GLsizei inputRowPitch                = 0;
-    ANGLE_TRY_RESULT(formatInfo.computeRowPitch(GL_UNSIGNED_BYTE, area.width, 1, 0), inputRowPitch);
+    ANGLE_TRY_RESULT(formatInfo.computeRowPitch(area.width, 1, 0), inputRowPitch);
     GLsizei inputDepthPitch = 0;
     ANGLE_TRY_RESULT(formatInfo.computeDepthPitch(area.height, 0, inputRowPitch), inputDepthPitch);
 
