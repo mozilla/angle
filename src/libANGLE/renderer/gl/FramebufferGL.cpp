@@ -847,7 +847,7 @@ gl::Error FramebufferGL::readPixelsRowByRow(const gl::Context *context,
     ANGLE_TRY_RESULT(glFormat.computeRowPitch(type, area.width, pack.alignment, pack.rowLength),
                      rowBytes);
     GLuint skipBytes = 0;
-    ANGLE_TRY_RESULT(glFormat.computeSkipBytes(rowBytes, 0, pack, false), skipBytes);
+    ANGLE_TRY_RESULT(glFormat.computeSkipBytes(type, rowBytes, 0, pack, false), skipBytes);
 
     gl::PixelPackState directPack;
     directPack.alignment   = 1;
@@ -886,7 +886,7 @@ gl::Error FramebufferGL::readPixelsAllAtOnce(const gl::Context *context,
         ANGLE_TRY_RESULT(glFormat.computeRowPitch(type, area.width, pack.alignment, pack.rowLength),
                          rowBytes);
         GLuint skipBytes = 0;
-        ANGLE_TRY_RESULT(glFormat.computeSkipBytes(rowBytes, 0, pack, false), skipBytes);
+        ANGLE_TRY_RESULT(glFormat.computeSkipBytes(type, rowBytes, 0, pack, false), skipBytes);
 
         gl::PixelPackState directPack;
         directPack.alignment = 1;

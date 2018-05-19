@@ -341,7 +341,7 @@ gl::Error TextureGL::setSubImageRowByRowWorkaround(const gl::Context *context,
 
     bool useTexImage3D = nativegl::UseTexImage3D(getType());
     GLuint skipBytes   = 0;
-    ANGLE_TRY_RESULT(glFormat.computeSkipBytes(rowBytes, imageBytes, unpack, useTexImage3D),
+    ANGLE_TRY_RESULT(glFormat.computeSkipBytes(type, rowBytes, imageBytes, unpack, useTexImage3D),
                      skipBytes);
 
     const uint8_t *pixelsWithSkip = pixels + skipBytes;
@@ -393,7 +393,7 @@ gl::Error TextureGL::setSubImagePaddingWorkaround(const gl::Context *context,
                      imageBytes);
     bool useTexImage3D = nativegl::UseTexImage3D(getType());
     GLuint skipBytes   = 0;
-    ANGLE_TRY_RESULT(glFormat.computeSkipBytes(rowBytes, imageBytes, unpack, useTexImage3D),
+    ANGLE_TRY_RESULT(glFormat.computeSkipBytes(type, rowBytes, imageBytes, unpack, useTexImage3D),
                      skipBytes);
 
     mStateManager->setPixelUnpackState(unpack);

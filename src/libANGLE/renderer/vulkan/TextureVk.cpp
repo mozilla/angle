@@ -92,7 +92,7 @@ gl::Error StagingStorage::stageSubresourceUpdate(ContextVk *contextVk,
 
     GLuint inputSkipBytes = 0;
     ANGLE_TRY_RESULT(
-        formatInfo.computeSkipBytes(inputRowPitch, inputDepthPitch, unpack, applySkipImages),
+        formatInfo.computeSkipBytes(type, inputRowPitch, inputDepthPitch, unpack, applySkipImages),
         inputSkipBytes);
 
     RendererVk *renderer = contextVk->getRenderer();
