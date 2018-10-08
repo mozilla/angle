@@ -735,6 +735,141 @@ gl::RangeUI ProgramD3D::getUsedImageRange(gl::ShaderType type, bool readonly) co
     }
 }
 
+class ProgramD3D::GetExecutableTask : public Closure
+{
+public:
+    GetExecutableTask(ProgramD3D *program, const gl::Context *context)
+        : mProgram(program),
+        mResult(angle::Result::Continue()),
+        mInfoLog(),
+        mExecutable(nullptr),
+        mContext(context)
+    {
+    }
+
+    virtual angle::Result run() = 0;
+
+    void operator()() override { mResult = run(); }
+
+    angle::Result getResult() const { return mResult; }
+    const gl::InfoLog &getInfoLog() const { return mInfoLog; }
+    ShaderExecutableD3D *getExecutable() { return mExecutable; }
+
+protected:
+    ProgramD3D * mProgram;
+    angle::Result mResult;
+    gl::InfoLog mInfoLog;
+    ShaderExecutableD3D *mExecutable;
+    const gl::Context *mContext;
+};
+
+// The LinkEvent implementation for linking a rendering(VS, FS, GS) program.
+class ProgramD3D::GraphicsProgramLinkEvent final : public LinkEvent
+{
+public:
+    GraphicsProgramLinkEvent(gl::InfoLog &infoLog,
+        std::shared_ptr<WorkerThreadPool> workerPool,
+        std::shared_ptr<ProgramD3D::GetExecutableTask> vertexTask,
+        std::shared_ptr<ProgramD3D::GetExecutableTask> pixelTask,
+        std::shared_ptr<ProgramD3D::GetExecutableTask> geometryTask,
+        bool useGS,
+        const ShaderD3D *vertexShader,
+        const ShaderD3D *fragmentShader)
+        : mInfoLog(infoLog),
+        mWorkerPool(workerPool),
+        mVertexTask(vertexTask),
+        mPixelTask(pixelTask),
+        mGeometryTask(geometryTask),
+        mWaitEvents(
+            { { std::shared_ptr<WaitableEvent>(workerPool->postWorkerTask(mVertexTask)),
+            std::shared_ptr<WaitableEvent>(workerPool->postWorkerTask(mPixelTask)),
+            std::shared_ptr<WaitableEvent>(workerPool->postWorkerTask(mGeometryTask)) } }),
+        mUseGS(useGS),
+        mVertexShader(vertexShader),
+        mFragmentShader(fragmentShader)
+    {
+    }
+
+    bool wait() override
+    {
+        WaitableEvent::WaitMany(&mWaitEvents);
+
+        if (!checkTask(mVertexTask.get()) || !checkTask(mPixelTask.get()) ||
+            !checkTask(mGeometryTask.get()))
+        {
+            return false;
+        }
+
+        ShaderExecutableD3D *defaultVertexExecutable = mVertexTask->getExecutable();
+        ShaderExecutableD3D *defaultPixelExecutable = mPixelTask->getExecutable();
+        ShaderExecutableD3D *pointGS = mGeometryTask->getExecutable();
+
+        if (mUseGS && pointGS)
+        {
+            // Geometry shaders are currently only used internally, so there is no corresponding
+            // shader object at the interface level. For now the geometry shader debug info is
+            // prepended to the vertex shader.
+            mVertexShader->appendDebugInfo("// GEOMETRY SHADER BEGIN\n\n");
+            mVertexShader->appendDebugInfo(pointGS->getDebugInfo());
+            mVertexShader->appendDebugInfo("\nGEOMETRY SHADER END\n\n\n");
+        }
+
+        if (defaultVertexExecutable)
+        {
+            mVertexShader->appendDebugInfo(defaultVertexExecutable->getDebugInfo());
+        }
+
+        if (defaultPixelExecutable)
+        {
+            mFragmentShader->appendDebugInfo(defaultPixelExecutable->getDebugInfo());
+        }
+
+        bool isLinked = (defaultVertexExecutable && defaultPixelExecutable && (!mUseGS || pointGS));
+        if (!isLinked)
+        {
+            mInfoLog << "Failed to create D3D Shaders";
+        }
+        return isLinked;
+    }
+
+    bool isLinking() override
+    {
+        for (auto &event : mWaitEvents)
+        {
+            if (!event->isReady())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+private:
+    bool checkTask(ProgramD3D::GetExecutableTask *task)
+    {
+        if (!task->getInfoLog().empty())
+        {
+            mInfoLog << task->getInfoLog().str();
+        }
+        auto result = task->getResult();
+        if (result.isError())
+        {
+            return false;
+        }
+        return true;
+    }
+
+    gl::InfoLog &mInfoLog;
+    std::shared_ptr<WorkerThreadPool> mWorkerPool;
+    std::shared_ptr<ProgramD3D::GetExecutableTask> mVertexTask;
+    std::shared_ptr<ProgramD3D::GetExecutableTask> mPixelTask;
+    std::shared_ptr<ProgramD3D::GetExecutableTask> mGeometryTask;
+    std::array<std::shared_ptr<WaitableEvent>, 3> mWaitEvents;
+    bool mUseGS;
+    const ShaderD3D *mVertexShader;
+    const ShaderD3D *mFragmentShader;
+};
+
 std::unique_ptr<LinkEvent> ProgramD3D::load(const gl::Context *context,
                                             gl::InfoLog &infoLog,
                                             gl::BinaryInputStream *stream)
@@ -1357,33 +1492,6 @@ angle::Result ProgramD3D::getGeometryExecutableForPrimitiveType(const gl::Contex
     return result;
 }
 
-class ProgramD3D::GetExecutableTask : public Closure
-{
-  public:
-    GetExecutableTask(ProgramD3D *program, const gl::Context *context)
-        : mProgram(program),
-          mResult(angle::Result::Continue()),
-          mInfoLog(),
-          mExecutable(nullptr),
-          mContext(context)
-    {
-    }
-
-    virtual angle::Result run() = 0;
-
-    void operator()() override { mResult = run(); }
-
-    angle::Result getResult() const { return mResult; }
-    const gl::InfoLog &getInfoLog() const { return mInfoLog; }
-    ShaderExecutableD3D *getExecutable() { return mExecutable; }
-
-  protected:
-    ProgramD3D *mProgram;
-    angle::Result mResult;
-    gl::InfoLog mInfoLog;
-    ShaderExecutableD3D *mExecutable;
-    const gl::Context *mContext;
-};
 
 class ProgramD3D::GetVertexExecutableTask : public ProgramD3D::GetExecutableTask
 {
@@ -1467,112 +1575,6 @@ angle::Result ProgramD3D::getComputeExecutable(ShaderExecutableD3D **outExecutab
     return angle::Result::Continue();
 }
 
-// The LinkEvent implementation for linking a rendering(VS, FS, GS) program.
-class ProgramD3D::GraphicsProgramLinkEvent final : public LinkEvent
-{
-  public:
-    GraphicsProgramLinkEvent(gl::InfoLog &infoLog,
-                             std::shared_ptr<WorkerThreadPool> workerPool,
-                             std::shared_ptr<ProgramD3D::GetVertexExecutableTask> vertexTask,
-                             std::shared_ptr<ProgramD3D::GetPixelExecutableTask> pixelTask,
-                             std::shared_ptr<ProgramD3D::GetGeometryExecutableTask> geometryTask,
-                             bool useGS,
-                             const ShaderD3D *vertexShader,
-                             const ShaderD3D *fragmentShader)
-        : mInfoLog(infoLog),
-          mWorkerPool(workerPool),
-          mVertexTask(vertexTask),
-          mPixelTask(pixelTask),
-          mGeometryTask(geometryTask),
-          mWaitEvents(
-              {{std::shared_ptr<WaitableEvent>(workerPool->postWorkerTask(mVertexTask)),
-                std::shared_ptr<WaitableEvent>(workerPool->postWorkerTask(mPixelTask)),
-                std::shared_ptr<WaitableEvent>(workerPool->postWorkerTask(mGeometryTask))}}),
-          mUseGS(useGS),
-          mVertexShader(vertexShader),
-          mFragmentShader(fragmentShader)
-    {
-    }
-
-    bool wait() override
-    {
-        WaitableEvent::WaitMany(&mWaitEvents);
-
-        if (!checkTask(mVertexTask.get()) || !checkTask(mPixelTask.get()) ||
-            !checkTask(mGeometryTask.get()))
-        {
-            return false;
-        }
-
-        ShaderExecutableD3D *defaultVertexExecutable = mVertexTask->getExecutable();
-        ShaderExecutableD3D *defaultPixelExecutable  = mPixelTask->getExecutable();
-        ShaderExecutableD3D *pointGS                 = mGeometryTask->getExecutable();
-
-        if (mUseGS && pointGS)
-        {
-            // Geometry shaders are currently only used internally, so there is no corresponding
-            // shader object at the interface level. For now the geometry shader debug info is
-            // prepended to the vertex shader.
-            mVertexShader->appendDebugInfo("// GEOMETRY SHADER BEGIN\n\n");
-            mVertexShader->appendDebugInfo(pointGS->getDebugInfo());
-            mVertexShader->appendDebugInfo("\nGEOMETRY SHADER END\n\n\n");
-        }
-
-        if (defaultVertexExecutable)
-        {
-            mVertexShader->appendDebugInfo(defaultVertexExecutable->getDebugInfo());
-        }
-
-        if (defaultPixelExecutable)
-        {
-            mFragmentShader->appendDebugInfo(defaultPixelExecutable->getDebugInfo());
-        }
-
-        bool isLinked = (defaultVertexExecutable && defaultPixelExecutable && (!mUseGS || pointGS));
-        if (!isLinked)
-        {
-            mInfoLog << "Failed to create D3D Shaders";
-        }
-        return isLinked;
-    }
-
-    bool isLinking() override
-    {
-        for (auto &event : mWaitEvents)
-        {
-            if (!event->isReady())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-  private:
-    bool checkTask(ProgramD3D::GetExecutableTask *task)
-    {
-        if (!task->getInfoLog().empty())
-        {
-            mInfoLog << task->getInfoLog().str();
-        }
-        auto result = task->getResult();
-        if (result.isError())
-        {
-            return false;
-        }
-        return true;
-    }
-
-    gl::InfoLog &mInfoLog;
-    std::shared_ptr<WorkerThreadPool> mWorkerPool;
-    std::shared_ptr<ProgramD3D::GetVertexExecutableTask> mVertexTask;
-    std::shared_ptr<ProgramD3D::GetPixelExecutableTask> mPixelTask;
-    std::shared_ptr<ProgramD3D::GetGeometryExecutableTask> mGeometryTask;
-    std::array<std::shared_ptr<WaitableEvent>, 3> mWaitEvents;
-    bool mUseGS;
-    const ShaderD3D *mVertexShader;
-    const ShaderD3D *mFragmentShader;
-};
 
 std::unique_ptr<LinkEvent> ProgramD3D::compileProgramExecutables(const gl::Context *context,
                                                                  gl::InfoLog &infoLog)
