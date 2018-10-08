@@ -735,9 +735,9 @@ gl::RangeUI ProgramD3D::getUsedImageRange(gl::ShaderType type, bool readonly) co
     }
 }
 
-gl::LinkResult ProgramD3D::load(const gl::Context *context,
-                                gl::InfoLog &infoLog,
-                                gl::BinaryInputStream *stream)
+std::unique_ptr<LinkEvent> ProgramD3D::load(const gl::Context *context,
+                                            gl::InfoLog &infoLog,
+                                            gl::BinaryInputStream *stream)
 {
     // TODO(jmadill): Use Renderer from contextImpl.
 
@@ -751,14 +751,14 @@ gl::LinkResult ProgramD3D::load(const gl::Context *context,
     if (memcmp(&identifier, &binaryDeviceIdentifier, sizeof(DeviceIdentifier)) != 0)
     {
         infoLog << "Invalid program binary, device configuration has changed.";
-        return false;
+        return std::make_unique<LinkEventDone>(false);
     }
 
     int compileFlags = stream->readInt<int>();
     if (compileFlags != ANGLE_COMPILE_OPTIMIZATION_LEVEL)
     {
         infoLog << "Mismatched compilation flags.";
-        return false;
+        return std::make_unique<LinkEventDone>(false);
     }
 
     for (int &index : mAttribLocationToD3DSemantic)
@@ -816,7 +816,7 @@ gl::LinkResult ProgramD3D::load(const gl::Context *context,
     if (stream->error())
     {
         infoLog << "Invalid program binary.";
-        return false;
+        return std::make_unique<LinkEventDone>(false);
     }
 
     const auto &linkedUniforms = mState.getUniforms();
@@ -843,7 +843,7 @@ gl::LinkResult ProgramD3D::load(const gl::Context *context,
     if (stream->error())
     {
         infoLog << "Invalid program binary.";
-        return false;
+        return std::make_unique<LinkEventDone>(false);
     }
 
     ASSERT(mD3DUniformBlocks.empty());
@@ -911,19 +911,22 @@ gl::LinkResult ProgramD3D::load(const gl::Context *context,
             inputLayout[inputIndex] = stream->readInt<gl::VertexFormatType>();
         }
 
-        unsigned int vertexShaderSize             = stream->readInt<unsigned int>();
+        unsigned int vertexShaderSize = stream->readInt<unsigned int>();
         const unsigned char *vertexShaderFunction = binary + stream->offset();
 
         ShaderExecutableD3D *shaderExecutable = nullptr;
 
-        ANGLE_TRY(mRenderer->loadExecutable(context, vertexShaderFunction, vertexShaderSize,
-                                            gl::ShaderType::Vertex, mStreamOutVaryings,
-                                            separateAttribs, &shaderExecutable));
+        angle::Result result = mRenderer->loadExecutable(context, vertexShaderFunction, vertexShaderSize,
+                                                         gl::ShaderType::Vertex, mStreamOutVaryings,
+                                                         separateAttribs, &shaderExecutable);
+        if (result.isError()) {
+            return std::make_unique<LinkEventDone>(result);
+        }
 
         if (!shaderExecutable)
         {
             infoLog << "Could not create vertex shader.";
-            return false;
+            return std::make_unique<LinkEventDone>(false);
         }
 
         // generated converted input layout
@@ -951,14 +954,17 @@ gl::LinkResult ProgramD3D::load(const gl::Context *context,
         const unsigned char *pixelShaderFunction = binary + stream->offset();
         ShaderExecutableD3D *shaderExecutable    = nullptr;
 
-        ANGLE_TRY(mRenderer->loadExecutable(context, pixelShaderFunction, pixelShaderSize,
-                                            gl::ShaderType::Fragment, mStreamOutVaryings,
-                                            separateAttribs, &shaderExecutable));
+        angle::Result result = mRenderer->loadExecutable(context, pixelShaderFunction, pixelShaderSize,
+                                                         gl::ShaderType::Fragment, mStreamOutVaryings,
+                                                         separateAttribs, &shaderExecutable);
+        if (result.isError()) {
+            return std::make_unique<LinkEventDone>(result);
+        }
 
         if (!shaderExecutable)
         {
             infoLog << "Could not create pixel shader.";
-            return false;
+            return std::make_unique<LinkEventDone>(false);
         }
 
         // add new binary
@@ -979,14 +985,17 @@ gl::LinkResult ProgramD3D::load(const gl::Context *context,
         const unsigned char *geometryShaderFunction = binary + stream->offset();
 
         ShaderExecutableD3D *geometryExecutable = nullptr;
-        ANGLE_TRY(mRenderer->loadExecutable(context, geometryShaderFunction, geometryShaderSize,
-                                            gl::ShaderType::Geometry, mStreamOutVaryings,
-                                            separateAttribs, &geometryExecutable));
+        angle::Result result = mRenderer->loadExecutable(context, geometryShaderFunction, geometryShaderSize,
+                                                         gl::ShaderType::Geometry, mStreamOutVaryings,
+                                                         separateAttribs, &geometryExecutable);
+        if (result.isError()) {
+            return std::make_unique<LinkEventDone>(result);
+        }
 
         if (!geometryExecutable)
         {
             infoLog << "Could not create geometry shader.";
-            return false;
+            return std::make_unique<LinkEventDone>(false);
         }
 
         geometryExe.reset(geometryExecutable);
@@ -1000,14 +1009,17 @@ gl::LinkResult ProgramD3D::load(const gl::Context *context,
         const unsigned char *computeShaderFunction = binary + stream->offset();
 
         ShaderExecutableD3D *computeExecutable = nullptr;
-        ANGLE_TRY(mRenderer->loadExecutable(context, computeShaderFunction, computeShaderSize,
-                                            gl::ShaderType::Compute, std::vector<D3DVarying>(),
-                                            false, &computeExecutable));
+        angle::Result result = mRenderer->loadExecutable(context, computeShaderFunction, computeShaderSize,
+                                                         gl::ShaderType::Compute, std::vector<D3DVarying>(),
+                                                         false, &computeExecutable);
+        if (result.isError()) {
+            return std::make_unique<LinkEventDone>(result);
+        }
 
         if (!computeExecutable)
         {
             infoLog << "Could not create compute shader.";
-            return false;
+            return std::make_unique<LinkEventDone>(false);
         }
 
         mComputeExecutable.reset(computeExecutable);
@@ -1017,7 +1029,7 @@ gl::LinkResult ProgramD3D::load(const gl::Context *context,
 
     dirtyAllUniforms();
 
-    return true;
+    return std::make_unique<LinkEventDone>(true);
 }
 
 void ProgramD3D::save(const gl::Context *context, gl::BinaryOutputStream *stream)
