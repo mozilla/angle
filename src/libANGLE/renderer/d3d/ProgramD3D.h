@@ -174,7 +174,8 @@ class ProgramD3D : public ProgramImpl
 
     bool usesPointSize() const { return mUsesPointSize; }
     bool usesPointSpriteEmulation() const;
-    bool usesGeometryShader(gl::PrimitiveMode drawMode) const;
+	bool usesGeometryShader(const gl::Context *context,
+		                    gl::PrimitiveMode drawMode) const;
     bool usesGeometryShaderForPointSpriteEmulation() const;
     bool usesInstancedPointSpriteEmulation() const;
 
@@ -284,7 +285,8 @@ class ProgramD3D : public ProgramImpl
 
     // Checks if we need to recompile certain shaders.
     bool hasVertexExecutableForCachedInputLayout();
-    bool hasGeometryExecutableForPrimitiveType(gl::PrimitiveMode drawMode);
+    bool hasGeometryExecutableForPrimitiveType(const gl::Context *context,
+                                               gl::PrimitiveMode drawMode);
     bool hasPixelExecutableForCachedOutputLayout();
 
     bool anyShaderUniformsDirty() const { return mShaderUniformsDirty.any(); }
