@@ -790,5 +790,24 @@
         "InsertEventMarkerEXT",
         "PushGroupMarkerEXT",
         "PopGroupMarkerEXT"
+<<<<<<< HEAD
     ]
+=======
+    ],
+
+    "GL_ARB_parallel_shader_compile":
+    [
+        "MaxShaderCompilerThreadsARB"
+    ],
+
+    "GL_KHR_parallel_shader_compile":
+    [
+        "MaxShaderCompilerThreadsKHR"
+    ],
+    
+    "GL_OVR_multiview2":
+    [
+        "FramebufferTextureMultiviewOVR"
+    ] 
+>>>>>>> 7d64c4863... GL_ANGLE_multiview has been renamed to GL_OVR_multiview2.
 }
