@@ -3121,10 +3121,26 @@ void main()
     EXPECT_GL_NO_ERROR();
 }
 
+static void TestBlendColor(const bool shouldClamp)
+{
+    auto expected = GLColor32F(5, 0, 0, 0);
+    glBlendColor(expected.R, expected.G, expected.B, expected.A);
+    if (shouldClamp)
+    {
+        expected.R = 1;
+    }
+
+    float arr[4] = {};
+    glGetFloatv(GL_BLEND_COLOR, arr);
+    const auto actual = GLColor32F(arr[0], arr[1], arr[2], arr[3]);
+    EXPECT_COLOR_NEAR(expected, actual, 0.001);
+}
+
 // Test if blending of float32 color attachment generates GL_INVALID_OPERATION when
 // GL_EXT_float_blend is not enabled
 TEST_P(WebGLCompatibilityTest, FloatBlend)
 {
+    TestBlendColor(true);
     ANGLE_SKIP_TEST_IF(!IsGLExtensionRequestable("GL_EXT_float_blend"));
     if (getClientMajorVersion() >= 3)
     {
@@ -3135,6 +3151,8 @@ TEST_P(WebGLCompatibilityTest, FloatBlend)
         ANGLE_SKIP_TEST_IF(!EnsureGLExtensionEnabled("GL_OES_texture_float"));
         ANGLE_SKIP_TEST_IF(!EnsureGLExtensionEnabled("GL_CHROMIUM_color_buffer_float_rgba"));
     }
+
+    TestBlendColor(false);
 
     TestExtFloatBlend(false);
 
