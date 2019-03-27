@@ -221,18 +221,19 @@ void main()
             0, 0, GLColor32F(floatData[0], floatData[1], floatData[2], floatData[3]), 1.0f);
     }
 
-    void TestExtFloatBlend(bool shouldBlend)
+    void TestExtFloatBlend(GLenum internalFormat, GLenum type, bool shouldBlend)
     {
         constexpr char kVS[] =
             R"(void main()
 {
+    gl_PointSize = 1.0;
     gl_Position = vec4(0, 0, 0, 1);
 })";
 
         constexpr char kFS[] =
             R"(void main()
 {
-    gl_FragColor = vec4(0, 1, 0, 1);
+    gl_FragColor = vec4(0.5, 0, 0, 0);
 })";
 
         ANGLE_GL_PROGRAM(program, kVS, kFS);
@@ -240,7 +241,7 @@ void main()
 
         GLTexture texture;
         glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 1, 1, 0, GL_RGBA, GL_FLOAT, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, 1, 1, 0, GL_RGBA, type, nullptr);
         EXPECT_GL_NO_ERROR();
 
         GLFramebuffer fbo;
@@ -253,15 +254,28 @@ void main()
         EXPECT_GL_NO_ERROR();
 
         glEnable(GL_BLEND);
+        glBlendFunc(GL_CONSTANT_COLOR, GL_ZERO);
+        glBlendColor(10, 1, 1, 1);
+        glViewport(0, 0, 1, 1);
         glDrawArrays(GL_POINTS, 0, 1);
-        if (shouldBlend)
-        {
-            EXPECT_GL_NO_ERROR();
-        }
-        else
+        if (!shouldBlend)
         {
             EXPECT_GL_ERROR(GL_INVALID_OPERATION);
+            return;
         }
+        EXPECT_GL_NO_ERROR();
+
+        if (!IsOpenGLES())
+        {
+            // GLES test machines will need a workaround.
+            EXPECT_PIXEL_COLOR32F_NEAR(0, 0, GLColor32F(5, 0, 0, 0), 0.001f);
+        }
+
+        // Check sure that non-float attachments clamp BLEND_COLOR.
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glDrawArrays(GL_POINTS, 0, 1);
+
+        EXPECT_PIXEL_COLOR_NEAR(0, 0, GLColor(0x80, 0, 0, 0), 1);
     }
 
     void TestDifferentStencilMaskAndRef(GLenum errIfMismatch);
@@ -3114,10 +3128,27 @@ void main()
     EXPECT_GL_NO_ERROR();
 }
 
+static void TestBlendColor(const bool shouldClamp)
+{
+    auto expected = GLColor32F(5, 0, 0, 0);
+    glBlendColor(expected.R, expected.G, expected.B, expected.A);
+    if (shouldClamp)
+    {
+        expected.R = 1;
+    }
+
+    float arr[4] = {};
+    glGetFloatv(GL_BLEND_COLOR, arr);
+    const auto actual = GLColor32F(arr[0], arr[1], arr[2], arr[3]);
+    EXPECT_COLOR_NEAR(expected, actual, 0.001);
+}
+
 // Test if blending of float32 color attachment generates GL_INVALID_OPERATION when
 // GL_EXT_float_blend is not enabled
 TEST_P(WebGLCompatibilityTest, FloatBlend)
 {
+    TestBlendColor(true);
+
     ANGLE_SKIP_TEST_IF(!extensionRequestable("GL_EXT_float_blend"));
     if (getClientMajorVersion() >= 3)
     {
@@ -3129,12 +3160,41 @@ TEST_P(WebGLCompatibilityTest, FloatBlend)
         ANGLE_SKIP_TEST_IF(!ensureExtensionEnabled("GL_CHROMIUM_color_buffer_float_rgba"));
     }
 
-    TestExtFloatBlend(false);
+    TestBlendColor(false);
+
+    TestExtFloatBlend(GL_RGBA32F, GL_FLOAT, false);
 
     glRequestExtensionANGLE("GL_EXT_float_blend");
     ASSERT_GL_NO_ERROR();
 
-    TestExtFloatBlend(true);
+    TestExtFloatBlend(GL_RGBA32F, GL_FLOAT, true);
+}
+
+// Test the blending of float16 color attachments
+TEST_P(WebGLCompatibilityTest, HalfFloatBlend)
+{
+    // D3D9 doesn't support any float blending.
+    ANGLE_SKIP_TEST_IF(IsD3D9());
+
+    TestBlendColor(true);
+
+    GLenum internalFormat = GL_RGBA16F;
+    GLenum type           = GL_FLOAT;
+    if (getClientMajorVersion() >= 3)
+    {
+        ANGLE_SKIP_TEST_IF(!ensureExtensionEnabled("GL_EXT_color_buffer_float"));
+    }
+    else
+    {
+        ANGLE_SKIP_TEST_IF(!ensureExtensionEnabled("GL_OES_texture_half_float"));
+        ANGLE_SKIP_TEST_IF(!ensureExtensionEnabled("GL_EXT_color_buffer_half_float"));
+        internalFormat = GL_RGBA;
+        type           = GL_HALF_FLOAT_OES;
+    }
+
+    TestBlendColor(false);
+
+    TestExtFloatBlend(internalFormat, type, true);
 }
 
 TEST_P(WebGLCompatibilityTest, R16FTextures)

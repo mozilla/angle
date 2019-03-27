@@ -4489,7 +4489,42 @@ void Context::activeTexture(GLenum texture)
 
 void Context::blendColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
 {
-    mState.setBlendColor(clamp01(red), clamp01(green), clamp01(blue), clamp01(alpha));
+    /* EXT_color_buffer_half_float:
+    Modify Section 4.1.6 (Blending), p. 96
+
+    (modify second paragraph, p. 96) [...]
+
+    If the color buffer is fixed-point, the components of the source and
+    destination values and blend factors are clamped to [0, 1] prior to
+    evaluating the blend equation. If the color buffer is floating-point, no
+    clamping occurs. The resulting four values are sent to the next operation.
+    */
+    /* EXT_color_buffer_float:
+    4.1.7 Blending, p.177 (section 15.1.7 p.315 in ES 3.1)
+
+    Modify paragraphs 3 & 4:
+
+     *      "If the color buffer is fixed-point, the components of the
+        source and destination values and blend factors are clamped
+     *  to [0; 1] prior to evaluating the blend equation. If the color
+     +  buffer is floating-point, no clamping occurs. The resulting four
+     +  values are sent to the next operation.
+    */
+    // Fortunately, (at least) GL and D3D11 have this same behavior, so there's nothing special we
+    // need to do there. If any backend /doesn't/ do this (does Vulkan?), it will need to do
+    // clamping based on the pipeline formats.
+    const auto &exts            = mState.mExtensions;
+    const bool hasFloatBlending = exts.colorBufferFloat || exts.colorBufferHalfFloat ||
+                                  exts.colorBufferFloatRGB || exts.colorBufferFloatRGBA;
+    if (!hasFloatBlending)
+    {
+        red   = clamp01(red);
+        green = clamp01(green);
+        blue  = clamp01(blue);
+        alpha = clamp01(alpha);
+    }
+
+    mState.setBlendColor(red, green, blue, alpha);
 }
 
 void Context::blendEquation(GLenum mode)
