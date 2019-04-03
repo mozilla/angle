@@ -1563,6 +1563,106 @@ TEST_P(RobustResourceInitTest, SurfaceInitializedAfterSwap)
         swapBuffers();
     }
 }
+/*
+// Test that multisampled 2D textures are initialized.
+TEST_P(RobustResourceInitTestES31, Multisample2DTexture)
+{
+    ANGLE_SKIP_TEST_IF(!hasGLExtension());
+
+    GLTexture texture;
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, texture);
+    glTexStorage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 2, GL_RGBA8, kWidth, kHeight, false);
+
+    GLFramebuffer framebuffer;
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer);
+    glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE,
+                           texture, 0);
+
+    GLTexture resolveTexture;
+    glBindTexture(GL_TEXTURE_2D, resolveTexture);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, kWidth, kHeight);
+
+    GLFramebuffer resolveFramebuffer;
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, resolveFramebuffer);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, resolveTexture,
+                           0);
+    ASSERT_GL_NO_ERROR();
+
+    glBlitFramebuffer(0, 0, kWidth, kHeight, 0, 0, kWidth, kHeight, GL_COLOR_BUFFER_BIT,
+                      GL_NEAREST);
+    ASSERT_GL_NO_ERROR();
+
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, resolveFramebuffer);
+    EXPECT_PIXEL_RECT_EQ(0, 0, kWidth, kHeight, GLColor::transparentBlack);
+}
+*/
+/*
+// Test that multisampled 2D texture arrays from OES_texture_storage_multisample_2d_array are
+// initialized.
+TEST_P(RobustResourceInitTestES31, Multisample2DTextureArray)
+{
+    ANGLE_SKIP_TEST_IF(!hasGLExtension());
+
+    if (extensionRequestable("GL_OES_texture_storage_multisample_2d_array"))
+    {
+        glRequestExtensionANGLE("GL_OES_texture_storage_multisample_2d_array");
+    }
+    ANGLE_SKIP_TEST_IF(!extensionEnabled("GL_OES_texture_storage_multisample_2d_array"));
+
+    const GLsizei kLayers = 4;
+
+    GLTexture texture;
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE_ARRAY_OES, texture);
+    glTexStorage3DMultisampleOES(GL_TEXTURE_2D_MULTISAMPLE_ARRAY_OES, 2, GL_RGBA8, kWidth, kHeight,
+                                 kLayers, false);
+
+    GLTexture resolveTexture;
+    glBindTexture(GL_TEXTURE_2D, resolveTexture);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, kWidth, kHeight);
+
+    GLFramebuffer resolveFramebuffer;
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, resolveFramebuffer);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, resolveTexture,
+                           0);
+    ASSERT_GL_NO_ERROR();
+
+    for (GLsizei layerIndex = 0; layerIndex < kLayers; ++layerIndex)
+    {
+        GLFramebuffer framebuffer;
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer);
+        glFramebufferTextureLayer(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0,
+                                  layerIndex);
+
+        glBlitFramebuffer(0, 0, kWidth, kHeight, 0, 0, kWidth, kHeight, GL_COLOR_BUFFER_BIT,
+                          GL_NEAREST);
+        ASSERT_GL_NO_ERROR();
+
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, resolveFramebuffer);
+        EXPECT_PIXEL_RECT_EQ(0, 0, kWidth, kHeight, GLColor::transparentBlack);
+    }
+}
+*/
+// Tests that using an out of bounds draw offset with a dynamic array succeeds.
+TEST_P(RobustResourceInitTest, DynamicVertexArrayOffsetOutOfBounds)
+{
+    const std::string vertexShader =
+        "attribute vec4 position; void main() { gl_Position = position; }";
+    const std::string fragmentShader = "void main() { gl_FragColor = vec4(1, 0, 0, 1); }";
+    ANGLE_GL_PROGRAM(program, vertexShader, fragmentShader);
+    glUseProgram(program);
+
+    GLint posLoc = glGetAttribLocation(program, "position");
+    ASSERT_NE(-1, posLoc);
+
+    glEnableVertexAttribArray(posLoc);
+    GLBuffer buf;
+    glBindBuffer(GL_ARRAY_BUFFER, buf);
+    glVertexAttribPointer(posLoc, 4, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const void *>(500));
+    glBufferData(GL_ARRAY_BUFFER, 100, nullptr, GL_DYNAMIC_DRAW);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    // Either no error or invalid operation is okay.
+}
 
 ANGLE_INSTANTIATE_TEST(RobustResourceInitTest,
                        ES2_D3D9(),
