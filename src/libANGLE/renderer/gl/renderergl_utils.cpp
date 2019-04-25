@@ -1102,7 +1102,8 @@ void GenerateCaps(const FunctionsGL *functions,
     extensions->fragDepth = functions->standard == STANDARD_GL_DESKTOP ||
                             functions->hasGLESExtension("GL_EXT_frag_depth");
 
-    if (functions->hasGLExtension("GL_NV_viewport_array2"))
+    if (functions->hasGLExtension("GL_ARB_shader_viewport_layer_array") ||
+        functions->hasGLExtension("GL_NV_viewport_array2"))
     {
         extensions->multiview2 = true;
         // GL_MAX_ARRAY_TEXTURE_LAYERS is guaranteed to be at least 256.
