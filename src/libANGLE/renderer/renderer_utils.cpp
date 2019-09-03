@@ -320,6 +320,9 @@ PixelCopyFunction FastCopyFunctionMap::get(angle::FormatID formatID) const
 
 bool ShouldUseDebugLayers(const egl::AttributeMap &attribs)
 {
+    // (miko): Disabling debug layers fixes flakiness with debug builds.
+    return false;
+
     EGLAttrib debugSetting =
         attribs.get(EGL_PLATFORM_ANGLE_DEBUG_LAYERS_ENABLED_ANGLE, EGL_DONT_CARE);
 
