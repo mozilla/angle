@@ -21,7 +21,8 @@
 #        define ANGLE_PLATFORM_EXPORT __declspec(dllexport)
 #    endif
 #elif defined(__GNUC__) || defined(__clang__)
-#    define ANGLE_PLATFORM_EXPORT __attribute__((visibility("default")))
+// (miko): This visibility setting conflicts with the Firefox build system.
+// #    define ANGLE_PLATFORM_EXPORT __attribute__((visibility("default")))
 #endif
 #if !defined(ANGLE_PLATFORM_EXPORT)
 #    define ANGLE_PLATFORM_EXPORT
