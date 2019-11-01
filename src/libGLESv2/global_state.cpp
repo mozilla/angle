@@ -36,10 +36,6 @@ namespace
 static TLSIndex threadTLS = TLS_INVALID_INDEX;
 Debug *g_Debug            = nullptr;
 std::atomic<std::mutex *> g_Mutex;
-static_assert(std::is_trivially_constructible<decltype(g_Mutex)>::value,
-              "global mutex is not trivially constructible");
-static_assert(std::is_trivially_destructible<decltype(g_Mutex)>::value,
-              "global mutex is not trivially destructible");
 
 Thread *AllocateCurrentThread()
 {
