@@ -830,6 +830,7 @@ void InitializeFeatures(angle::FeaturesD3D *features)
 {
     ANGLE_FEATURE_CONDITION(features, mrtPerfWorkaround, true);
     ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUpload, false);
+    ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUploadOn128bitFormats, false);
     ANGLE_FEATURE_CONDITION(features, useInstancedPointSpriteEmulation, false);
 
     // TODO(jmadill): Disable workaround when we have a fixed compiler DLL.

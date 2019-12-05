@@ -217,6 +217,8 @@ constexpr PackedEnumMap<Feature, const char *> kFeatureNames = {{
     {Feature::ScalarizeVecAndMatConstructorArgs, "scalarizeVecAndMatConstructorArgs"},
     {Feature::SelectViewInGeometryShader, "selectViewInGeometryShader"},
     {Feature::SetDataFasterThanImageUpload, "setDataFasterThanImageUpload"},
+    {Feature::SetDataFasterThanImageUploadOn128bitFormats,
+     "setDataFasterThanImageUploadOn128bitFormats"},
     {Feature::SetPrimitiveRestartFixedIndexForDrawArrays,
      "setPrimitiveRestartFixedIndexForDrawArrays"},
     {Feature::SetZeroLevelBeforeGenerateMipmap, "setZeroLevelBeforeGenerateMipmap"},
