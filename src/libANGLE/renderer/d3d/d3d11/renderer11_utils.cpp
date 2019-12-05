@@ -2480,8 +2480,10 @@ void InitializeFeatures(const Renderer11DeviceCaps &deviceCaps,
                             isIntel && capsVersion >= angle::VersionTriple(16, 0, 0) &&
                                 capsVersion < angle::VersionTriple(16, 4815, 0));
 
-    // Haswell/Ivybridge drivers occasionally corrupt (small?) (vertex?) texture data uploads.
-    ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUpload,
+    // Haswell drivers occasionally corrupt (small?) (vertex?) texture data uploads for 128bit
+    // formats.
+    ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUpload, true);
+    ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUploadOn128bitFormats,
                             !(isIvyBridge || isBroadwell || isHaswell));
 
     ANGLE_FEATURE_CONDITION(features, disableB5G6R5Support,

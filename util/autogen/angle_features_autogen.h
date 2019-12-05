@@ -306,6 +306,7 @@ enum class Feature
     ScalarizeVecAndMatConstructorArgs,
     SelectViewInGeometryShader,
     SetDataFasterThanImageUpload,
+    SetDataFasterThanImageUploadOn128bitFormats,
     SetPrimitiveRestartFixedIndexForDrawArrays,
     SetZeroLevelBeforeGenerateMipmap,
     ShiftInstancedArrayDataWithOffset,

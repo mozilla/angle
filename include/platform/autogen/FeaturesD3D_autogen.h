@@ -38,6 +38,12 @@ struct FeaturesD3D : FeatureSetBase
         &members,
     };
 
+    FeatureInfo setDataFasterThanImageUploadOn128bitFormats = {
+        "setDataFasterThanImageUploadOn128bitFormats",
+        FeatureCategory::D3DWorkarounds,
+        &members,
+    };
+
     FeatureInfo zeroMaxLodWorkaround = {
         "zeroMaxLodWorkaround",
         FeatureCategory::D3DWorkarounds,

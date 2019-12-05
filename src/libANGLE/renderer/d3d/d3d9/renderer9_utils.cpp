@@ -831,6 +831,7 @@ void InitializeFeatures(angle::FeaturesD3D *features, DWORD vendorID)
 {
     ANGLE_FEATURE_CONDITION(features, mrtPerfWorkaround, true);
     ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUpload, false);
+    ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUploadOn128bitFormats, false);
 
     // TODO(jmadill): Disable workaround when we have a fixed compiler DLL.
     ANGLE_FEATURE_CONDITION(features, expandIntegerPowExpressions, true);
