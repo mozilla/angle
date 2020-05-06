@@ -2459,6 +2459,7 @@ void InitializeFeatures(const Renderer11DeviceCaps &deviceCaps,
     bool isBroadwell       = false;
     bool isHaswell         = false;
     bool isIvyBridge       = false;
+    bool isSandyBridge     = false;
     bool isAMD             = IsAMD(adapterDesc.VendorId);
     bool isFeatureLevel9_3 = (deviceCaps.featureLevel <= D3D_FEATURE_LEVEL_9_3);
 
@@ -2467,10 +2468,11 @@ void InitializeFeatures(const Renderer11DeviceCaps &deviceCaps,
     {
         capsVersion = d3d11_gl::GetIntelDriverVersion(deviceCaps.driverVersion);
 
-        isSkylake   = IsSkylake(adapterDesc.DeviceId);
-        isBroadwell = IsBroadwell(adapterDesc.DeviceId);
-        isHaswell   = IsHaswell(adapterDesc.DeviceId);
-        isIvyBridge = IsIvyBridge(adapterDesc.DeviceId);
+        isSkylake     = IsSkylake(adapterDesc.DeviceId);
+        isBroadwell   = IsBroadwell(adapterDesc.DeviceId);
+        isHaswell     = IsHaswell(adapterDesc.DeviceId);
+        isIvyBridge   = IsIvyBridge(adapterDesc.DeviceId);
+        isSandyBridge = IsSandyBridge(adapterDesc.DeviceId);
     }
 
     if (isNvidia)
@@ -2530,6 +2532,8 @@ void InitializeFeatures(const Renderer11DeviceCaps &deviceCaps,
     ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUpload, true);
     ANGLE_FEATURE_CONDITION(features, setDataFasterThanImageUploadOn128bitFormats,
                             !(isIvyBridge || isBroadwell || isHaswell));
+
+    ANGLE_FEATURE_CONDITION(features, emulateClearViewAfterDualSourceBlending, isSandyBridge);
 
     ANGLE_FEATURE_CONDITION(features, disableB5G6R5Support,
                             (isIntel && capsVersion >= IntelDriverVersion(150000) &&

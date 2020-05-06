@@ -122,6 +122,12 @@ struct FeaturesD3D : FeatureSetBase
                                   "Using clear() may not take effect", &members,
                                   "https://crbug.com/655534"};
 
+    FeatureInfo emulateClearViewAfterDualSourceBlending = {
+        "emulateClearViewAfterDualSourceBlending", FeatureCategory::D3DWorkarounds,
+        "On Sandybridge, calling ClearView after using dual source blending causes hardware to "
+        "hang",
+        &members, "https://bugzilla.mozilla.org/show_bug.cgi?id=1633628"};
+
     FeatureInfo useSystemMemoryForConstantBuffers = {
         "useSystemMemoryForConstantBuffers", FeatureCategory::D3DWorkarounds,
         "Copying from staging storage to constant buffer "
