@@ -132,6 +132,7 @@ constexpr PackedEnumMap<Feature, const char *> kFeatureNames = {{
     {Feature::EmulateAdvancedBlendEquations, "emulateAdvancedBlendEquations"},
     {Feature::EmulateAlphaToCoverage, "emulateAlphaToCoverage"},
     {Feature::EmulateAtan2Float, "emulateAtan2Float"},
+    {Feature::EmulateClearViewAfterDualSourceBlending, "emulateClearViewAfterDualSourceBlending"},
     {Feature::EmulateClipDistanceState, "emulateClipDistanceState"},
     {Feature::EmulateClipOrigin, "emulateClipOrigin"},
     {Feature::EmulateCopyTexImage2D, "emulateCopyTexImage2D"},

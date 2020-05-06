@@ -121,6 +121,14 @@
             "issue": "https://crbug.com/655534"
         },
         {
+            "name": "emulate_clear_view_after_dual_source_blending",
+            "category": "Workarounds",
+            "description": [
+                "On Sandybridge, calling ClearView after using dual source blending causes hardware to hang"
+            ],
+            "issue": "https://bugzilla.mozilla.org/show_bug.cgi?id=1633628"
+        },
+        {
             "name": "use_system_memory_for_constant_buffers",
             "category": "Workarounds",
             "description": [

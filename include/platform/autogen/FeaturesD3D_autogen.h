@@ -110,6 +110,12 @@ struct FeaturesD3D : FeatureSetBase
         &members,
     };
 
+    FeatureInfo emulateClearViewAfterDualSourceBlending = {
+        "emulateClearViewAfterDualSourceBlending",
+        FeatureCategory::D3DWorkarounds,
+        &members,
+    };
+
     FeatureInfo useSystemMemoryForConstantBuffers = {
         "useSystemMemoryForConstantBuffers",
         FeatureCategory::D3DWorkarounds,

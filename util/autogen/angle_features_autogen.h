@@ -132,6 +132,7 @@ enum class Feature
     EmulateAdvancedBlendEquations,
     EmulateAlphaToCoverage,
     EmulateAtan2Float,
+    EmulateClearViewAfterDualSourceBlending,
     EmulateClipDistanceState,
     EmulateClipOrigin,
     EmulateCopyTexImage2D,
