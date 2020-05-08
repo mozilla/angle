@@ -522,13 +522,15 @@ angle::Result Clear11::clearFramebuffer(const gl::Context *context,
             ID3D11BlendState *blendState;
             D3D11_BLEND_DESC blendDesc;
             deviceContext1->OMGetBlendState(&blendState, blendFactor, &sampleMask);
-            blendState->GetDesc(&blendDesc);
-            // You can only use dual source blending on slot 0 so only check there
-            if (isDualSource(blendDesc.RenderTarget[0].SrcBlend) ||
-                isDualSource(blendDesc.RenderTarget[0].DestBlend) ||
-                isDualSource(blendDesc.RenderTarget[0].SrcBlendAlpha) ||
-                isDualSource(blendDesc.RenderTarget[0].DestBlendAlpha)) {
-                canClearView = false;
+            if (blendState) {
+                    blendState->GetDesc(&blendDesc);
+                    // You can only use dual source blending on slot 0 so only check there
+                    if (isDualSource(blendDesc.RenderTarget[0].SrcBlend) ||
+                        isDualSource(blendDesc.RenderTarget[0].DestBlend) ||
+                        isDualSource(blendDesc.RenderTarget[0].SrcBlendAlpha) ||
+                        isDualSource(blendDesc.RenderTarget[0].DestBlendAlpha)) {
+                            canClearView = false;
+                    }
             }
         }
 
