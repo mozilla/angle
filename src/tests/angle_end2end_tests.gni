@@ -3,6 +3,7 @@
 # found in the LICENSE file.
 
 angle_end2end_tests_sources = [
+  "gl_tests/ActiveTextureCacheTest.cpp",
   "gl_tests/AtomicCounterBufferTest.cpp",
   "gl_tests/AttributeLayoutTest.cpp",
   "gl_tests/BindGeneratesResourceTest.cpp",
