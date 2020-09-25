@@ -908,12 +908,12 @@ enum class PreprocessorDirective
     Endif,
 };
 
-class TIntermPreprocessorDirective : public TIntermNode
+class TIntermPreprocessorDirective final : public TIntermNode
 {
   public:
     // This could also take an ImmutbleString as an argument.
     TIntermPreprocessorDirective(PreprocessorDirective directive, ImmutableString command);
-    ~TIntermPreprocessorDirective() final;
+    ~TIntermPreprocessorDirective();
 
     void traverse(TIntermTraverser *it) final;
     bool visit(Visit visit, TIntermTraverser *it) final;
