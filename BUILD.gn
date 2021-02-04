@@ -1380,3 +1380,7 @@ group("angle") {
     ":libGLESv2",
   ]
 }
+
+if (is_android) {
+  defines = [ "ANGLE_TRANSLATOR_ESSL_ONLY" ]
+}
