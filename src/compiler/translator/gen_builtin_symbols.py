@@ -37,6 +37,8 @@ template_immutablestring_cpp = """// GENERATED FILE - DO NOT EDIT.
 // valid and unchanged for the duration of the compilation.
 // Implements mangledNameHash using perfect hash function from gen_builtin_symbols.py
 
+{ifdef}
+
 #include "compiler/translator/ImmutableString.h"
 
 std::ostream &operator<<(std::ostream &os, const sh::ImmutableString &str)
@@ -130,6 +132,8 @@ uint32_t ImmutableString::unmangledNameHash() const
 }}
 
 }}  // namespace sh
+
+{endif}
 """
 
 template_immutablestringtest_cpp = """// GENERATED FILE - DO NOT EDIT.
@@ -240,6 +244,8 @@ template_symboltable_cpp = """// GENERATED FILE - DO NOT EDIT.
 //
 // SymbolTable_{source_label}autogen.cpp:
 //   Compile-time initialized built-ins.
+
+{ifdef}
 
 #include "compiler/translator/SymbolTable.h"
 
@@ -382,6 +388,8 @@ bool TSymbolTable::isUnmangledBuiltInName(const ImmutableString &name,
 }}
 
 }}  // namespace sh
+
+{endif}
 """
 
 template_parsecontext_header = """// GENERATED FILE - DO NOT EDIT.
@@ -2019,7 +2027,10 @@ def generate_files(essl_only, args, functions_txt_filename, variables_json_filen
         'header_label':
             'ESSL_' if essl_only else 'complete_',
         'source_label':
-            'ESSL_' if essl_only else ''
+            'ESSL_' if essl_only else '',
+        'ifdef': ('#ifdef' if essl_only else '#ifndef') + ' ANGLE_TRANSLATOR_ESSL_ONLY',
+        'endif':
+            '#endif // ANGLE_TRANSLATOR_ESSL_ONLY'
     }
 
     with open(immutablestring_cpp_filename, 'wt') as outfile_cpp:

@@ -10,16 +10,18 @@
 // guaranteed to be valid and unchanged for the duration of the compilation. Implements
 // mangledNameHash using perfect hash function from gen_builtin_symbols.py
 
-#include "compiler/translator/ImmutableString.h"
+#ifdef ANGLE_TRANSLATOR_ESSL_ONLY
+
+#    include "compiler/translator/ImmutableString.h"
 
 std::ostream &operator<<(std::ostream &os, const sh::ImmutableString &str)
 {
     return os.write(str.data(), str.length());
 }
 
-#if defined(_MSC_VER)
-#    pragma warning(disable : 4309)  // truncation of constant value
-#endif
+#    if defined(_MSC_VER)
+#        pragma warning(disable : 4309)  // truncation of constant value
+#    endif
 
 namespace
 {
@@ -327,3 +329,5 @@ uint32_t ImmutableString::unmangledNameHash() const
 }
 
 }  // namespace sh
+
+#endif  // ANGLE_TRANSLATOR_ESSL_ONLY
