@@ -3628,50 +3628,6 @@ angle::Result Renderer11::blitRenderbufferRect(const gl::Context *context,
     RenderTarget11 *readRenderTarget11 = GetAs<RenderTarget11>(readRenderTarget);
     ASSERT(readRenderTarget11);
 
-    TextureHelper11 readTexture;
-    unsigned int readSubresource = 0;
-    d3d11::SharedSRV readSRV;
-
-    if (readRenderTarget->isMultisampled())
-    {
-        ANGLE_TRY(resolveMultisampledTexture(context, readRenderTarget11, depthBlit, stencilBlit,
-                                             &readTexture));
-
-        if (!stencilBlit)
-        {
-            const auto &readFormatSet = readTexture.getFormatSet();
-
-            D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc;
-            viewDesc.Format                    = readFormatSet.srvFormat;
-            viewDesc.ViewDimension             = D3D11_SRV_DIMENSION_TEXTURE2D;
-            viewDesc.Texture2D.MipLevels       = 1;
-            viewDesc.Texture2D.MostDetailedMip = 0;
-
-            ANGLE_TRY(allocateResource(GetImplAs<Context11>(context), viewDesc, readTexture.get(),
-                                       &readSRV));
-        }
-    }
-    else
-    {
-        ASSERT(readRenderTarget11);
-        readTexture     = readRenderTarget11->getTexture();
-        readSubresource = readRenderTarget11->getSubresourceIndex();
-        const d3d11::SharedSRV *blitSRV;
-        ANGLE_TRY(readRenderTarget11->getBlitShaderResourceView(context, &blitSRV));
-        readSRV = blitSRV->makeCopy();
-        if (!readSRV.valid())
-        {
-            ASSERT(depthBlit || stencilBlit);
-            const d3d11::SharedSRV *srv;
-            ANGLE_TRY(readRenderTarget11->getShaderResourceView(context, &srv));
-            readSRV = srv->makeCopy();
-        }
-        ASSERT(readSRV.valid());
-    }
-
-    // Stencil blits don't use shaders.
-    ASSERT(readSRV.valid() || stencilBlit);
-
     const gl::Extents readSize(readRenderTarget->getWidth(), readRenderTarget->getHeight(), 1);
     const gl::Extents drawSize(drawRenderTarget->getWidth(), drawRenderTarget->getHeight(), 1);
 
@@ -3787,11 +3743,58 @@ angle::Result Renderer11::blitRenderbufferRect(const gl::Context *context,
     bool partialDSBlit =
         (nativeFormat.depthBits > 0 && depthBlit) != (nativeFormat.stencilBits > 0 && stencilBlit);
 
-    if (drawRenderTarget->getSamples() == readRenderTarget->getSamples() &&
+    const bool canCopySubresource =
+        drawRenderTarget->getSamples() == readRenderTarget->getSamples() &&
         readRenderTarget11->getFormatSet().formatID ==
             drawRenderTarget11->getFormatSet().formatID &&
         !stretchRequired && !outOfBounds && !reversalRequired && !partialDSBlit &&
-        !colorMaskingNeeded && (!(depthBlit || stencilBlit) || wholeBufferCopy))
+        !colorMaskingNeeded && (!(depthBlit || stencilBlit) || wholeBufferCopy);
+
+    TextureHelper11 readTexture;
+    unsigned int readSubresource = 0;
+    d3d11::SharedSRV readSRV;
+
+    if (readRenderTarget->isMultisampled())
+    {
+        ANGLE_TRY(resolveMultisampledTexture(context, readRenderTarget11, depthBlit, stencilBlit,
+                                             &readTexture));
+
+        if (!stencilBlit && !canCopySubresource)
+        {
+            const auto &readFormatSet = readTexture.getFormatSet();
+
+            D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc;
+            viewDesc.Format                    = readFormatSet.srvFormat;
+            viewDesc.ViewDimension             = D3D11_SRV_DIMENSION_TEXTURE2D;
+            viewDesc.Texture2D.MipLevels       = 1;
+            viewDesc.Texture2D.MostDetailedMip = 0;
+
+            ANGLE_TRY(allocateResource(GetImplAs<Context11>(context), viewDesc, readTexture.get(),
+                                       &readSRV));
+        }
+    }
+    else
+    {
+        ASSERT(readRenderTarget11);
+        readTexture     = readRenderTarget11->getTexture();
+        readSubresource = readRenderTarget11->getSubresourceIndex();
+        if (!canCopySubresource)
+        {
+            const d3d11::SharedSRV *blitSRV;
+            ANGLE_TRY(readRenderTarget11->getBlitShaderResourceView(context, &blitSRV));
+            readSRV = blitSRV->makeCopy();
+            if (!readSRV.valid())
+            {
+                ASSERT(depthBlit || stencilBlit);
+                const d3d11::SharedSRV *srv;
+                ANGLE_TRY(readRenderTarget11->getShaderResourceView(context, &srv));
+                readSRV = srv->makeCopy();
+            }
+            ASSERT(readSRV.valid());
+        }
+    }
+
+    if (canCopySubresource)
     {
         UINT dstX = drawRect.x;
         UINT dstY = drawRect.y;
