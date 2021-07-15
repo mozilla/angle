@@ -302,6 +302,7 @@ angle_translator_hlsl_sources = [
   "src/compiler/translator/TranslatorHLSL.cpp",
   "src/compiler/translator/UtilsHLSL.cpp",
   "src/compiler/translator/UtilsHLSL.h",
+  "src/compiler/translator/VersionGLSL.h",
   "src/compiler/translator/blocklayoutHLSL.cpp",
   "src/compiler/translator/emulated_builtin_functions_hlsl_autogen.cpp",
   "src/compiler/translator/tree_ops/d3d/AddDefaultReturnStatements.cpp",
