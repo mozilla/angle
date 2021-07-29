@@ -18,15 +18,7 @@ namespace sh
 class TCompiler;
 class TIntermBlock;
 
-#if defined(ANGLE_ENABLE_GLSL) && defined(ANGLE_PLATFORM_APPLE)
 ANGLE_NO_DISCARD bool UnfoldShortCircuitAST(TCompiler *compiler, TIntermBlock *root);
-#else
-ANGLE_NO_DISCARD ANGLE_INLINE bool UnfoldShortCircuitAST(TCompiler *compiler, TIntermBlock *root)
-{
-    UNREACHABLE();
-    return false;
-}
-#endif
 
 }  // namespace sh
 

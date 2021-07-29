@@ -524,9 +524,7 @@ template("translator_lib") {
       _needs_glsl_base = true
       _needs_glsl_and_vulkan_base = true
       sources += angle_translator_glsl_sources
-      if (is_apple) {
-        sources += angle_translator_glsl_mac_sources
-      }
+      sources += angle_translator_glsl_mac_sources
       defines += [ "ANGLE_ENABLE_GLSL" ]
     }
 

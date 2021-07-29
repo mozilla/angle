@@ -17,19 +17,10 @@ class TCompiler;
 class TIntermBlock;
 class TSymbolTable;
 
-#if defined(ANGLE_ENABLE_GLSL) && defined(ANGLE_PLATFORM_APPLE)
 ANGLE_NO_DISCARD bool RewriteRowMajorMatrices(TCompiler *compiler,
                                               TIntermBlock *root,
                                               TSymbolTable *symbolTable);
-#else
-ANGLE_NO_DISCARD ANGLE_INLINE bool RewriteRowMajorMatrices(TCompiler *compiler,
-                                                           TIntermBlock *root,
-                                                           TSymbolTable *symbolTable)
-{
-    UNREACHABLE();
-    return false;
-}
-#endif
+
 }  // namespace sh
 
 #endif  // COMPILER_TRANSLATOR_TREEOPS_GL_MAC_REWRITEROWMAJORMATRICES_H_
