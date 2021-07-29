@@ -15,16 +15,7 @@ namespace sh
 class TCompiler;
 class TIntermNode;
 
-#if defined(ANGLE_ENABLE_GLSL) && defined(ANGLE_PLATFORM_APPLE)
 ANGLE_NO_DISCARD bool RewriteUnaryMinusOperatorFloat(TCompiler *compiler, TIntermNode *root);
-#else
-ANGLE_NO_DISCARD ANGLE_INLINE bool RewriteUnaryMinusOperatorFloat(TCompiler *compiler,
-                                                                  TIntermNode *root)
-{
-    UNREACHABLE();
-    return false;
-}
-#endif
 
 }  // namespace sh
 

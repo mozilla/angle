@@ -16,15 +16,7 @@ namespace sh
 class TCompiler;
 class TIntermNode;
 
-#if defined(ANGLE_ENABLE_GLSL) && defined(ANGLE_PLATFORM_APPLE)
 ANGLE_NO_DISCARD bool AddAndTrueToLoopCondition(TCompiler *compiler, TIntermNode *root);
-#else
-ANGLE_NO_DISCARD ANGLE_INLINE bool AddAndTrueToLoopCondition(TCompiler *compiler, TIntermNode *root)
-{
-    UNREACHABLE();
-    return false;
-}
-#endif
 
 }  // namespace sh
 
