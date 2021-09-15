@@ -303,9 +303,7 @@ RoHelper::RoHelper()
         return;
     }
 
-    auto result = RoInitialize(RO_INIT_MULTITHREADED);
-
-    if (SUCCEEDED(result) || result == S_FALSE || result == RPC_E_CHANGED_MODE)
+    if (SUCCEEDED(RoInitialize(RO_INIT_MULTITHREADED)))
     {
         mWinRtAvailable = true;
     }
