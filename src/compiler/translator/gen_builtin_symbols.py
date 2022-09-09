@@ -247,6 +247,8 @@ template_symboltable_cpp = """// GENERATED FILE - DO NOT EDIT.
 
 {ifdef}
 
+#include <cmath>
+
 #include "compiler/translator/SymbolTable.h"
 
 #include "angle_gl.h"
