@@ -439,7 +439,7 @@ angle_static_library("angle_common") {
     ":includes",
   ]
   public_configs += [ ":angle_common_config" ]
-  if (angle_has_build && use_fuzzing_engine) {
+  if (angle_has_build) {
     all_dependent_configs = [ ":angle_disable_pool_alloc" ]
   }
 
