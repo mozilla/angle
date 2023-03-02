@@ -129,6 +129,14 @@
             "issue": "https://bugzilla.mozilla.org/show_bug.cgi?id=1633628"
         },
         {
+            "name": "scissored_clear_artifacts",
+            "category": "Workarounds",
+            "description": [
+                "On Skylake, calling ClearView with a scissor rect that is not a multiple of 8x4 pixels causes corruption of pixels in the 8x4 pixel tiles along the edge which resembles a square wave"
+            ],
+            "issue": "https://bugzilla.mozilla.org/show_bug.cgi?id=1817240"
+        },
+        {
             "name": "use_system_memory_for_constant_buffers",
             "category": "Workarounds",
             "description": [
