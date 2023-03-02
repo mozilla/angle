@@ -305,6 +305,7 @@ enum class Feature
     RoundOutputAfterDithering,
     SanitizeAMDGPURendererString,
     ScalarizeVecAndMatConstructorArgs,
+    ScissoredClearArtifacts,
     SelectViewInGeometryShader,
     SetDataFasterThanImageUpload,
     SetDataFasterThanImageUploadOn128bitFormats,

@@ -116,6 +116,12 @@ struct FeaturesD3D : FeatureSetBase
         &members,
     };
 
+    FeatureInfo scissoredClearArtifacts = {
+        "scissoredClearArtifacts",
+        FeatureCategory::D3DWorkarounds,
+        &members,
+    };
+
     FeatureInfo useSystemMemoryForConstantBuffers = {
         "useSystemMemoryForConstantBuffers",
         FeatureCategory::D3DWorkarounds,
