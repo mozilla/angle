@@ -1195,6 +1195,19 @@ bool TCompiler::checkAndSimplifyAST(TIntermBlock *root,
             mGLPositionInitialized = true;
         }
 
+        if (mShaderType == GL_VERTEX_SHADER && compileOptions.initGLPointSize)
+        {
+            InitVariableList list;
+            AddBuiltInToInitList(&mSymbolTable, mShaderVersion, root, "gl_PointSize", &list);
+
+            if (!list.empty() &&
+                !InitializeVariables(this, root, list, &mSymbolTable, mShaderVersion,
+                                     mExtensionBehavior, false))
+            {
+                return false;
+            }
+        }
+
         // DeferGlobalInitializers needs to be run before other AST transformations that generate
         // new statements from expressions. But it's fine to run DeferGlobalInitializers after the
         // above SplitSequenceOperator and RemoveArrayLengthMethod since they only have an effect on
