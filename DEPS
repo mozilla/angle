@@ -107,6 +107,10 @@ vars = {
   # the commit queue can handle CLs rolling android_sdk_sources_version
   # and whatever else without interference from each other.
   'android_sdk_sources_version': '4gxhM8E62bvZpQs7Q3d0DinQaW0RLCIefhXrQBFkNy8C',
+
+  # ninja CIPD package version.
+  # https://chrome-infra-packages.appspot.com/p/infra/3pp/tools/ninja
+  'ninja_version': 'version:2@1.8.2.chromium.3',
 }
 
 deps = {
@@ -408,6 +412,16 @@ deps = {
   'third_party/nasm': {
     'url': '{chromium_git}/chromium/deps/nasm.git@19f3fad68da99277b2882939d3b2fa4c4b8d51d9',
     'condition': 'not build_with_chromium',
+  },
+
+  'third_party/ninja': {
+    'packages': [
+      {
+        'package': 'infra/3pp/tools/ninja/${{platform}}',
+        'version': Var('ninja_version'),
+      }
+    ],
+    'dep_type': 'cipd',
   },
 
   'third_party/OpenCL-ICD-Loader/src': {
