@@ -102,13 +102,13 @@ class VariablePacker
     static const unsigned kColumnMask = (1 << kNumColumns) - 1;
 
     unsigned makeColumnFlags(int column, int numComponentsPerRow);
-    void fillColumns(int topRow, int numRows, int column, int numComponentsPerRow);
-    bool searchColumn(int column, int numRows, int *destRow, int *destSize);
+    void fillColumns(int64_t topRow, int64_t numRows, int column, int numComponentsPerRow);
+    bool searchColumn(int column, int64_t numRows, int64_t *destRow, int64_t *destSize);
 
-    int topNonFullRow_;
-    int bottomNonFullRow_;
-    int maxRows_;
-    std::vector<unsigned> rows_;
+    int64_t topNonFullRow_;
+    int64_t bottomNonFullRow_;
+    int64_t maxRows_;
+    std::vector<unsigned> colFlagsByRow_;
 };
 
 struct TVariableInfoComparer
@@ -131,26 +131,26 @@ unsigned VariablePacker::makeColumnFlags(int column, int numComponentsPerRow)
     return ((kColumnMask << (kNumColumns - numComponentsPerRow)) & kColumnMask) >> column;
 }
 
-void VariablePacker::fillColumns(int topRow, int numRows, int column, int numComponentsPerRow)
+void VariablePacker::fillColumns(int64_t topRow, int64_t numRows, int column, int numComponentsPerRow)
 {
     unsigned columnFlags = makeColumnFlags(column, numComponentsPerRow);
-    for (int r = 0; r < numRows; ++r)
+    for (int64_t r = 0; r < numRows; ++r)
     {
-        int row = topRow + r;
-        ASSERT((rows_[row] & columnFlags) == 0);
-        rows_[row] |= columnFlags;
+        const auto row = topRow + r;
+        ASSERT((colFlagsByRow_[row] & columnFlags) == 0);
+        colFlagsByRow_[row] |= columnFlags;
     }
 }
 
-bool VariablePacker::searchColumn(int column, int numRows, int *destRow, int *destSize)
+bool VariablePacker::searchColumn(int column, int64_t numRows, int64_t *destRow, int64_t *destSize)
 {
     ASSERT(destRow);
 
-    for (; topNonFullRow_ < maxRows_ && rows_[topNonFullRow_] == kColumnMask; ++topNonFullRow_)
+    for (; topNonFullRow_ < maxRows_ && colFlagsByRow_[topNonFullRow_] == kColumnMask; ++topNonFullRow_)
     {
     }
 
-    for (; bottomNonFullRow_ >= 0 && rows_[bottomNonFullRow_] == kColumnMask; --bottomNonFullRow_)
+    for (; bottomNonFullRow_ >= 0 && colFlagsByRow_[bottomNonFullRow_] == kColumnMask; --bottomNonFullRow_)
     {
     }
 
@@ -160,14 +160,14 @@ bool VariablePacker::searchColumn(int column, int numRows, int *destRow, int *de
     }
 
     unsigned columnFlags = makeColumnFlags(column, 1);
-    int topGoodRow       = 0;
-    int smallestGoodTop  = -1;
-    int smallestGoodSize = maxRows_ + 1;
-    int bottomRow        = bottomNonFullRow_ + 1;
+    int64_t topGoodRow       = 0;
+    int64_t smallestGoodTop  = -1;
+    auto smallestGoodSize = maxRows_ + 1;
+    auto bottomRow        = bottomNonFullRow_ + 1;
     bool found           = false;
-    for (int row = topNonFullRow_; row <= bottomRow; ++row)
+    for (auto row = topNonFullRow_; row <= bottomRow; ++row)
     {
-        bool rowEmpty = row < bottomRow ? ((rows_[row] & columnFlags) == 0) : false;
+        bool rowEmpty = row < bottomRow ? ((colFlagsByRow_[row] & columnFlags) == 0) : false;
         if (rowEmpty)
         {
             if (!found)
@@ -180,7 +180,7 @@ bool VariablePacker::searchColumn(int column, int numRows, int *destRow, int *de
         {
             if (found)
             {
-                int size = row - topGoodRow;
+                const auto size = row - topGoodRow;
                 if (size >= numRows && size < smallestGoodSize)
                 {
                     smallestGoodSize = size;
@@ -226,8 +226,8 @@ bool VariablePacker::checkExpandedVariablesWithinPackingLimits(
     // As per GLSL 1.017 Appendix A, Section 7 variables are packed in specific
     // order by type, then by size of array, largest first.
     std::sort(variables->begin(), variables->end(), TVariableInfoComparer());
-    rows_.clear();
-    rows_.resize(maxVectors, 0);
+    colFlagsByRow_.clear();
+    colFlagsByRow_.resize(maxVectors, 0);
 
     // Packs the 4 column variables.
     size_t ii = 0;
@@ -247,7 +247,7 @@ bool VariablePacker::checkExpandedVariablesWithinPackingLimits(
     }
 
     // Packs the 3 column variables.
-    int num3ColumnRows = 0;
+    int64_t num3ColumnRows = 0;
     for (; ii < variables->size(); ++ii)
     {
         const sh::ShaderVariable &variable = (*variables)[ii];
@@ -266,10 +266,10 @@ bool VariablePacker::checkExpandedVariablesWithinPackingLimits(
     fillColumns(topNonFullRow_, num3ColumnRows, 0, 3);
 
     // Packs the 2 column variables.
-    int top2ColumnRow            = topNonFullRow_ + num3ColumnRows;
-    int twoColumnRowsAvailable   = maxRows_ - top2ColumnRow;
-    int rowsAvailableInColumns01 = twoColumnRowsAvailable;
-    int rowsAvailableInColumns23 = twoColumnRowsAvailable;
+    const auto top2ColumnRow            = topNonFullRow_ + num3ColumnRows;
+    const auto twoColumnRowsAvailable   = maxRows_ - top2ColumnRow;
+    auto rowsAvailableInColumns01 = twoColumnRowsAvailable;
+    auto rowsAvailableInColumns23 = twoColumnRowsAvailable;
     for (; ii < variables->size(); ++ii)
     {
         const sh::ShaderVariable &variable = (*variables)[ii];
@@ -292,8 +292,8 @@ bool VariablePacker::checkExpandedVariablesWithinPackingLimits(
         }
     }
 
-    int numRowsUsedInColumns01 = twoColumnRowsAvailable - rowsAvailableInColumns01;
-    int numRowsUsedInColumns23 = twoColumnRowsAvailable - rowsAvailableInColumns23;
+    const auto numRowsUsedInColumns01 = twoColumnRowsAvailable - rowsAvailableInColumns01;
+    const auto numRowsUsedInColumns23 = twoColumnRowsAvailable - rowsAvailableInColumns23;
     fillColumns(top2ColumnRow, numRowsUsedInColumns01, 0, 2);
     fillColumns(maxRows_ - numRowsUsedInColumns23, numRowsUsedInColumns23, 2, 2);
 
@@ -302,14 +302,14 @@ bool VariablePacker::checkExpandedVariablesWithinPackingLimits(
     {
         const sh::ShaderVariable &variable = (*variables)[ii];
         ASSERT(1 == GetTypePackingComponentsPerRow(variable.type));
-        int numRows        = GetVariablePackingRows(variable);
+        const int64_t numRows        = GetVariablePackingRows(variable);
         int smallestColumn = -1;
-        int smallestSize   = maxRows_ + 1;
-        int topRow         = -1;
+        auto smallestSize   = maxRows_ + 1;
+        int64_t topRow         = -1;
         for (int column = 0; column < kNumColumns; ++column)
         {
-            int row  = 0;
-            int size = 0;
+            int64_t row  = 0;
+            int64_t size = 0;
             if (searchColumn(column, numRows, &row, &size))
             {
                 if (size < smallestSize)
