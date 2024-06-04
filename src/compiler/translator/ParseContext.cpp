@@ -45,15 +45,6 @@ namespace
 {
 const int kWebGLMaxStructNesting = 4;
 
-// Arbitrarily enforce that all types declared with a size in bytes of over 2 GB will cause
-// compilation failure.
-//
-// For local and global variables, the limit is much lower (64KB) as that much memory won't fit in
-// the GPU registers anyway.
-constexpr size_t kWebGLMaxVariableSizeInBytes        = static_cast<size_t>(2) * 1024 * 1024 * 1024;
-constexpr size_t kWebGLMaxPrivateVariableSizeInBytes = static_cast<size_t>(64) * 1024;
-constexpr size_t kWebGLMaxTotalPrivateVariableSizeInBytes = static_cast<size_t>(16) * 1024 * 1024;
-
 // The 1024 character identifier limit, `-2` for the `_u`
 constexpr size_t kMaxAvailableIdentifierLength = 1022;
 
@@ -1755,7 +1746,8 @@ bool TParseContext::checkVariableSize(const TSourceLoc &line,
     const size_t variableSize =
         CalculateVariableSize(type, type->isInterfaceBlock() || type->getQualifier() == EvqUniform)
             .ValueOrDefault(std::numeric_limits<size_t>::max());
-    if (variableSize > kWebGLMaxVariableSizeInBytes)
+    if (mResources.MaxVariableSizeInBytes &&
+        variableSize > mResources.MaxVariableSizeInBytes)
     {
         error(line, "Size of declared variable exceeds implementation-defined limit", identifier);
         return false;
@@ -1799,7 +1791,8 @@ bool TParseContext::checkVariableSize(const TSourceLoc &line,
         case EvqPerVertexIn:
         case EvqPerVertexOut:
 
-            if (variableSize > kWebGLMaxPrivateVariableSizeInBytes)
+            if (mResources.MaxPrivateVariableSizeInBytes &&
+                variableSize > mResources.MaxPrivateVariableSizeInBytes)
             {
                 error(line,
                       "Size of declared private variable exceeds implementation-defined limit",
@@ -10401,8 +10394,9 @@ bool TParseContext::postParseChecks()
 
     if (mCompileOptions.rejectWebglShadersWithLargeVariables)
     {
-        if (mTotalPrivateVariablesSize.ValueOrDefault(std::numeric_limits<size_t>::max()) >
-            kWebGLMaxTotalPrivateVariableSizeInBytes)
+        if (mResources.MaxTotalPrivateVariableSizeInBytes &&
+            mTotalPrivateVariablesSize.ValueOrDefault(std::numeric_limits<size_t>::max()) >
+                mResources.MaxTotalPrivateVariableSizeInBytes)
         {
             error(TSourceLoc{},
                   "Total size of declared private variables exceeds implementation-defined limit",

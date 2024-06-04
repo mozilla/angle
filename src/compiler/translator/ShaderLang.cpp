@@ -363,6 +363,12 @@ void InitBuiltInResources(ShBuiltInResources *resources)
     resources->MaxTessEvaluationUniformBlocks        = 12;
 
     resources->MaxSamples = 4;
+
+    // Prevent unrealistically large WebGL variable sizes. These defaults match the current parser
+    // limits while allowing embedders to override them.
+    resources->MaxVariableSizeInBytes             = static_cast<size_t>(2) * 1024 * 1024 * 1024;
+    resources->MaxPrivateVariableSizeInBytes      = static_cast<size_t>(64) * 1024;
+    resources->MaxTotalPrivateVariableSizeInBytes = static_cast<size_t>(16) * 1024 * 1024;
 }
 
 //

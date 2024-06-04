@@ -1511,6 +1511,9 @@ void TCompiler::setResourceString()
         << ":MaxFragmentImageUniforms:" << mResources.MaxFragmentImageUniforms
         << ":MaxComputeImageUniforms:" << mResources.MaxComputeImageUniforms
         << ":MaxCombinedImageUniforms:" << mResources.MaxCombinedImageUniforms
+        << ":MaxVariableSizeInBytes:" << mResources.MaxVariableSizeInBytes
+        << ":MaxPrivateVariableSizeInBytes:" << mResources.MaxPrivateVariableSizeInBytes
+        << ":MaxTotalPrivateVariableSizeInBytes:" << mResources.MaxTotalPrivateVariableSizeInBytes
         << ":MaxCombinedShaderOutputResources:" << mResources.MaxCombinedShaderOutputResources
         << ":MaxComputeWorkGroupCountX:" << mResources.MaxComputeWorkGroupCount[0]
         << ":MaxComputeWorkGroupCountY:" << mResources.MaxComputeWorkGroupCount[1]
