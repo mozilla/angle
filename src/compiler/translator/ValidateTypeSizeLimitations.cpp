@@ -20,22 +20,15 @@ namespace sh
 namespace
 {
 
-// Arbitrarily enforce that all types declared with a size in bytes of over 2 GB will cause
-// compilation failure.
-//
-// For local and global variables, the limit is much lower (1MB) as that much memory won't fit in
-// the GPU registers anyway.
-constexpr size_t kMaxVariableSizeInBytes        = static_cast<size_t>(2) * 1024 * 1024 * 1024;
-constexpr size_t kMaxPrivateVariableSizeInBytes = static_cast<size_t>(1) * 1024 * 1024;
-
 // Traverses intermediate tree to ensure that the shader does not
 // exceed certain implementation-defined limits on the sizes of types.
 // Some code was copied from the CollectVariables pass.
 class ValidateTypeSizeLimitationsTraverser : public TIntermTraverser
 {
   public:
-    ValidateTypeSizeLimitationsTraverser(TSymbolTable *symbolTable, TDiagnostics *diagnostics)
+    ValidateTypeSizeLimitationsTraverser(const ShBuiltInResources& limits, TSymbolTable *symbolTable, TDiagnostics *diagnostics)
         : TIntermTraverser(true, false, false, symbolTable),
+          mLimits(limits),
           mDiagnostics(diagnostics),
           mTotalPrivateVariablesSize(0)
     {
@@ -84,7 +77,8 @@ class ValidateTypeSizeLimitationsTraverser : public TIntermTraverser
             // whether the row-major layout is correctly determined.
             bool isRowMajorLayout = false;
             TraverseShaderVariable(shaderVar, isRowMajorLayout, &visitor);
-            if (layoutEncoder.getCurrentOffset() > kMaxVariableSizeInBytes)
+            if (mLimits.MaxVariableSizeInBytes &&
+                layoutEncoder.getCurrentOffset() > mLimits.MaxVariableSizeInBytes)
             {
                 error(asSymbol->getLine(),
                       "Size of declared variable exceeds implementation-defined limit",
@@ -97,7 +91,7 @@ class ValidateTypeSizeLimitationsTraverser : public TIntermTraverser
                                    variableType.getQualifier() == EvqConst;
             if (isPrivate)
             {
-                if (layoutEncoder.getCurrentOffset() > kMaxPrivateVariableSizeInBytes)
+                if (mLimits.MaxPrivateVariableSizeInBytes && layoutEncoder.getCurrentOffset() > mLimits.MaxPrivateVariableSizeInBytes)
                 {
                     error(asSymbol->getLine(),
                           "Size of declared private variable exceeds implementation-defined limit",
@@ -228,6 +222,7 @@ class ValidateTypeSizeLimitationsTraverser : public TIntermTraverser
         }
     }
 
+    const ShBuiltInResources& mLimits;
     TDiagnostics *mDiagnostics;
     std::vector<int> mLoopSymbolIds;
 
@@ -236,11 +231,12 @@ class ValidateTypeSizeLimitationsTraverser : public TIntermTraverser
 
 }  // namespace
 
-bool ValidateTypeSizeLimitations(TIntermNode *root,
+bool ValidateTypeSizeLimitations(const ShBuiltInResources& limits,
+                                 TIntermNode *root,
                                  TSymbolTable *symbolTable,
                                  TDiagnostics *diagnostics)
 {
-    ValidateTypeSizeLimitationsTraverser validate(symbolTable, diagnostics);
+    ValidateTypeSizeLimitationsTraverser validate(limits, symbolTable, diagnostics);
     root->traverse(&validate);
     validate.validateTotalPrivateVariableSize();
     return diagnostics->numErrors() == 0;
