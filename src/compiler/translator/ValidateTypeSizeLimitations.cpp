@@ -107,7 +107,7 @@ class ValidateTypeSizeLimitationsTraverser : public TIntermTraverser
 
     void validateTotalPrivateVariableSize()
     {
-        if (mTotalPrivateVariablesSize > kMaxPrivateVariableSizeInBytes)
+        if (mTotalPrivateVariablesSize > mLimits.MaxPrivateVariableSizeInBytes)
         {
             mDiagnostics->error(
                 TSourceLoc{},

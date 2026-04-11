@@ -216,6 +216,7 @@ constexpr PackedEnumMap<Feature, const char *> kFeatureNames = {{
     {Feature::RoundOutputAfterDithering, "roundOutputAfterDithering"},
     {Feature::SanitizeAMDGPURendererString, "sanitizeAMDGPURendererString"},
     {Feature::ScalarizeVecAndMatConstructorArgs, "scalarizeVecAndMatConstructorArgs"},
+    {Feature::ScissoredClearArtifacts, "scissoredClearArtifacts"},
     {Feature::SelectViewInGeometryShader, "selectViewInGeometryShader"},
     {Feature::SetDataFasterThanImageUpload, "setDataFasterThanImageUpload"},
     {Feature::SetDataFasterThanImageUploadOn128bitFormats,
