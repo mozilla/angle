@@ -208,6 +208,12 @@ struct ShCompileOptions
     // Whether SPV_EXT_demote_to_helper_invocation can be used.
     uint64_t useDemoteToHelperInvocation : 1;
 
+    // Enforce the GLSL 1.017 Appendix A section 7 packing restrictions.  This flag only enforces
+    // (and can only enforce) the packing restrictions for uniform variables in both vertex and
+    // fragment shaders. ShCheckVariablesWithinPackingLimits() lets embedders enforce the packing
+    // restrictions for varying variables during program link time.
+    uint64_t enforcePackingRestrictions : 1;
+
     // This flag ensures all indirect (expression-based) array indexing is clamped to the bounds of
     // the array. This ensures, for example, that you cannot read off the end of a uniform, whether
     // an array vec234, or mat234 type.
