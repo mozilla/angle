@@ -23087,6 +23087,40 @@ void main() {
     EXPECT_PIXEL_COLOR_EQ(0, 0, GLColor::blue);
     ASSERT_GL_NO_ERROR();
 }
+
+// Make sure gl_FragColor can be marked invariant in presence of GL_EXT_draw_buffers.
+TEST_P(GLSLTest, EmulateGLFragColorBroadcastInvariantFragColor)
+{
+    ANGLE_SKIP_TEST_IF(!EnsureGLExtensionEnabled("GL_EXT_draw_buffers"));
+
+    constexpr char kFS[] = R"(#extension GL_EXT_draw_buffers : require
+        invariant gl_FragColor;
+        void main() {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        }
+    )";
+
+    ANGLE_GL_PROGRAM(program, essl1_shaders::vs::Simple(), kFS);
+    drawQuad(program, essl3_shaders::PositionAttrib(), 0.5f);
+    EXPECT_PIXEL_COLOR_EQ(0, 0, GLColor::red);
+}
+
+// Make sure gl_FragColor can be marked invariant in presence of GL_EXT_draw_buffers, even if
+// gl_FragColor is unused.
+TEST_P(GLSLTest, EmulateGLFragColorBroadcastInvariantFragColorUnused)
+{
+    ANGLE_SKIP_TEST_IF(!EnsureGLExtensionEnabled("GL_EXT_draw_buffers"));
+
+    constexpr char kFS[] = R"(#extension GL_EXT_draw_buffers : require
+        invariant gl_FragColor;
+        void main() {
+            // gl_FragColor is unused
+        }
+    )";
+
+    // Verify compilation only, as output is not written to.
+    ANGLE_GL_PROGRAM(program, essl1_shaders::vs::Simple(), kFS);
+}
 }  // anonymous namespace
 
 ANGLE_INSTANTIATE_TEST_ES2_AND_ES3_AND_ES31_AND_ES32(
